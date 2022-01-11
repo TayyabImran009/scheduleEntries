@@ -1,0 +1,578 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<style>
+::placeholder{
+    color:gray !important;
+}
+p{
+  font-size:12px !important;
+}
+input{
+  border-radius:0px !important;
+}
+select{
+  border-radius:0px !important;
+  color:gray !important;
+}
+</style>
+
+<section class="px-4 pb-5">
+<h4 class="py-3"><b>Dentists</b></h4>
+<div class="">
+
+<h6><b>Patient Details</b></h6>
+
+<!-- form starts -->
+<form method="POST" action="{% url 'addnewpatient' %}" enctype="multipart/form-data">
+{% csrf_token %}
+
+   <!-- Message Box Starts --> 
+    <div class="col-sm-12">
+{% for message in messages %}
+<div id="mydiv" class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"style="color:black;background:#CCCCCC;position:relative;">
+<div class="d-flex">
+  <i class="fas fa-check-circle text-success fa-2x"></i> 
+  <h6 class="mx-2">{{message}}</h6> 
+  <a onclick="document.getElementById('mydiv').style.display='none'" style="color:gray;font-size:22px;position:absolute;right:20px;">X</a>
+</div>
+ </div>
+{% endfor %}
+</div>
+   <!-- Message Box Ends --> 
+
+<div class="row">
+
+<!-- section 1 starts -->
+
+<div class="col-sm-8">
+<div class="row">
+    <div class="col-sm-6 my-2">
+      <input type="text" class="form-control shadow"  style="background:#3B4356;color:white;" required="required" placeholder="Prescriber"  name="Prescriber" id="Prescriber" onchange="PrescriberF()">
+      <script>
+function PrescriberF(){
+  e = document.getElementById('Prescriber')
+  e.style.background="rgba(21, 84, 201, 0.104)"
+  e.style.color="gray"
+}
+      </script>
+    </div>
+ 
+    <div class="col-sm-6 my-2">
+      <input type="text" class="form-control shadow" style="background:#3B4356;color:white;" required="required" placeholder="Clinic" name="Clinic" id="Clinic" onchange="ClinicF()">
+       <script>
+          function ClinicF(){
+            e = document.getElementById('Clinic')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+            e.style.color="gray"
+}
+      </script>
+  </div>
+
+    <div class="col-sm-6 my-2">
+      <input type="text" class="form-control shadow" style="background:#3B4356;color:white;" required="required" placeholder="Email" name="Email" id="Email" onchange="EmailF()">
+             <script>
+          function EmailF(){
+            e = document.getElementById('Email')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+            e.style.color="gray"
+}
+      </script>
+    </div> 
+
+      <div class="col-sm-6 my-2">
+      <input type="text" class="form-control shadow" style="background:#3B4356;color:white;" required="required" placeholder="Telephone" name="Telephone" id="Telephone" onchange="TelephoneF()">
+       <script>
+          function TelephoneF(){
+            e = document.getElementById('Telephone')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+            e.style.color="gray"
+}
+      </script>      
+    </div> 
+
+    <div class="col-sm-6 my-2">
+      <input type="text" class="form-control shadow" style="background:#3B4356;color:white;" required="required" placeholder="Patient name" name="PatientName" id="PatientName" onchange="PatientNameF()">
+       <script>
+          function PatientNameF(){
+            e = document.getElementById('PatientName')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+            e.style.color="gray"
+}
+      </script>      
+    </div>
+
+    <div class="col-sm-6 my-2">
+      <select  class="form-control shadow" style="background:#3B4356;color:white;" required="required" name="Sex" id="Sex" onchange="SexF()">
+      <option value="No Selection" selected>Sex</option>
+      <option value="Male" >Male</option>
+      <option value="Female" >Female</option>
+      <option value="Other" >Other</option>
+      </select>
+      <script>
+          function SexF(){
+            e=document.getElementById('Sex')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>
+    </div>
+
+    <div class="col-sm-6 my-2">
+      <select  class="form-control shadow" style="background:#3B4356;color:white;" required="required" name="TreatmentInPast" id="TreatmentInPast" onchange="TreatmentInPastF()">
+      <option value="No Selection" selected>Orthodontics Treatment in Past</option>
+      <option value="Yes" >Yes</option>
+      <option value="No" >No</option>
+      </select>
+      <script>
+          function TreatmentInPastF(){
+            e=document.getElementById('TreatmentInPast')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>  
+    </div>
+
+    <div class="col-sm-6 my-2">
+      <input type="number" class="form-control shadow" style="background:#3B4356;color:white;" placeholder="Age" name="Age" id="Age" onchange="AgeF()">
+       <script>
+          function AgeF(){
+            e = document.getElementById('Age')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+            e.style.color="gray"
+}
+      </script>  
+    </div>
+
+</div>
+</div>
+
+   <div class="col-sm-4">
+<div class="row">
+
+    <div class="col-sm-12 my-2">
+      <input type="text" class="form-control shadow" style="background:#3B4356;color:white;" required="required" placeholder="Address1" name="Address1" id="Address1" onchange="Address1F()">
+       <script>
+          function Address1F(){
+            e = document.getElementById('Address1')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+            e.style.color="gray"
+}
+      </script>  
+    </div>
+
+    <div class="col-sm-12 my-2">
+      <input type="text" class="form-control shadow" style="background:#3B4356;color:white;" required="required" placeholder="Address2" name="Address2" id="Address2" onchange="Address2F()">
+       <script>
+          function Address2F(){
+            e = document.getElementById('Address2')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+            e.style.color="gray"
+}
+      </script>        
+    </div>
+
+    </div>
+</div>
+
+</div>
+<!-- section 1 end -->
+
+<div class="my-5"style="background:black;height:1px;"></div>
+
+<!-- section 2 starts -->
+<div class="row">
+
+<div class="col-sm-3">
+<div class="col1 text-center"style="background:#3B4356;height:200px;">
+<h6 class="text-white"style="padding-top:90px;">METERIAL SENT</h6>
+</div>
+</div>
+
+<div class="col-sm-3">
+
+<div class="box  p-3 my-3 bg-success">
+    <div class="form-check">
+  <input class="form-check-input" type="checkbox" value = "YES"  name="OralScan">
+  <label class="form-check-label" for="ORAL SCAN">ORAL SCAN</label>
+   </div>
+</div>
+
+<div class="box p-3 my-3 bg-warning">
+       <div class="form-check">
+  <input class="form-check-input" type="checkbox" value="Yes" name="Impression">
+  <label class="form-check-label" for="Impression">IMPRESSION</label>
+   </div>
+</div>
+
+<div class="images my-3">
+  <a class="btn my-1"style="color:white;width:100%;padding:5px !important;margin-right:3px;border-radius:0px;background:#3B4356;" onclick="document.getElementById('Photo1').click()">UPLOAD PHOTO</a>
+  <input type='file' id="Photo1" style="display:none" name="Photo1">
+
+  <a class="btn my-1"style="color:white;width:100%;padding:5px !important;margin-right:3px;border-radius:0px;background:#3B4356;" onclick="document.getElementById('Photo2').click()">UPLOAD PHOTO</a>
+  <input type='file' id="Photo2" style="display:none" name="Photo2">
+
+  <a class="btn my-1"style="color:white;width:100%;padding:5px !important;margin-right:3px;border-radius:0px;background:#3B4356;" onclick="document.getElementById('Photo3').click()">UPLOAD PHOTO</a>
+  <input type='file' id="Photo3" style="display:none" name="Photo3">
+
+  <a class="btn my-1"style="color:white;width:100%;padding:5px !important;margin-right:3px;border-radius:0px;background:#3B4356;" onclick="document.getElementById('Photo4').click()">UPLOAD PHOTO</a>
+  <input type='file' id="Photo4" style="display:none" name="Photo4">
+
+</div>
+
+</div>
+
+<div class="col-sm-6">
+<div class="content">
+<p>YOUR 3D VISUALISATION WILL BE READY WITHIN 48 HOURS</p>
+
+<div class="d-flex justify-content-between my-3">
+  <a class="btn"style="color:white;width:50%;padding:5px !important;margin-right:3px;border-radius:0px;background:#3B4356;" onclick="document.getElementById('UpperJawBtn').click()">UPLOAD UPPER JAW</a>
+  <input type='file' id="UpperJawBtn" style="display:none" name="UpperJaw">
+
+  <a class="btn"style="color:white;width:50%;padding:5px !important;margin-left:3px;border-radius:0px;background:#3B4356;" onclick="document.getElementById('LowerJawBtn').click()">UPLOAD LOWER JAW</a>
+  <input type='file' id="LowerJawBtn" style="display:none" name="LowerJaw">
+</div>
+<p>WE NEED YOU FULL ADDRESS TO ARRANGE COLLECTION</p>
+<p>The 3D VISUALISATION WILL BE READY 48 HR AFTER RECEIVING YOUR IMPRESSION</p>
+<p>POSTAGE FEE WILL APPLY</p>
+</div>
+</div>
+
+<div class="col-sm-6">
+      <select  class="form-control shadow changer" onchange="changeBg()" id="changer" style="background:#3B4356;color:white;" required="required" name="Treatment" id="Treatment" onchange="TreatmentF()">
+      <option value="No Selection" selected>TREATMENT</option>
+      <option value="TREATMENT PLAN: includes 3D visualisation and STL files to print models in house" >TREATMENT PLAN: includes 3D visualisation and STL files to print models in house</option>
+      <option value="Full TREATMENT: including 3D and all set of aligners" >Full TREATMENT: including 3D and all set of aligners</option>
+      </select>
+      <script>
+          function TreatmentF(){
+            e=document.getElementById('Treatment')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>  
+</div>
+</div>
+<!-- section 2 ends -->
+
+<div class="my-5"style="background:black;height:1px;"></div>
+
+<!-- section 3 starts -->
+<h6>PLEASE COMPLETE THE FORM WITH TREATMENT GOALS | OBJECTIVES</h6>
+
+<div class="row">
+<div class="col-sm-6">
+
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>TREATMENT REQUIRED</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="TreatmentRequired" id="TreatmentRequired" onchange="TreatmentRequiredF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="UPPER JAW" >UPPER JAW</option>
+      <option value="LOWER JAW" >LOWER JAW</option>
+      <option value="BOTH" >BOTH</option>
+      </select>
+      <script>
+          function TreatmentRequiredF(){
+            e=document.getElementById('TreatmentRequired')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>        
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>ALIGNERS</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="Aligners" id="Aligners" onchange="AlignersF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="WEEKLY" >WEEKLY</option>
+      <option value="BI-WEEKLY" >BI-WEEKLY</option>
+      <option value="MONTHLY" >MONTHLY</option>
+      </select>
+      <script>
+          function AlignersF(){
+            e=document.getElementById('Aligners')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>        
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>TREATMENT LIMIT</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="TreatmentLimit" id="TreatmentLimit" onchange="TreatmentLimitF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="6 MONTHS" >6 MONTHS</option>
+      <option value="9 MONTHS" >9 MONTHS</option>
+      <option value="12 MONTHS" >12 MONTHS</option>
+      <option value="AS REQUIRED" >AS REQUIRED</option>
+      </select>
+      <script>
+          function TreatmentLimitF(){
+            e=document.getElementById('TreatmentLimit')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>        
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>OVERBITE</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="Overbite" id="Overbite" onchange="OverbiteF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="MAINTAIN" >MAINTAIN</option>
+      <option value="IMPROVE" >IMPROVE</option>
+      <option value="IDEALIZE" >IDEALIZE</option>
+      </select>
+      <script>
+          function OverbiteF(){
+            e=document.getElementById('Overbite')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>        
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>OVERJET</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="Overjet" id="Overjet" onchange="OverjetF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="MAINTAIN" >MAINTAIN</option>
+      <option value="IMPROVE" >IMPROVE</option>
+      <option value="IDEALIZE" >IDEALIZE</option>
+      </select>
+      <script>
+          function OverjetF(){
+            e=document.getElementById('Overjet')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>  
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>EXPENSION</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="Expension" id="Expension" onchange="ExpensionF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="NO" >NO</option>
+      <option value="YES" >YES</option>
+      <option value="IF NECESSARY" >IF NECESSARY</option>
+      </select>
+      <script>
+          function ExpensionF(){
+            e=document.getElementById('Expension')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>  
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>IPR</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="IPR" id="IPR" onchange="IPRF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="NO" >NO</option>
+      <option value="YES" >YES</option>
+      <option value="IF NECESSARY" >IF NECESSARY</option>
+      </select>
+      <script>
+          function IPRF(){
+            e=document.getElementById('IPR')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>  
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>PROCLINE</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="Procline" id="Procline" onchange="ProclineF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="NO" >NO</option>
+      <option value="YES" >YES</option>
+      <option value="IF NECESSARY" >IF NECESSARY</option>
+      </select>
+      <script>
+          function ProclineF(){
+            e=document.getElementById('Procline')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>  
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>DISTALIZE</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="Distalize" id="Distalize" onchange="DistalizeF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="NO" >NO</option>
+      <option value="YES" >YES</option>
+      <option value="IF NECESSARY" >IF NECESSARY</option>
+      </select>
+      <script>
+          function DistalizeF(){
+            e=document.getElementById('Distalize')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>  
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>UPPER MIDLINE</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="UpperMidline" id="UpperMidline" onchange="UpperMidlineF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="MOVE RIGHT" >MOVE RIGHT</option>
+      <option value="MOVE LEFT" >MOVE LEFT</option>
+      <option value="IF NECESSARY" >IF NECESSARY</option>
+      </select>
+      <script>
+          function UpperMidlineF(){
+            e=document.getElementById('UpperMidline')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>        
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>LOVER MIDLINE</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="LoverMidline" id="LowerMidline" onchange="LowerMidlineF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="MOVE RIGHT" >MOVE RIGHT</option>
+      <option value="MOVE LEFT" >MOVE LEFT</option>
+      <option value="IF NECESSARY" >IF NECESSARY</option>
+      </select>
+      <script>
+          function LowerMidlineF(){
+            e=document.getElementById('LowerMidline')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>  
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>ARCH FORM</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="ArchForm" id="ArchForm" onchange="ArchFormF()"> 
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="MAINTAIN" >MAINTAIN</option>
+      <option value="IMPROVE" >IMPROVE</option>
+      <option value="IDEALIZE" >IDEALIZE</option>
+      </select>
+      <script>
+          function ArchFormF(){
+            e=document.getElementById('ArchForm')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>  
+</div>
+
+<div class="content d-flex justify-content-between my-2">
+<div class="px-1 py-1 border" style="width:50%;background:#F1F1F1;">
+<span>Posterior Crossbite</span>
+</div>
+      <select  class="form-control border" style="background:#3B4356;color:white;border:none;" required="required" name="PCrossbite" id="PCrossbite" onchange="PCrossbiteF()">
+      <option value="No Selection" selected>PLEASE SELECT</option>
+      <option value="MAINTAIN" >MAINTAIN</option>
+      <option value="IMPROVE" >IMPROVE</option>
+      <option value="IDEALIZE" >IDEALIZE</option>
+      </select>
+      <script>
+          function PCrossbiteF(){
+            e=document.getElementById('PCrossbite')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+      }
+      </script>  
+</div>
+
+</div>
+
+<div class="col-sm-6">
+<div class="img text-center">
+<img class="img-fluid"src="{% static 'images/Logo5.png' %} " style="object-fit:cover;width:425px;height:275px;margin-top:180px;" alt="Logo">
+</div>
+</div>
+
+</div>
+
+<div class="row">
+<div class="col-sm-6">
+    <div class="my-2">
+      <input type="text" class="form-control shadow" value="Do not move these teeth (bridges,ankylosed teeth,etc.)" style="background:#3B4356;color:white;" required="required" name="Hint1" id="Hint1" onchange="Hint1F()">
+       <script>
+          function Hint1F(){
+            e = document.getElementById('Hint1')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+            e.style.color="gray"
+}
+      </script>      
+  </div>
+    <div class="my-2">
+      <input type="text" class="form-control shadow" value="Avoid engagers on these teeth(facial restorations,etc.)" style="background:#3B4356;color:white;" required="required" name="Hint2" id="Hint2" onchange="Hint2F()">
+       <script>
+          function Hint2F(){
+            e = document.getElementById('Hint2')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+            e.style.color="gray"
+}
+      </script>      
+  </div>
+  <div class="my-2">
+      <input type="text" class="form-control shadow" value="I will extract these teeth before treatment." style="background:#3B4356;color:white;" required="required" name="Hint3" id="Hint3" onchange="Hint3F()">
+       <script>
+          function Hint3F(){
+            e = document.getElementById('Hint3')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+            e.style.color="gray"
+}
+      </script>      
+  </div>
+</div>
+
+<div class="col-sm-6">
+  <div class="my-2">
+ <textarea class="form-control rounded-0" style="background:#3B4356;color:white;resize:verticle;" placeholder="Additional Note" rows="5" name="Note" id="Note" onchange="NoteF()"></textarea>
+      <script>
+          function NoteF(){
+            e = document.getElementById('Note')
+            e.style.background="rgba(21, 84, 201, 0.104)"
+            e.style.color="gray"
+}
+      </script>
+  </div>
+</div>
+
+</div>
+
+<!-- section 3 ends -->
+<div class="mt-5">
+<p>By submitting this form, you are agreeing to the terms and condition of UKALIGNERS Laboratory.</p>
+<p>This form is a prescription for the construction of medical devices as directed by signatory clinician who has sole responsibility for the accuracy of the diagnosis and the prescription. the prescription forms a binding contract for medical devices between the signatory clinician and UKALIGNERS Laboratory.</p>
+<p>the 3D filming required is only a virtual simulation of orthodontic treatment.</p>
+</div>
+
+<div class="col-sm-12 py-4"style="margin:auto;">
+  <input type="submit" class="btn  px-5 py-2" style="background:#3B4356;color:white" value="SUBMIT">   
+</div>
+
+  </div>
+</form>
+<!-- form ends -->
+
+</div>
+
+</section>
+{% endblock body %}

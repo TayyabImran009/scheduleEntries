@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<!-- style -->
+<style>
+
+input,
+input::-webkit-input-placeholder {
+    font-size: 10px;
+    
+}
+</style>
+<!-- style -->
+<section class="px-4">
+<h4 class="py-3"><b>Orders</b></h4>
+<div class="">
+
+
+<div class="d-flex justify-content-between py-3">
+<h5><b>Orders Archived</b></h5>
+
+</div>
+
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
+<table class="table ">
+<thead class="text-secondary">
+<tr>
+<th scope="col">Date</th>
+<th scope="col">User</th>
+<th scope="col">Item</th>
+<th scope="col">Category</th>
+<th scope="col">Order By</th>
+<th scope="col">Supplier</th>
+<th scope="col">Quantity</th>
+<th scope="col">Fee(£)</th>
+<th scope="col">Date</th>
+<th scope="col">Arrived</th>
+<th scope="col">Returned</th>
+<th scope="col">Note</th>
+
+</tr>
+</thead>
+
+<tbody>
+
+{% for order in order %}
+
+<tr>
+<td>{{order.Date}}</td>
+<td class="text-secondary">{{order.user}}</td>
+<td>{{order.Item}}</td>
+<td>{{order.Category}}</td>
+<td>{{order.OrderBy}}</td>
+<td>{{order.Supplier}}</td>
+<td>{{order.Quantity}}</td>
+<td>{{order.Fee}}</td>
+<td>{{order.NewDate}}</td>
+<td>{{order.Arrived}}</td>
+<td>{{order.Returned}}</td>
+<td>{{order.Note}}</td>
+
+</tr>
+
+
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+
+
+</div>
+
+</section>
+{% endblock body %}

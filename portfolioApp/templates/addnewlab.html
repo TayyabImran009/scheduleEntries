@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Lab Work</b></h4>
+<div class="">
+
+<!-- Referral form starts -->
+<form method="POST" action="{% url 'addnewlab' %}" enctype="multipart/form-data">
+{% csrf_token %}
+  <div class="row px-3 py-2">
+  <h6 class="py-3">Lab Work Information</h6>
+    
+    <div class="col-sm-12">
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"style="color:white;background:#294C3E;">
+   {{message}}
+ </div>
+{% endfor %}
+</div>
+
+    <div class="col-sm-6 my-3">
+    <label for="Date">Date</label>
+      <select  class="form-control border-0" style="background:#EBEBEB" required="required" name="date">
+      <option value="{{date}}" selected>{{date}}</option>
+      </select>
+    </div>
+
+    <div class="col-sm-6 my-3">
+    <label for="PatientID">Patient name</label>
+      <input type="text" class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Patient name" name="PatientName">
+    </div>
+
+    <div class="col-sm-6 my-3">
+    <label for="PatientID">Patient ID</label>
+      <input type="text" class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Patient ID" name="PatientID">
+    </div>
+
+       <div class="col-sm-6 my-3">
+    <label for="Dentist">Dentist</label>
+      <select  class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Dentist" name="Dentist">
+      <option value="MB" selected>MB</option>
+      <option value="GM" >GM</option>
+      <option value="YC" >YC</option>
+      <option value="RF" >RF</option>
+      <option value="KF" >KF</option>
+      <option value="UJ" >UJ</option>
+      <option value="HYG" >HYG</option>
+      </select>
+    </div>
+
+       <div class="col-sm-6 my-3">
+    <label for="Scheme">Scheme</label>
+      <select  class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Scheme" name="Scheme">
+      <option value="NHS" selected>NHS</option>
+      <option value="PVT" >PVT</option>
+      </select>
+    </div>
+
+        <div class="col-sm-6 my-3">
+    <label for="Lab">Lab</label>
+      <select  class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Lab" name="Lab">
+      <option value="HDM" selected>HDM</option>
+      <option value="Simply Private" >SimplyPrivate</option>
+      <option value="UKAligners" >UKAligners</option>
+      </select>
+    </div>
+
+        <div class="col-sm-6 my-3">
+    <label for="Type">Type</label>
+      <select  class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Type" name="Type">
+      <option value="Crown" selected>Crown</option>
+      <option value="POST" >Post</option>
+      <option value="Denture" >Denture</option>
+      <option value="Mouthguard" >Mouthguard</option>
+      <option value="Retainer" >Retainer</option>
+      <option value="Inlay" >Inlay</option>
+      <option value="Veneer" >Veneer</option>
+      <option value="Study Model" >Study Model</option>
+      </select>
+    </div>
+
+        <div class="col-sm-6 my-3">
+    <label for="Stage">Stage</label>
+      <select  class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Stage" name="Stage">
+      <option value="Imp" selected>Imp</option>
+      <option value="Bite" >Bite</option>
+      <option value="Try-in" >Try-in</option>
+      <option value="Review" >Review</option>
+      <option value="Fit" >Fit</option>
+      </select>
+    </div>
+
+    <div class="col-sm-6 my-3">
+    <label for="DateArriving">Date Arriving</label>
+      <input type="date" class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Date Arriving" name="DateArriving">
+    </div>
+
+<div class="col-sm-12 py-4"style="margin:auto;">
+  <input type="submit" class="btn btn-primary px-5 py-2" value="Save">   
+</div>
+
+
+
+  </div>
+</form>
+<!-- Referral form ends -->
+
+
+</div>
+
+</section>
+{% endblock body %}

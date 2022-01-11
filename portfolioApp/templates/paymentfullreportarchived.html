@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Payment Full Report</b></h4>
+<div class="pb-5">
+
+
+<!-- filter start -->
+  <form action="{% url 'paymentfullreportarchived' %}" method="get">
+  <div class="d-flex justify-content-aountd">
+
+
+  <div class="start text-dark">
+      <input type="date" id="StartDate"  class="form-control" style="border-radius:3px 0px 0px 3px;" required="required" name="StartDate" />
+  </div>
+
+  <div class="end text-dark">
+    <input type="date" id="EndDate"  class="form-control" style="border-radius:0px" required="required" name="EndDate" />
+  </div>
+
+    <div class="end text-dark">
+      <select  class="form-control" style="border-radius:0px" required="required" placeholder="Dentist" name="Dentist">
+      <option selected>Choose Dentist</option>
+      <option value="All" >All</option>
+      <option value="MB" >MB</option>
+      <option value="GM" >GM</option>
+      <option value="YC" >YC</option>
+      <option value="RF" >RF</option>
+      <option value="KF" >KF</option>
+      <option value="UJ" >UJ</option>
+      </select>
+  </div>
+
+      <div class="end text-dark">
+      <select  class="form-control" style="border-radius:0px" required="required" placeholder="Scheme" name="Scheme">
+      <option selected>Choose Scheme</option>
+      <option value="All">All</option>
+      <option value="NHS">NHS</option>
+      <option value="PVT" >PVT</option>
+      </select>
+  </div>
+
+  <button type="submit" class="btn btn-success bg-success"style="border-radius: 0px 3px 3px 0px;"name="Search">
+      <i class="fas fa-search"></i>  
+  </button>
+  </div>
+  </form>
+  <!-- filter end -->
+
+<div class="report col-sm-8 my-3 table-responsive border rounded p-3"style="margin:auto;font-size:16px;"id="printableArea">
+
+<div class="title text-center my-3">
+<h6><b>Payment Full Report</b></h6>
+</div>
+
+<div class="date d-flex justify-content-between mx-3 mt-5">
+<span><b style="font-size:13px;color:black;">Cash Up For</b></span>
+<span style="font-size:13px;color:black;">{{StartDate}} to {{EndDate}}</span>
+</div>
+
+<div class="line"style="border:1px solid black;"></div>
+
+<div class="mx-2 my-4">
+<table class="table" style="">
+<thead class=" text-dark">
+<tr>
+<th scope="col">Patient name</th>
+<th scope="col">Dentist</th>
+<th scope="col">Scheme</th>
+<th scope="col">Payment Method</th>
+<th scope="col">Amount</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for allpayments in allpayments %}
+
+<tr style="border:1px solid white;">
+
+<td>{{allpayments.PatientName}}</td>
+<td>{{allpayments.Dentist}}</td>
+<td>{{allpayments.Scheme}}</td>
+<td>{{allpayments.PaymentMethod}}</td>
+<td>£{{allpayments.Amount}}</td>
+
+</tr>
+
+{% endfor %}
+
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-4"><b>Total</b></td>
+<td class="pt-4"></td>
+<td class="pt-4"></td>
+<td class="pt-4"></td>
+<td class="pt-4"><b>£{{total|floatformat:2}}</b></td>
+</tr>
+
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="print text-center">
+<button class="btn btn-sm btn-primary px-5"onclick="printDiv('printableArea')">Print</button>
+</div>
+</div>
+
+
+<!-- Scripts -->
+
+<script>
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
+
+<!-- Scripts -->
+</section>
+{% endblock body %}

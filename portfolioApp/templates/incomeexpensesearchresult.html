@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Income And Expense Report</b></h4>
+<div class="pb-5">
+
+
+<div class="d-flex justify-content-between my-5">
+
+
+
+
+<!-- date bar starts -->
+<div class="search-bar">
+<div class="input-group">
+  <form action="{% url 'incomeexpensesearchresult' %}" method="get">
+  <div class="d-flex justify-content-aountd">
+  <div class="start text-dark">
+      <input type="date" id="StartDate"  class="form-control" style="border-radius:3px 0px 0px 3px;" required="required" name="IncomeExpenseStartDateQuery" />
+  </div>
+  
+  <div class="end text-dark">
+    <input type="date" id="EndDate"  class="form-control" style="border-radius:0px" required="required" name="IncomeExpenseEndDateQuery" />
+  </div>
+
+    <div class="end text-dark">
+      <select  class="form-control" style="border-radius:0px" required="required"  name="IncomeExpenseAccountQuery">
+      <option selected value="All">Choose Account</option>
+      <option value="All">All</option>
+      <option value="BEHNAM LTD" >BEHNAM LTD</option>
+      <option value="MBDENTAL LTD" >MBDENTAL LTD</option>
+      <option value="UKALIGNERS LTD" >UKALIGNERS LTD</option>
+      <option value="PERSONAL" >PERSONAL</option>
+      </select>
+  </div>
+
+  <button type="submit" class="btn btn-success bg-success"style="border-radius: 0px 3px 3px 0px;">
+      <i class="fas fa-search"></i>  
+  </button>
+  </div>
+  </form>
+</div>
+</div>
+
+<!-- date bar ends -->
+</div>
+
+<!-- Income Report Starts -->
+<div class="report col-sm-9 my-3 table-responsive border rounded p-3"style="margin:auto;font-size:16px;"id="printableArea1">
+
+<div class="title text-center my-3">
+<h6><b>Income Report</b></h6>
+</div>
+
+<div class="date d-flex justify-content-between mx-3 mt-5">
+<span><b style="font-size:13px;color:black;">Income Report of</b></span>
+<span style="font-size:13px;color:black;">{{StartDate}} To {{EndDate}}</span>
+</div>
+
+<div class="line"style="border:1px solid black;"></div>
+
+<div class="mx-2 my-4">
+<table class="table" style="">
+<thead class=" text-dark">
+<tr>
+<th scope="col">Date</th>
+<th scope="col">Title</th>
+<th scope="col">Category</th>
+<th scope="col">Account</th>
+<th scope="col">Amount</th>
+<th scope="col">Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for incomereport in incomereport %}
+
+<tr style="border:1px solid white;">
+<td>{{incomereport.Date}}</td>
+<td>{{incomereport.Title}}</td>
+<td>{{incomereport.Category}}</td>
+<td>{{incomereport.Account}}</td>
+<td>£{{incomereport.Amount}}</td>
+<td>
+<a href="/editincome/{{incomereport.id}}" class="btn btn-sm text-secondary mx-1 p-0"style="background:none"><i class="far fa-edit"></i></a>
+<a href="/deleteincome/{{incomereport.id}}" class="btn btn-sm text-secondary mx-1 p-0"style="background:none"><i class="far fa-trash-alt"></i></a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-5"><b>Total Income</b></td>
+<td class="pt-5"></td>
+<td class="pt-5"></td>
+<td class="pt-5"></td>
+<td class="pt-5"><b>£{{incometotal|floatformat:2}}</b></td>
+</tr>
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-0"><b>Total Expense</b></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"><b>£{{expensetotal|floatformat:2}}</b></td>
+</tr>
+
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-0"><b>Sum</b></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"><b>£{{total|floatformat:2}}</b></td>
+</tr>
+
+</tbody>
+</table>
+</div>
+</div>
+
+
+<!-- Income Report Ends -->
+<hr class="my-5">
+<!-- Expense Report Starts -->
+<div class="report col-sm-9 my-3 table-responsive border rounded p-3"style="margin:auto;font-size:16px;"id="printableArea2">
+
+<div class="title text-center my-3">
+<h6><b>Expense Report</b></h6>
+</div>
+
+<div class="date d-flex justify-content-between mx-3 mt-5">
+<span><b style="font-size:13px;color:black;">Expense Report of</b></span>
+<span style="font-size:13px;color:black;">{{StartDate}} To {{EndDate}}</span>
+</div>
+
+<div class="line"style="border:1px solid black;"></div>
+
+<div class="mx-2 my-4">
+<table class="table" style="">
+<thead class=" text-dark">
+<tr>
+<th scope="col">Date</th>
+<th scope="col">Title</th>
+<th scope="col">Category</th>
+<th scope="col">Account</th>
+<th scope="col">Amount</th>
+<th scope="col">Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for expensereport in expensereport %}
+
+<tr style="border:1px solid white;">
+<td>{{expensereport.Date}}</td>
+<td>{{expensereport.Title}}</td>
+<td>{{expensereport.Category}}</td>
+<td>{{expensereport.Account}}</td>
+<td>£{{expensereport.Amount}}</td>
+<td>
+<a href="/editexpense/{{expensereport.id}}" class="btn btn-sm text-secondary mx-1 p-0"style="background:none"><i class="far fa-edit"></i></a>
+<a href="/deleteexpense/{{expensereport.id}}" class="btn btn-sm text-secondary mx-1 p-0"style="background:none"><i class="far fa-trash-alt"></i></a>
+</td>
+</tr>
+
+{% endfor %}
+
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-5"><b>Total Expense</b></td>
+<td class="pt-5"></td>
+<td class="pt-5"></td>
+<td class="pt-5"></td>
+<td class="pt-5"><b>£{{expensetotal|floatformat:2}}</b></td>
+</tr>
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-0"><b>Total Income</b></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"><b>£{{incometotal|floatformat:2}}</b></td>
+</tr>
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-0"><b>Sum</b></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"><b>£{{total|floatformat:2}}</b></td>
+</tr>
+
+</tbody>
+</table>
+</div>
+</div>
+
+
+</div>
+<!-- Expense Report Ends -->
+
+
+<!-- Scripts -->
+
+<script>
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
+
+<!-- Scripts -->
+</section>
+{% endblock body %}

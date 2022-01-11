@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Income</b></h4>
+<div class="">
+
+<h6><b>Add New Income</b></h6>
+
+<!-- Referral form starts -->
+<form method="POST" action="updateincome/{{incomedata.id}}" enctype="multipart/form-data">
+{% csrf_token %}
+  <div class="row px-3 py-2">
+    
+    <div class="col-sm-12">
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"style="color:white;background:#294C3E;">
+   {{message}}
+ </div>
+{% endfor %}
+</div>
+
+      <input type="hidden" id="id" value="{{incomedata.id}}" placeholder="Title" name="id">
+
+       <div class="col-sm-6 my-3">
+    <label for="Date">Date</label>
+      <select  class="form-control border-0" style="background:#EBEBEB" required="required" value="{{incomedata.Date}} "name="Date">
+      <option value="{{date}}">{{date}}</option>
+      </select>
+    </div>
+    
+        <div class="col-sm-6 my-3">
+    <label for="Title">Title</label>
+      <input list="Title"type="text" class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Title" value="{{incomedata.Title}}" name="Title">
+    <datalist id="Title">
+     {% for title in title %}
+      <option value="{{title.Title}}">
+     {% endfor %}
+    </datalist>
+    </div>
+
+    <div class="col-sm-6 my-3">
+    <label for="Category">Category</label>
+      <input list="Category" type="text" class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Category" value="{{incomedata.Category}}" name="Category">
+          <datalist id="Category">
+     {% for category in category %}
+      <option value="{{category.Category}}">
+     {% endfor %}
+    </datalist>
+    </div>
+    
+    <div class="col-sm-6 my-3">
+   <label for="Account">Account</label>
+      <select  class="form-control border-0" style="background:#EBEBEB" required="required" name="Account">
+      <option value="{{incomedata.Account}}" selected>{{incomedata.Account}}</option>
+      <option value="BEHNAM LTD" >BEHNAM LTD</option>
+      <option value="MBDENTAL LTD" >MBDENTAL LTD</option>
+      <option value="UKALIGNERS LTD" >UKALIGNERS LTD</option>
+      <option value="PERSONAL" >PERSONAL</option>
+      </select>
+    </div>
+
+
+    <div class="col-sm-6 my-3">
+    <label for="Amount">Amount(<b>£</b>)</label>
+      <input type="number" step=".01" class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="0.00"  value="{{incomedata.Amount}}" name="Amount">
+    </div>
+
+        <div class="col-sm-6 my-3">
+    <label for="Note">Note</label>
+      <input type="text" class="form-control border-0" style="background:#EBEBEB" placeholder="Add your note here" value="{{incomedata.Note}}" name="Note">
+    </div>
+
+    <div class="col-sm-6 d-flex justify-content-between py-3">
+    <div class="form-check form-check-inline">
+  <input class="form-check-input selected" type="radio" value = "Pending" checked name="Status">
+  <label class="form-check-label" for="Pending">Pending</label>
+   </div>
+       
+       <div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio"  value="Approved" name="Status">
+  <label class="form-check-label" for="Approved">Archived</label>
+   </div>
+</div>
+
+
+
+<div class="col-sm-12 py-4"style="margin:auto;">
+  <input type="submit" class="btn btn-primary px-5 py-2" value="Save" name="UpdateIncome">   
+</div>
+
+
+
+  </div>
+</form>
+<!-- Referral form ends -->
+
+
+</div>
+
+</section>
+{% endblock body %}

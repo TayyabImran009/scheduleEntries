@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<!-- style -->
+<style>
+
+input,
+input::-webkit-input-placeholder {
+    font-size: 10px;
+    
+}
+</style>
+<!-- style -->
+<section class="px-4">
+<h4 class="py-3"><b>Labs</b></h4>
+<div class="">
+
+
+<div class="d-flex justify-content-between py-3">
+<h5><b>Lab Works Pending</b></h5>
+
+</div>
+
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
+<table class="table ">
+<thead class="text-secondary">
+<tr>
+<th scope="col">Date</th>
+<th scope="col">Patient name</th>
+<th scope="col">Patient ID</th>
+<th scope="col">Dentist</th>
+<th scope="col">Scheme</th>
+<th scope="col">Lab</th>
+<th scope="col">Type</th>
+<th scope="col">Quantity</th>
+<th scope="col">Note</th>
+<th scope="col">Date Arriving</th>
+<th scope="col">Arrived</th>
+<th scope="col">Stage</th>
+{% if user.is_superuser %}
+<th scope="col">Fee(£)</th>
+<th scope="col">Paid Date</th>
+{% endif %}
+<th scope="col">TC</th>
+<th scope="col">Action</th>
+
+
+</tr>
+</thead>
+
+<tbody>
+
+{% for labwork in labwork %}
+
+<tr>
+<td style="font-size:12px;">{{labwork.date}}</td>
+
+<form action="" method="POST">
+{% csrf_token %}
+  <input type="hidden" name="id"value="{{labwork.id}}">
+<td>
+      <input type="text" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:90px;" required="required" name="PatientName"value="{{labwork.PatientName}}">
+</td>
+
+<td>
+      <input type="text" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:80px;" required="required" name="PatientID"value="{{labwork.PatientID}}">
+</td>
+
+<td>
+    <select name="Dentist" id="Dentist" style="font-size:10px;">
+      <option value="{{labwork.Dentist}}"selected>{{labwork.Dentist}}</option>
+      <option value="MB" >MB</option>
+      <option value="GM" >GM</option>
+      <option value="YC" >YC</option>
+      <option value="RF" >RF</option>
+      <option value="KF" >KF</option>
+      <option value="UJ" >UJ</option>
+      <option value="HYG" >HYG</option>
+    </select>
+</td>
+
+<td>
+    <select name="Scheme" id="Scheme" style="font-size:10px;">
+      <option value="{{labwork.Scheme}}"selected>{{labwork.Scheme}}</option>
+      <option value="NHS" >NHS</option>
+      <option value="PVT" >PVT</option>
+    </select>
+</td>
+
+<td>
+    <select name="Lab" id="Lab" style="font-size:10px;">
+      <option value="{{labwork.Lab}}"selected>{{labwork.Lab}}</option>
+      <option value="HDM" >HDM</option>
+      <option value="Simply Private" >SimplyPrivate</option>
+      <option value="UKAligners" >UKAligners</option>
+    </select>
+</td>
+
+<td>
+    <select name="Type" id="Type" style="font-size:10px;">
+      <option value="{{labwork.Type}}"selected>{{labwork.Type}}</option>
+      <option value="Crown" >Crown</option>
+      <option value="POST" >Post</option>
+      <option value="Denture" >Denture</option>
+      <option value="Mouthguard" >Mouthguard</option>
+      <option value="Retainer" >Retainer</option>
+      <option value="Inlay" >Inlay</option>
+      <option value="Veneer" >Veneer</option>
+      <option value="Study Model" >Study Model</option>
+    </select>
+</td>
+
+<td>
+      <input type="number" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:60px;"  name="Quantity"value="{{labwork.Quantity}}">
+</td>
+
+<td>
+      <input type="text" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:120px;" name="Note"value="{{labwork.Note}}">
+</td>
+
+<td>
+      <input type="date" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:110px;" required="required" name="DateArriving" value="{{labwork.DateArriving}}">
+</td>
+
+<td>
+
+  {% if labwork.Arrived == "Yes" %}
+    <select name="Arrived" id="Arrived" style="font-size:10px;background:green;color:white;">
+  {% else %}
+    <select name="Arrived" id="Arrived" style="font-size:10px;background:White;">
+  {% endif %}
+        <option value="{{labwork.Arrived}}"selected>{{labwork.Arrived}}</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
+</td>
+
+<td>
+    <select name="Stage" id="Stage" style="font-size:10px;">
+      <option value="{{labwork.Stage}}" selected>{{labwork.Stage}}</option>
+      <option value="Imp">Imp</option>
+      <option value="Bite" >Bite</option>
+      <option value="Try-in" >Try</option>
+      <option value="Fit" >Fit</option>
+    </select>
+</td>
+
+{% if user.is_superuser %}
+<td>
+
+{% if labwork.Fee == 0.00 %}
+      <input type="number" step=".01" id="Fee" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:50px;" required="required" name="Fee"value="{{labwork.Fee}}">
+{% else %}
+      <input type="number" step=".01" id="Fee" class="form-control border-0" style="background:green;color:white;padding:3px;font-size:11px;width:50px;" name="Fee"value="{{labwork.Fee}}">
+{% endif %}
+
+</td>
+
+<td>
+      <input type="date" id="PaidDate" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:110px;" name="PaidDate"value="{{labwork.PaidDate}}">
+
+</td>
+{% endif %}
+
+<td>
+  {% if labwork.TC == "TC" %}
+  <select name="TC" id="TC" style="font-size:10px;background:red;color:white;">
+  {% else %}
+  <select name="TC" id="TC" style="font-size:10px;">
+  {% endif %}
+      <option value="{{labwork.TC}}" selected>{{labwork.TC}}</option>
+      <option value="TC" >TC</option>
+    </select>
+</td>
+
+<td>
+<div class="d-flex justify-content-between">
+<span>
+ <input type="submit" class="btn px-2 mx-1 py-0 text-light" value="Save" style="background:green;font-size:11px;" name="Save"> 
+</form>
+</span>
+{% if user.is_superuser %}
+<span>
+<form action=""method="POST">
+{% csrf_token %}
+<input type="hidden" name="id"value="{{labwork.id}}">
+    <input type="submit" class="btn px-2 mx-1 py-0" value="Archive" style="background:yellow;font-size:11px;" name="Archive"> 
+</form>
+</span>
+</div>
+
+</td>
+{% endif %}
+
+</tr>
+
+
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+
+
+</div>
+
+
+</section>
+{% endblock body %}

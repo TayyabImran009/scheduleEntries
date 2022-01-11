@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Dentists</b></h4>
+<div class="">
+
+<span class="text-secondary">UKALIGNERS Dental Home</span>
+<h6><b>{{user.first_name}} {{user.last_name}}</b></h6>
+
+<div class="d-flex justify-content-between py-3">
+<h5><b>Patients</b></h5>
+<a href="{% url 'addnewpatient' %}" class="btn btn-sm text-light bg-success"><i class="fas fa-plus mx-1"></i> Add new patient</a>
+</div>
+
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
+<table class="table ">
+<thead class="text-secondary">
+<tr>
+<th scope="col">ID</th>
+<th scope="col">First name</th>
+<th scope="col">Last name</th>
+<th scope="col">Email</th>
+
+</tr>
+</thead>
+
+<tbody>
+
+{% for dentists in dentists %}
+
+<tr>
+<td>{{dentists.id}}</td>
+<td>{{dentists.first_name}}</td>
+<td>{{dentists.last_name}}</td>
+<td>{{dentists.email}}</td>
+</tr>
+
+
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+
+
+</div>
+
+</section>
+{% endblock body %}

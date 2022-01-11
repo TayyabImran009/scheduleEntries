@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Labs</b></h4>
+<div class="">
+
+
+<div class="d-flex justify-content-between py-3">
+<h5><b>Lab Works Archived</b></h5>
+
+<div class="add-new">
+<a href="{% url 'addnewlab' %}" class="btn btn-sm text-light bg-success"><i class="fas fa-plus mx-1"></i>Add new Lab Work</a>
+</div>
+</div>
+
+<!-- filter start -->
+  <form action="{% url 'labsarchived' %}" method="get">
+  <div class="d-flex justify-content-aountd">
+
+
+  <div class="start text-dark">
+      <input type="date" id="StartDate"  class="form-control" style="border-radius:3px 0px 0px 3px;" required="required" name="StartDate" />
+  </div>
+
+  <div class="end text-dark">
+    <input type="date" id="EndDate"  class="form-control" style="border-radius:0px" required="required" name="EndDate" />
+  </div>
+
+    <div class="end text-dark">
+      <select  class="form-control" style="border-radius:0px" required="required" placeholder="Dentist" name="Dentist">
+      <option selected>Choose Dentist</option>
+      <option value="MB" >MB</option>
+      <option value="GM" >GM</option>
+      <option value="YC" >YC</option>
+      <option value="RF" >RF</option>
+      <option value="KF" >KF</option>
+      <option value="UJ" >UJ</option>
+      <option value="HYG" >HYG</option>
+      </select>
+  </div>
+
+  <div class="end text-dark">
+      <select  class="form-control" style="border-radius:0px" required="required" placeholder="Scheme" name="Scheme">
+      <option selected>Choose Scheme</option>
+      <option value="NHS">NHS</option>
+      <option value="PVT" >PVT</option>
+      </select>
+  </div>
+
+      <div class="end text-dark">
+      <select  class="form-control" style="border-radius:0px" required="required" placeholder="Lab" name="Lab">
+      <option selected>Choose Lab</option>
+      <option value="HDM">HDM</option>
+      <option value="Simply Private" >SimplyPrivate</option>
+      <option value="UKAligners" >UKAligners</option>
+      </select>
+  </div>
+
+  <button type="submit" class="btn btn-success bg-success"style="border-radius: 0px 3px 3px 0px;"name="Search">
+      <i class="fas fa-search"></i>  
+  </button>
+  </div>
+  </form>
+  <!-- filter end -->
+
+
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;"id="printableArea">
+<table class="table ">
+<thead class="text-secondary">
+<tr>
+<th scope="col">Date</th>
+<th scope="col">Patient name</th>
+<th scope="col">Patient ID</th>
+<th scope="col">Dentist</th>
+<th scope="col">Scheme</th>
+<th scope="col">Lab</th>
+<th scope="col">Type</th>
+<th scope="col">Stage</th>
+<th scope="col">Date Arriving</th>
+<th scope="col">Arrived</th>
+<th scope="col">Fee</th>
+<th scope="col">Paid Date</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for labwork in labwork %}
+
+<tr>
+<td>{{labwork.date}}</td>
+<td class="text-secondary">{{labwork.PatientName}}</td>
+<td>{{labwork.PatientID}}</td>
+<td>{{labwork.Dentist}}</td>
+<td>{{labwork.Scheme}}</td>
+<td>{{labwork.Lab}}</td>
+<td>{{labwork.Type}}</td>
+<td>{{labwork.Stage}}</td>
+<td>{{labwork.DateArriving}}</td>
+<td>{{labwork.Arrived}}</td>
+<td>£{{labwork.Fee}}</td>
+<td>{{labwork.PaidDate}}</td>
+</tr>
+{% endfor %}
+
+<tr style="font-weight:bold;">
+<th scope="col">Total</th>
+<th scope="col"></th>
+<th scope="col"></th>
+<th scope="col"></th>
+<th scope="col"></th>
+<th scope="col"></th>
+<th scope="col"></th>
+<th scope="col"></th>
+<th scope="col"></th>
+<th scope="col"></th>
+<th scope="col"></th>
+<th scope="col">£{{sum|floatformat:2}}</th>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+<div class="print text-center">
+<button class="btn btn-sm btn-primary px-5"onclick="printDiv('printableArea')">Print</button>
+</div>
+
+</div>
+
+</section>
+<script>
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
+
+{% endblock body %}
+

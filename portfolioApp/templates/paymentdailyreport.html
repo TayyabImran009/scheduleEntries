@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Payments</b></h4>
+<div class="">
+
+<div class="d-flex justify-content-between">
+<h5><b>Daily Report</b></h5>
+
+<!-- search bar starts -->
+<div class="search-bar">
+<div class="input-group">
+  <div class="form-outline">
+  <form action="{% url 'reportsearchresults' %}" method="get">
+    <input type="date" id="patientName"  class="form-control" required="required" name="ReportSearchQuery" />
+  </div>
+  <button type="submit" class="btn btn-success bg-success">
+      <i class="fas fa-search"></i>
+  </button>
+  </form>
+</div>
+</div>
+<!-- search bar ends -->
+
+</div>
+
+<!-- Report  starts -->
+<div class="row"style="position:relative;">
+<div class="col-sm-3"></div>
+
+<div class="col-md-6"style="margin:auto;">
+<div class="report rounded border px-4 py-3 my-3" style=""id="printableArea">
+<div class="title text-center mb-3">
+<h6><b>Daily Report</b></h6>
+</div>
+<!-- date -->
+<div class="date d-flex justify-content-between mx-3 mt-5">
+<span><b style="font-size:13px;color:black;">Daily Cash Up For</b></span>
+<span style="font-size:13px;color:black;">{{date}}</span>
+</div>
+<div class="line"style="border:1px solid black;"></div>
+<!-- content -->
+<div class="content d-flex justify-content-between mt-4 mx-5">
+
+<div class="pmethod text-left">
+<p class="my-3" style="font-size:13px;"><b>Payment Method</b></p>
+<p class="my-3" style="font-size:13px;">Cash</p>
+<p class="my-3" style="font-size:13px;">Card11</p>
+<p class="my-3" style="font-size:13px;">Card12</p>
+<p class="my-3" style="font-size:13px;">Bank Transfer</p>
+<p class="my-3" style="font-size:13px;">Loan</p>
+</div>
+
+<div class="sum text-left">
+<p class="my-3" style="font-size:13px;"><b>Sum</b></p>
+<p class="my-3" style="font-size:13px;">£{{cashsum|floatformat:2}}</p>
+<p class="my-3" style="font-size:13px;">£{{card11sum|floatformat:2}}</p>
+<p class="my-3" style="font-size:13px;">£{{card14sum|floatformat:2}}</p>
+<p class="my-3" style="font-size:13px;">£{{banktransfersum|floatformat:2}}</p>
+<p class="my-3" style="font-size:13px;">£{{loansum|floatformat:2}}</p>
+</div>
+
+</div>
+
+<div class="line mx-4 my-2"style="border-top:1px solid black;"></div>
+<!-- total -->
+<div class="total d-flex justify-content-between my-2 mx-5">
+<div class="pmethod text-left">
+<p class="my-1" style="font-size:13px;"><b>Total</b></p>
+</div>
+
+<div class="sum text-left">
+<p class="my-1" style="font-size:13px;"><b>£<span id="total"style="font-size:13px;">{{total|floatformat:2}}</span></b></p>
+</div>
+</div>
+</div>
+
+</div>
+<div class="col-sm-3">
+<!-- payment check starts -->
+<div class="paymentcheck row d-sm-none d-md-block"style="position:absolute;bottom:10px;">
+    <div class="col-sm-12 my-3">
+    <label class="text-center">iSmile</label>
+      <input id="iSmile"type="number" onchange="iSmilefunc()"step=".01" class="form-control" required="required" placeholder="00.00" name="Category">
+      <small class="text-danger"style="display:none;" id="warningline">Total is not matching. Please Recheck.</small>
+      <small class="text-success"style="display:none;" id="successline">Total is matching. Looks fine.</small>
+    </div>
+</div>
+<script>
+function iSmilefunc(){
+total=document.getElementById('total').innerHTML
+ismile=document.getElementById('iSmile').value
+warningline=document.getElementById('warningline')
+successline=document.getElementById('successline')
+if(total != ismile){
+  warningline.style.display="block"
+  successline.style.display="none"
+}
+else {
+  warningline.style.display="none"  
+  successline.style.display="block"
+}
+
+}
+  
+</script>
+<!-- payment check ends -->
+</div>
+
+
+</div>
+<div class="print text-center">
+<button class="btn btn-sm btn-primary px-5"onclick="printDiv('printableArea')">Print</button>
+</div>
+<!-- Referral form ends -->
+
+
+</div>
+
+
+
+<!-- Scripts -->
+
+<script>
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
+
+<!-- Scripts -->
+</section>
+{% endblock body %}

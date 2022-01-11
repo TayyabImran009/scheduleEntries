@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<!-- style -->
+<style>
+
+input,
+input::-webkit-input-placeholder {
+    font-size: 10px;
+    
+}
+</style>
+<!-- style -->
+<section class="px-4">
+<h4 class="py-3"><b>Orders</b></h4>
+<div class="">
+
+
+<div class="d-flex justify-content-between py-3">
+<h5><b>Orders Page</b></h5>
+
+</div>
+
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
+<table class="table ">
+<thead class="text-secondary">
+<tr>
+<th scope="col">Date</th>
+<th scope="col">User</th>
+<th scope="col">Item</th>
+<th scope="col">Category</th>
+<th scope="col">Order By</th>
+<th scope="col">Supplier</th>
+<th scope="col">Quantity</th>
+<th scope="col">Fee(£)</th>
+<th scope="col">Date</th>
+<th scope="col">Arrived</th>
+<th scope="col">Returned</th>
+<th scope="col">Note</th>
+<th scope="col">Action</th>
+
+
+</tr>
+</thead>
+
+<tbody>
+
+{% for order in order %}
+
+{% if order.Arrived == "Yes" %}
+<tr style="background:#C7FF9B;">
+{% else %}
+<tr style="background:white;">
+{% endif %}
+
+<td>{{order.Date}}</td>
+<td class="text-secondary">{{order.user}}</td>
+<td>{{order.Item}}</td>
+<td>{{order.Category}}</td>
+
+<td>
+<form action="" method="POST">
+{% csrf_token %}
+  <input type="hidden" name="id"value="{{order.id}}">
+      <input type="text" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:50px;" required="required" name="OrderBy"value="{{order.OrderBy}}">
+      <input type="submit" name="AddOrderBy"style="display:none;">
+</form>
+</td>
+
+<td>
+<form action="" method="POST">
+{% csrf_token %}
+  <input type="hidden" name="id"value="{{order.id}}">
+      <input type="text" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:50px;" required="required" name="Supplier"value="{{order.Supplier}}">
+      <input type="submit" name="AddSupplier"style="display:none;">
+</form>
+</td>
+
+<td>
+<form action="" method="POST">
+{% csrf_token %}
+  <input type="hidden" name="id"value="{{order.id}}">
+      <input type="number" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:50px;" required="required" name="Quantity"value="{{order.Quantity}}">
+      <input type="submit" name="AddQuantity"style="display:none;">
+</form>
+</td>
+
+<td>
+<form action="" method="POST">
+{% csrf_token %}
+  <input type="hidden" name="id"value="{{order.id}}">
+      <input type="number" id="Fee" step=".01" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:50px;" required="required" name="Fee"value="{{order.Fee}}">
+      <input type="submit" name="AddFee"style="display:none;">
+</form>
+</td>
+
+<td>
+<form action="" method="POST">
+{% csrf_token %}
+  <input type="hidden" name="id"value="{{order.id}}">
+      <input type="text" onfocus="(this.type='date')" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:110px;" required="required" name="NewDate"value="{{order.NewDate|date:"d/m/Y"}}">
+      <input type="submit" name="AddNewDate"style="display:none;">
+</form>
+</td>
+
+<td>
+<form action="" method="POST">
+{% csrf_token %}
+  <input type="hidden" name="id"value="{{order.id}}">
+    <select name="Arrived" id="Arrived" onchange="this.form.submit()">
+        <option value="{{order.Arrived}}"selected>{{order.Arrived}}</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
+</form>
+</td>
+
+<td>
+<form action="" method="POST">
+{% csrf_token %}
+  <input type="hidden" name="id"value="{{order.id}}">
+    <select name="Returned" id="Returned" onchange="this.form.submit()">
+        <option value="{{order.Returned}}"selected>{{order.Returned}}</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
+</form>
+</td>
+
+<td>
+<form action="" method="POST">
+{% csrf_token %}
+  <input type="hidden" name="id"value="{{order.id}}">
+      <input type="textarea" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:50px;" required="required" name="Note"value="{{order.Note}}">
+      <input type="submit" name="AddNote"style="display:none;">
+</form>
+</td>
+
+<td>
+<form action=""method="POST">
+{% csrf_token %}
+<input type="hidden" name="id"value="{{order.id}}">
+    <input type="submit" class="btn px-2 py-0" value="Archived" style="background:yellow;font-size:11px;" name="Archive"> 
+</form>
+</td>
+
+
+
+</tr>
+
+
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+
+
+</div>
+
+</section>
+{% endblock body %}

@@ -1,0 +1,430 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Dashboard</b></h4>
+
+{% if user.is_superuser or user.is_staff %}
+<!-- Reception Section Starts -->
+<div class="row pt-2 pb-5">
+<h4>Payments</h4>
+
+<div class="col-sm-3">
+<a href="{% url 'addpayment' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#3E4A37;">
+<div class="title text-light"><h4>ADD PAYMENT</h4></div>
+<div class="icon"><a href="{% url 'addpayment' %}"style="float:right;color:yellow;"><i class="fas fa-2x fa-plus mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-3">
+<a href="{% url 'paymentfullreport' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#3E4A37;">
+<div class="title text-light"><h4>DAILY CASH-UP</h4></div>
+<div class="icon"><a href="{% url 'paymentfullreport' %}"style="float:right;color:yellow;"><i class="fas fa-2x fa-receipt mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-3">
+<a href="{% url 'paymentdailyreport' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#3E4A37;">
+<div class="title text-light"><h4>DAILY REPORT</h4></div>
+<div class="icon"><a href="{% url 'paymentdailyreport' %}"style="float:right;color:yellow;"><i class="fas fa-2x fa-receipt mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+{% if user.is_superuser %}
+<div class="col-sm-3">
+<a href="{% url 'paymentfullreportarchived' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#3E4A37;">
+<div class="title text-light"><h4>FULL REPORT</h4></div>
+<div class="icon"><a href="{% url 'paymentfullreportarchived' %}"style="float:right;color:yellow;"><i class="fas fa-2x fa-receipt mx-1"></i></a></div>
+</div>
+</a>
+</div>
+{% endif %}
+
+
+</div>
+<!-- Reception Section Ends -->
+{% endif %}
+
+<!-- Patient section starts -->
+<div class="row pt-2 pb-5">
+<div class="d-flex justify-content-between">
+<h4>Aligners</h4>
+<a href="{% url 'addnewpatient' %}" class="btn btn-sm text-light bg-success"><i class="fas fa-plus mx-1"></i> Add new patient</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'patientnew' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>New Entry</b></h6></div>
+<div class="number text-warning"><h4><b>{{newpatientscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patientnew' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+{% if user.is_superuser or user.is_staff%}
+
+<div class="col-sm-2">
+<a href="{% url 'patienttdv' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>3D View</b></h6></div>
+<div class="number text-warning"><h4><b>{{tdvpatientscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patienttdv' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+{% endif %}
+
+<div class="col-sm-2">
+<a href="{% url 'patientwa' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Waiting Acceptance</b></h6></div>
+<div class="number text-warning"><h4><b>{{wapatientscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patientwa' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'patientaccepted' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Accepted</b></h6></div>
+<div class="number text-warning"><h4><b>{{acceptedpatientscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patientaccepted' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+{% if user.is_superuser or user.is_staff%}
+
+<div class="col-sm-2">
+<a href="{% url 'patientmp' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Model Production</b></h6></div>
+<div class="number text-warning"><h4><b>{{mppatientscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patientmp' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'patientar' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Aligners Ready</b></h6></div>
+<div class="number text-warning"><h4><b>{{arpatientscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patientar' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+{% endif %}
+
+<div class="col-sm-2">
+<a href="{% url 'patientreview' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Review</b></h6></div>
+<div class="number text-warning"><h4><b>{{reviewpatientscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patientreview' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'patientoh' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>On-Hold</b></h6></div>
+<div class="number text-warning"><h4><b>{{ohpatientscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patientoh' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'patientdeclined' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Declined</b></h6></div>
+<div class="number text-warning"><h4><b>{{declinedpatientscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patientdeclined' %}"style="float:right;color:white;font-size:12px">Check Details</a></div>
+</div>
+</a>
+</div>
+
+
+
+{% if user.is_superuser or user.is_staff%}
+
+<div class="col-sm-2">
+<a href="{% url 'patientarchived' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Archived</b></h6></div>
+<div class="number text-warning"><h4><b>{{archivedpatientcount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patientarchived' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+
+<div class="col-sm-2">
+<a href="{% url 'patienttc' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>TC</b></h6></div>
+<div class="number text-warning"><h4><b>{{tcpatientscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patienttc' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'patients' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Total</b></h6></div>
+<div class="number text-warning"><h4><b>{{totalpatientscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'patients' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+
+{% endif %}
+
+</div>
+<!-- Patient section Ends -->
+
+<!-- Referral section starts -->
+<div class="row py-2">
+<div class="d-flex justify-content-between">
+<h4>Referrals</h4>
+<a href="{% url 'addnewreferral' %}" class="btn btn-sm text-light bg-success"><i class="fas fa-plus mx-1"></i> Add new referral</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'referrals' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Total</b></h6></div>
+<div class="number text-warning"><h4><b>{{reftotalcount}}</b></h4></div>
+<div class="icon"><a href="{% url 'referrals' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'refnew' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>New Entry</b></h6></div>
+<div class="number text-warning"><h4><b>{{refnewcount}}</b></h4></div>
+<div class="icon"><a href="{% url 'refnew' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'refconsultations' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Consultations</b></h6></div>
+<div class="number text-warning"><h4><b>{{refconsultationscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'refconsultations' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'refimplants' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Implants</b></h6></div>
+<div class="number text-warning"><h4><b>{{refimplantscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'refimplants' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'reforthodontics' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Orthodontics</b></h6></div>
+<div class="number text-warning"><h4><b>{{reforthodonticscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'reforthodontics' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'refrootcanals' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Root Canal</b></h6></div>
+<div class="number text-warning"><h4><b>{{refrootcanalcount}}</b></h4></div>
+<div class="icon"><a href="{% url 'refrootcanals' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'refcrowns' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Crown</b></h6></div>
+<div class="number text-warning"><h4><b>{{refcrownnveneerscount}}</b></h4></div>
+<div class="icon"><a href="{% url 'refcrowns' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'refdeclined' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Declined</b></h6></div>
+<div class="number text-warning"><h4><b>{{refdeclinedcount}}</b></h4></div>
+<div class="icon"><a href="{% url 'refdeclined' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'reftc' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>TC</b></h6></div>
+<div class="number text-warning"><h4><b>{{reftccount}}</b></h4></div>
+<div class="icon"><a href="{% url 'reftc' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+
+</div>
+<!-- Referral section Ends -->
+
+
+<!-- Reception Section Starts -->
+{% if user.is_superuser %}
+<div class="row pt-2 pb-5">
+<h4>Income and Expenses</h4>
+<div class="col-sm-2">
+<a href="{% url 'adminaddincome' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#75643C;">
+<div class="title text-light"><h6  style="font-size:14px;">ADD INCOME</h6></div>
+<div class="icon"><a href="{% url 'adminaddincome' %}"style="float:right;color:yellow;"><i class="fas fa-plus mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'adminaddexpense' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#75643C;">
+<div class="title text-light"><h6  style="font-size:14px;">ADD EXPENSE</h6></div>
+<div class="icon"><a href="{% url 'adminaddexpense' %}"style="float:right;color:yellow;"><i class="fas fa-plus mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'incomeandexpenserepeat' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#75643C;">
+<div class="title text-light"><h6 style="font-size:14px;">REPEATED</h6></div>
+<div class="icon"><a <a href="{% url 'incomeandexpenserepeat' %}" style="float:right;color:yellow;"><i class="fas fa-redo-alt mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'incomeandexpensereport' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#75643C;">
+<div class="title text-light"><h6 style="font-size:14px;">PENDING</h6></div>
+<div class="icon"><a <a href="{% url 'incomeandexpensereport' %}" style="float:right;color:yellow;"><i class="fas fa-receipt mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'incomeandexpensereportapproved' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#75643C;">
+<div class="title text-light"><h6 style="font-size:14px;">REPORT</h6></div>
+<div class="icon"><a <a href="{% url 'incomeandexpensereportapproved' %}" style="float:right;color:yellow;"><i class="fas fa-receipt mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+{% endif %}
+<!-- Reception Section Ends -->
+
+
+<!-- Lab Section Starts -->
+{% if user.is_superuser %}
+<div class="row pt-2 pb-5">
+<h4>LABORATORY</h4>
+<div class="col-sm-3">
+<a href="{% url 'addnewlab' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#FE6214;">
+<div class="title text-light"><h4>ADD LAB WORK</h4></div>
+<div class="icon"><a href="{% url 'addnewlab' %}"style="float:right;color:yellow;"><i class="fas fa-2x fa-plus mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-3">
+<a href="{% url 'labsarchived' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#FE6214;">
+<div class="title text-light"><h4>LAB ARCHIVED</h4></div>
+<div class="icon"><a <a href="{% url 'labsarchived' %}" style="float:right;color:yellow;"><i class="fas fa-2x fa-flask mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-3">
+<a href="{% url 'labspending' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#FE6214;">
+<div class="title text-light"><h4>LAB PENDING</h4></div>
+<div class="icon"><a <a href="{% url 'labspending' %}" style="float:right;color:yellow;"><i class="fas fa-2x fa-flask mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+
+
+{% endif %}
+<!-- Lab Section Ends -->
+
+<!-- Order Section Starts -->
+{% if user.is_superuser %}
+<div class="row pt-2 pb-5">
+<h4>Order</h4>
+<div class="col-sm-3">
+<a href="{% url 'addorder' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:gray;">
+<div class="title text-light"><h6>ADD NEW ORDER</h6></div>
+<div class="icon"><a href="{% url 'addorder' %}"style="float:right;color:yellow;"><i class="fas fa-2x fa-plus mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-3">
+<a href="{% url 'orders' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:gray;">
+<div class="title text-light"><h6>ORDERS PAGE</h6></div>
+<div class="icon"><a <a href="{% url 'orders' %}" style="float:right;color:yellow;"><i class="fas fa-2x fa-file-invoice-dollar mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+{% if user.is_superuser %}
+<div class="col-sm-3">
+<a href="{% url 'ordersarchived' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:gray;">
+<div class="title text-light"><h6>ORDER ARCHIVE</h6></div>
+<div class="icon"><a <a href="{% url 'ordersarchived' %}" style="float:right;color:yellow;"><i class="fas fa-2x fa-file-invoice-dollar mx-1"></i></a></div>
+</div>
+</a>
+</div>
+{% endif %}
+
+
+{% endif %}
+<!-- Order Section Ends -->
+
+
+</section>
+{% endblock body %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Referral Detail</b></h4>
+<div class="container">
+<div class="py-3">
+<div class="row">
+<div class="col-sm-6">
+<h5><b>Patient</b></h5>
+<h6><b class="text-secondary">Patient name:</b>  <span style="font-size:13px;color:black;">{{referral.PatientName}}</span></h6>
+<h6><b class="text-secondary">Patient phone:</b>  <span style="font-size:13px;color:black;">{{referral.PatientPhone}}</span></h6>
+<h6><b class="text-secondary">Patient email:</b>  <span style="font-size:13px;color:black;">{{referral.PatientEmail}}</span></h6>
+<h5><b>Date</b></h5>
+<h6><b class="text-secondary">Refferal Date:</b>  <span style="font-size:13px;color:black;">{{referral.Date}}</span></h6>
+
+</div>
+<div class="col-sm-6">
+<h5><b>Dentist</b></h5>
+<h6><b class="text-secondary">Referred by:</b>  <span style="font-size:13px;color:black;">{{referral.DentistName}}</span></h6>
+<h5><b>Reason</b></h5>
+<h6><b class="text-secondary">Refferal Reason:</b>  <span style="font-size:13px;color:black;">{{referral.ReferralReason}}</span></h6>
+<h5><b>Status</b></h5>
+<h6><b class="text-secondary">Refferal Status:</b>  <span style="font-size:13px;color:black;">{{referral.Status}}</span></h6>
+</div>
+<hr class="my-5">
+
+{% if user.is_superuser %}
+
+<!-- Status start -->
+<div class="status py-5">
+<h5 class="py-3"><b>Status</b></h5>
+<form method="POST" action="" >
+{% csrf_token %}
+<div class="col-sm-8 d-flex justify-content-between">
+
+             <div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" id="Inprogress" value="Inprogress" checked name="Status">
+  <label class="form-check-label" for="InProgress">Inprogress</label>
+   </div>
+
+      
+       <div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" id="Accepted" value="Accepted" name="Status">
+  <label class="form-check-label" for="Accepted">Accepted</label>
+   </div>
+    
+    <div class="form-check form-check-inline">
+  <input class="form-check-input selected" type="radio" value = "TC" name="Status">
+  <label class="form-check-label" for="TC">TC</label>
+   </div>
+
+       <div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" id="Decline" value="Declined" name="Status">
+  <label class="form-check-label" for="Decline">Decline</label>
+   </div>
+
+</div>
+
+   <div class="col-sm-12 py-4"style="margin:auto;">
+  <input type="submit" class="btn btn-primary px-5 py-2" name="SubmitStatus" value="Save">   
+</div>
+
+</form>
+</div>
+<!-- Status end -->
+{% endif %}
+
+
+</div>
+</div>
+</div>
+</section>
+{% endblock body %}

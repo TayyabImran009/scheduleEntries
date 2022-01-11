@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Pending Income & Expense</b></h4>
+<div class="pb-5">
+
+
+
+<!-- Income Report Starts -->
+<div class="report col-sm-9 my-3 table-responsive border rounded p-3"style="margin:auto;font-size:16px;"id="printableArea1">
+
+<div class="title text-center my-3">
+<h6><b>Income Report</b></h6>
+</div>
+
+<div class="date d-flex justify-content-between mx-3 mt-5">
+<span><b style="font-size:13px;color:black;">Income Report of</b></span>
+<span style="font-size:13px;color:black;">{{StartDate}} To {{EndDate}}</span>
+</div>
+
+<div class="line"style="border:1px solid black;"></div>
+
+<div class="mx-2 my-4">
+<table class="table" style="">
+<thead class=" text-dark">
+<tr>
+<th scope="col">Date</th>
+<th scope="col">Title</th>
+<th scope="col">Category</th>
+<th scope="col">Account</th>
+<th scope="col">Amount</th>
+<th scope="col">Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for incomereport in incomereport %}
+
+<tr style="border:1px solid white;">
+<td>{{incomereport.Date}}</td>
+<td>{{incomereport.Title}}</td>
+<td>{{incomereport.Category}}</td>
+<td>{{incomereport.Account}}</td>
+<td>£{{incomereport.Amount}}</td>
+<td>
+<a href="/editincome/{{incomereport.id}}" class="btn btn-sm text-secondary mx-1 p-0"style="background:none"><i class="far fa-edit"></i></a>
+
+<a href="/deleteincome/{{incomereport.id}}" class="btn btn-sm text-secondary mx-1 p-0"style="background:none"><i class="far fa-trash-alt"></i></a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-5"><b>Total Income</b></td>
+<td class="pt-5"></td>
+<td class="pt-5"></td>
+<td class="pt-5"></td>
+<td class="pt-5"><b>£{{incometotal|floatformat:2}}</b></td>
+</tr>
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-0"><b>Total Expense</b></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"><b>£{{expensetotal|floatformat:2}}</b></td>
+</tr>
+
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-0"><b>Sum</b></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"><b>£{{total|floatformat:2}}</b></td>
+</tr>
+
+</tbody>
+</table>
+</div>
+</div>
+
+
+<!-- Income Report Ends -->
+<hr class="my-5">
+<!-- Expense Report Starts -->
+<div class="report col-sm-9 my-3 table-responsive border rounded p-3"style="margin:auto;font-size:16px;"id="printableArea2">
+
+<div class="title text-center my-3">
+<h6><b>Expense Report</b></h6>
+</div>
+
+<div class="date d-flex justify-content-between mx-3 mt-5">
+<span><b style="font-size:13px;color:black;">Expense Report of</b></span>
+<span style="font-size:13px;color:black;">{{StartDate}} To {{EndDate}}</span>
+</div>
+
+<div class="line"style="border:1px solid black;"></div>
+
+<div class="mx-2 my-4">
+<table class="table" style="">
+<thead class=" text-dark">
+<tr>
+<th scope="col">Date</th>
+<th scope="col">Title</th>
+<th scope="col">Category</th>
+<th scope="col">Account</th>
+<th scope="col">Amount</th>
+<th scope="col">Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for expensereport in expensereport %}
+
+<tr style="border:1px solid white;">
+<td>{{expensereport.Date}}</td>
+<td>{{expensereport.Title}}</td>
+<td>{{expensereport.Category}}</td>
+<td>{{expensereport.Account}}</td>
+<td>£{{expensereport.Amount}}</td>
+<td>
+<a href="/editexpense/{{expensereport.id}}" class="btn btn-sm text-secondary mx-1 p-0"style="background:none"><i class="far fa-edit"></i></a>
+<a href="/deleteexpense/{{expensereport.id}}" class="btn btn-sm text-secondary mx-1 p-0"style="background:none"><i class="far fa-trash-alt"></i></a>
+</td>
+</tr>
+
+{% endfor %}
+
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-5"><b>Total Expense</b></td>
+<td class="pt-5"></td>
+<td class="pt-5"></td>
+<td class="pt-5"></td>
+<td class="pt-5"><b>£{{expensetotal|floatformat:2}}</b></td>
+</tr>
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-0"><b>Total Income</b></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"><b>£{{incometotal|floatformat:2}}</b></td>
+</tr>
+
+<tr class="text-dark"style="border:1px solid white;">
+<td class="pt-0"><b>Sum</b></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"></td>
+<td class="pt-0"><b>£{{total|floatformat:2}}</b></td>
+</tr>
+
+</tbody>
+</table>
+</div>
+</div>
+
+
+</div>
+<!-- Expense Report Ends -->
+
+
+<!-- Scripts -->
+
+<script>
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+</script>
+
+<!-- Scripts -->
+</section>
+{% endblock body %}

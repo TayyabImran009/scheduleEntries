@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Orders</b></h4>
+<div class="">
+
+<!-- Referral form starts -->
+<form method="POST" action="{% url 'addorder' %}" enctype="multipart/form-data">
+{% csrf_token %}
+  <div class="row px-3 py-2">
+  <h6 class="py-3">Order Information</h6>
+    
+    <div class="col-sm-12">
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"style="color:white;background:#294C3E;">
+   {{message}}
+ </div>
+{% endfor %}
+</div>
+
+    <div class="col-sm-6 my-3">
+    <label for="Date">Date</label>
+      <select  class="form-control border-0" style="background:#EBEBEB" required="required" name="date">
+      <option value="{{Date}}" selected>{{Date}}</option>
+      </select>
+    </div>
+
+       <div class="col-sm-6 my-3">
+    <label for="Scheme">User</label>
+      <select  class="form-control border-0" style="background:#EBEBEB" required="required" name="user">
+      <option value="{{request.user}}" selected>{{request.user}}</option>
+      </select>
+    </div>
+
+    <div class="col-sm-6 my-3">
+    <label for="PatientID">Item</label>
+      <input type="text" class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Item" name="Item">
+    </div>
+
+    <div class="col-sm-6 my-3">
+    <label for="PatientID">Category</label>
+      <input type="text" class="form-control border-0" style="background:#EBEBEB" required="required" placeholder="Category" name="Category">
+    </div>
+
+
+
+
+<div class="col-sm-12 py-4"style="margin:auto;">
+  <input type="submit" class="btn btn-primary px-5 py-2" value="Save">   
+</div>
+
+
+
+  </div>
+</form>
+<!-- Referral form ends -->
+
+
+</div>
+
+</section>
+{% endblock body %}

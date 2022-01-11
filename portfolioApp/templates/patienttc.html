@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<section class="px-4">
+<h4 class="py-3"><b>Patients</b></h4>
+<div class="">
+
+<span class="text-secondary">UKALIGNERS Dental Home</span>
+<h6><b>{{user.first_name}} {{user.last_name}}</b></h6>
+
+<div class="d-flex justify-content-between py-3">
+<h5><b>Patients TC</b></h5>
+
+<!-- search bar starts -->
+<div class="search-bar">
+<div class="input-group">
+  <div class="form-outline">
+  <form action="{% url 'patientsearchresults' %}" method="get">
+    <input type="search" id="patientName"  class="form-control" placeholder="Patient Name" name="PatientSearchQuery" />
+  </div>
+  <button type="submit" class="btn btn-success bg-success">
+    <i class="fas fa-search"></i>
+  </button>
+  </form>
+</div>
+</div>
+<!-- search bar ends -->
+
+<div class="add-new">
+<a href="{% url 'addnewpatient' %}" class="btn btn-sm text-light bg-success"><i class="fas fa-plus mx-1"></i> Add new patient</a>
+</div>
+</div>
+
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
+<table class="table ">
+<thead class="text-secondary">
+<tr>
+<th scope="col">Date</th>
+<th scope="col">Patient name</th>
+<th scope="col">Clinic</th>
+<th scope="col">Status</th>
+<th scope="col">Internal Progress</th>
+{% if user.is_superuser %}
+<th scope="col">Dentist Note</th>
+{% endif %}
+{% if not user.is_superuser %}
+<th scope="col">Admin Note</th>
+{% endif %}
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for patients in mypatients %}
+
+<tr>
+<td>{{patients.Date}}</td>
+{% if not user.is_staff or user.is_superuser %}
+<td><a href="/patientdetail/{{patients.id}}/">{{patients.PatientName}} {{patients.PatientSurname}}</a></td>
+{% else %}
+<td class="text-secondary">{{patients.PatientName}} {{patients.PatientSurname}}</td>
+{% endif %}
+<td>{{patients.Clinic}}</td>
+
+<form action="" method="POST">
+{% csrf_token %}
+  <input type="hidden" name="id"value="{{patients.id}}">
+
+<td>
+{% if not user.is_superuser or not user.is_staff %}
+    <select name="Status" id="Status">
+        <option value="{{patients.Status}}"selected>{{patients.Status}}</option>
+        <option value="Accepted">Accept</option>
+        <option value="Review">Review</option>
+        <option value="On Hold">On Hold</option>
+        <option value="Declined">Decline</option>
+    </select>
+{% else %}
+{{patients.Status}}  
+ <input type="hidden" name="Status"value="{{patients.Status}}"> 
+{% endif %}
+</td>
+
+
+
+<td>
+{% if user.is_superuser %}
+    <select name="InternalStatus" id="InternalStatus">
+        <option value="{{patients.InternalStatus}}"selected>{{patients.InternalStatus}}</option>
+        <option value="Waiting Acceptance">Waiting Acceptance</option>
+        <option value="Model Production">Model Production</option>
+        <option value="3D View">3D View</option>
+        <option value="Aligners Ready">Aligners Ready</option>
+        <option value="TC">TC</option>
+        <option value="Archived">Archived</option>
+    </select>
+{% else %}
+{{patients.InternalStatus}}  
+ <input type="hidden" name="InternalStatus"value="{{patients.InternalStatus}}">    
+{% endif %}
+</td>
+
+{% if user.is_superuser %}
+<td style="max-width:300px;">{{patients.DentistNote}}</td>
+{% endif %}
+
+{% if not user.is_superuser %}
+<td style="max-width:300px;">{{patients.AdminNote}}</td>
+{% endif %}
+
+<td>
+    <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save"> 
+</td>
+
+</form>
+</tr>
+
+
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+
+
+</div>
+
+</section>
+{% endblock body %}

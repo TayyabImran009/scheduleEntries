@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<!-- style -->
+<style>
+
+input,
+input::-webkit-input-placeholder {
+    font-size: 10px;
+    
+}
+</style>
+<!-- style -->
+<section class="px-4">
+<h4 class="py-3"><b>Repeated Incomes</b></h4>
+<div class="">
+<!-- Message starts -->
+<div class="col-sm-12">
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"style="color:white;background:#294C3E;">
+   {{message}}
+ </div>
+{% endfor %}
+</div>
+<!-- Message ends -->
+<div class="d-flex justify-content-between py-3">
+<h5><b>Incomes Repeated</b></h5>
+</div>
+
+<!-- Monthly Table starts -->
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
+    <h6>Monthly Repeated Incomes</h6>
+    <table class="table ">
+        <thead class="text-secondary">
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Title</th>
+                <th scope="col">Category</th>
+                <th scope="col">Account</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Note</th>
+                <th scope="col">Repeat</th>
+                <th scope="col">Action</th>
+                
+                
+            </tr>
+        </thead>
+        
+        <tbody>
+            
+            {% for incomem in incomem %}
+            <tr>
+                
+                <form action="" method="POST">
+{% csrf_token %}
+
+
+<td style="font-size:10px;">
+    <input type="date" class="form-control" style="background:white;padding:1px;font-size:10px;width:110px;border:1px solid grey;" required="required" name="Date" value="{{incomem.Date}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Title" value="{{incomem.Title}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Category" value="{{incomem.Category}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Account" value="{{incomem.Account}}">
+</td>
+
+<td>
+    <input type="number" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Amount" value="{{incomem.Amount}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Note" value="{{incomem.Note}}">
+</td>
+
+<td>
+    <select name="Repeat" style="font-size:10px;">
+        <option value="{{incomem.Repeat}}" selected>{{incomem.Repeat}}</option>
+    </select>
+</td>
+
+
+<td>
+    <input type="submit" class="btn px-2 mx-1 py-0 text-light" value="Repeat" style="background:green;font-size:11px;" name="Repeat"> 
+</td>
+</form>
+</tr>
+
+
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+<!-- Monthly Table starts -->
+
+
+<!-- Quarterly Table starts -->
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
+    <h6>Quarterly Repeated Incomes</h6>
+    <table class="table ">
+        <thead class="text-secondary">
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Title</th>
+                <th scope="col">Category</th>
+                <th scope="col">Account</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Note</th>
+                <th scope="col">Repeat</th>
+                <th scope="col">Action</th>
+                
+                
+            </tr>
+        </thead>
+        
+        <tbody>
+            
+            {% for incomeq in incomeq %}
+                  <tr>
+                
+                <form action="" method="POST">
+{% csrf_token %}
+
+
+<td style="font-size:10px;">
+    <input type="date" class="form-control" style="background:white;padding:1px;font-size:10px;width:110px;border:1px solid grey;" required="required" name="Date" value="{{incomeq.Date}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Title" value="{{incomeq.Title}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Category" value="{{incomeq.Category}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Account" value="{{incomeq.Account}}">
+</td>
+
+<td>
+    <input type="number" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Amount" value="{{incomeq.Amount}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Note" value="{{incomeq.Note}}">
+</td>
+
+<td>
+    <select name="Repeat" style="font-size:10px;">
+        <option value="{{incomeq.Repeat}}" selected>{{incomeq.Repeat}}</option>
+    </select>
+</td>
+
+
+<td>
+    <input type="submit" class="btn px-2 mx-1 py-0 text-light" value="Repeat" style="background:green;font-size:11px;" name="Repeat"> 
+</td>
+</form>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+<!-- Quarterly Table starts -->
+
+
+<!-- Yearly Table starts -->
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
+    <h6>Yearly Repeated Incomes</h6>
+    <table class="table ">
+        <thead class="text-secondary">
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Title</th>
+                <th scope="col">Category</th>
+                <th scope="col">Account</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Note</th>
+                <th scope="col">Repeat</th>
+                <th scope="col">Action</th>
+                
+                
+            </tr>
+        </thead>
+        
+        <tbody>
+            
+            {% for incomey in incomey %}
+            <tr>
+                
+                <form action="" method="POST">
+{% csrf_token %}
+
+
+<td style="font-size:10px;">
+    <input type="date" class="form-control" style="background:white;padding:1px;font-size:10px;width:110px;border:1px solid grey;" required="required" name="Note" value="{{incomey.Date}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Title" value="{{incomey.Title}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Category" value="{{incomey.Category}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Account" value="{{incomey.Account}}">
+</td>
+
+<td>
+    <input type="number" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Amount" value="{{incomey.Amount}}">
+</td>
+
+<td>
+    <input type="text" class="form-control" style="background:white;padding:1px;font-size:10px;width:90px;border:1px solid grey;" required="required" name="Note" value="{{incomey.Note}}">
+</td>
+
+<td>
+    <select name="Repeat" style="font-size:10px;">
+        <option value="{{incomey.Repeat}}" selected>{{incomey.Repeat}}</option>
+    </select>
+</td>
+
+
+<td>
+    <input type="submit" class="btn px-2 mx-1 py-0 text-light" value="Repeat" style="background:green;font-size:11px;" name="Repeat"> 
+</td>
+</form>
+</tr>
+
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+<!-- Yearly Table starts -->
+
+
+</div>
+
+
+</section>
+{% endblock body %}
