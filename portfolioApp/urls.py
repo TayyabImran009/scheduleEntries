@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.contrib import admin
 from django.urls import path,include
 from . import views
@@ -78,5 +79,10 @@ urlpatterns = [
 
     #cdeditor
     path('ckeditor',include('ckeditor_uploader.urls')),
+
+
+    path('repeatExpense/',views.repeatExpense, name="repeatExpense"),
+    path('repeatIncome/', views.repeatIncome, name="repeatIncome"),
+    path('startScript/', views.startScript, name="startScript"),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()

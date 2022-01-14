@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Patient,PatientProposedTreatment,DentistProfile,Referral,TreatmentRequestFile,ImageUploadAdmin,Payment,Income,Expense,IncomeExpenseTitle,IncomeExpenseCategory,LabWork,Order
+from .models import Patient,PatientProposedTreatment,DentistProfile,Referral,TreatmentRequestFile,ImageUploadAdmin,Payment,Income,Expense,IncomeExpenseTitle,IncomeExpenseCategory,LabWork,Order,RepeatExpense, RepeatIncome
 # Register your models here.
 admin.site.register(Patient)
 admin.site.register(PatientProposedTreatment)
@@ -18,3 +18,6 @@ admin.site.register(Order)
 # admin.site.register(Comment)
 # admin.site.register(Querie)
 # admin.site.register(Answer)
+
+admin.site.register(RepeatExpense)
+admin.site.register(RepeatIncome)

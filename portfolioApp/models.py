@@ -244,3 +244,31 @@ class Order(models.Model):
 #     Time=models.DateTimeField(auto_now_add=True,null=True)
 #     def __str__(self):
 #         return str(self.Post) + " | "  + self.Body + " | " + self.user.username + " | " + str(self.Time)        
+
+class RepeatExpense(models.Model):
+    Date=models.DateField()
+    Title=models.CharField(max_length=50)
+    Category=models.CharField(max_length=50)
+    Account=models.CharField(max_length=50)
+    Amount=models.FloatField()
+    Status=models.CharField(max_length=20,null=True)
+    Note=models.TextField()
+    Repeat=models.CharField(max_length=20,null=True)
+
+
+    def __str__(self):
+        return str(self.Date) + " | " + self.Title + " | " + self.Category
+
+class RepeatIncome(models.Model):
+    Date=models.DateField()
+    Title=models.CharField(max_length=50)
+    Category=models.CharField(max_length=50)
+    Account=models.CharField(max_length=50)
+    Amount=models.FloatField()
+    Status=models.CharField(max_length=20,null=True)
+    Note=models.TextField()
+    Repeat=models.CharField(max_length=20,null=True)
+    RepeatStatus=models.CharField(max_length=20,null=True,default="On")
+
+    def __str__(self):
+        return str(self.Date) + " | " + self.Title + " | " + self.Category

@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.db.models import Sum
 from datetime import datetime
-from .models import LabWork, Patient,User,PatientProposedTreatment, DentistProfile,Referral,TreatmentRequestFile,ImageUploadAdmin,Payment,Income,Expense,IncomeExpenseTitle,IncomeExpenseCategory,LabWork,Order
+from .models import LabWork, Patient,User,PatientProposedTreatment, DentistProfile,Referral,TreatmentRequestFile,ImageUploadAdmin,Payment,Income,Expense,IncomeExpenseTitle,IncomeExpenseCategory,LabWork,Order,RepeatExpense,RepeatIncome
 from django.contrib.auth.forms import UserCreationForm
 from .forms import DentistProfileForm
 from .forms import CreateUserForm
@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 import schedule
 import time
+from tasks import entries
 # Create your views here.
 
 # Dashboard
@@ -1371,3 +1372,82 @@ def logoutuser(request):
     date1_obj= datetime.strptime(date1, '%B %d, %Y')
     date2_obj= datetime.strptime(date2, '%m/%d/%Y')
     
+
+
+@login_required(login_url='login')
+def repeatExpense(request):
+    date=datetime.now().strftime("%Y-%m-%d")
+    title=IncomeExpenseTitle.objects.all().order_by('Title')
+    category=IncomeExpenseCategory.objects.all().order_by('Category')
+    if request.method=='POST':
+        Date=request.POST.get('Date')
+        Title=request.POST.get('Title')
+        Category=request.POST.get('Category')
+        Account=request.POST.get('Account')
+        Amount=request.POST.get('Amount',default=0)
+        Status="Pending"
+        Note=request.POST.get('Note')
+
+        expense=RepeatExpense(Date=Date,Title=Title,Category=Category,Account=Account,Amount=Amount,Status=Status,Note=Note)
+        expense.save()
+        if not IncomeExpenseTitle.objects.filter(Title=Title).exists():
+            newtitle=IncomeExpenseTitle(Title=Title)
+            newtitle.save()
+        if not IncomeExpenseCategory.objects.filter(Category=Category).exists():
+            newcategory=IncomeExpenseCategory(Category=Category)
+            newcategory.save()
+    context={
+        'payment':'active',       
+        'date':date,
+        'title':title,
+        'category':category,
+    }
+    return render(request, 'repeatExpense.html',context)
+
+@login_required(login_url='login')
+def repeatIncome(request):
+    date=datetime.now().strftime("%Y-%m-%d")
+    title=IncomeExpenseTitle.objects.all().order_by('Title')
+    category=IncomeExpenseCategory.objects.all().order_by('Category')
+    if request.method=="POST":
+        print("******************")
+        Date=request.POST.get('Date')
+        Title=request.POST.get('Title')
+        Category=request.POST.get('Category')
+        Account=request.POST.get('Account')
+        Amount=request.POST.get('Amount',default=0)
+        Status="Pending"
+        Note=request.POST.get('Note')
+        Repeat=request.POST.get('Repeat')
+        RepeatStatus="On"
+        income=RepeatIncome(Date=Date,Title=Title,Category=Category,Account=Account,Amount=Amount,Status=Status,Note=Note,Repeat=Repeat,RepeatStatus=RepeatStatus)
+        income.save()
+        if not IncomeExpenseTitle.objects.filter(Title=Title).exists():
+            newtitle=IncomeExpenseTitle(Title=Title)
+            newtitle.save()
+        if not IncomeExpenseCategory.objects.filter(Category=Category).exists():
+            newcategory=IncomeExpenseCategory(Category=Category)
+            newcategory.save()
+        messages.success(request,"Income has been added successfully!")
+
+    context={
+        'payment':'active',       
+        'date':date,
+        'title':title,
+        'category':category,
+    }
+    return render(request, 'repeatIncome.html',context)
+
+@login_required(login_url='login')
+def startScript(request):
+    print("Starting")
+    entries.delay()
+    print("Ending")
+    return render(request, 'repeatIncome.html')
+
+
+def test():
+    print("*****************************")
+    title=IncomeExpenseTitle.objects.all().order_by('Title')
+    for t in title:
+        print(t)

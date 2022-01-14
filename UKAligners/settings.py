@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'portfolioApp',
     'ckeditor',
     'ckeditor_uploader',
-    'colorfield'
+    'colorfield',
+    'django_celery_results',
+    'celery',
 
 ]
 CKEDITOR_UPLOAD_PATH = "uploads/"
@@ -86,6 +88,18 @@ DATABASES = {
         'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'UKAligners',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306'
+
+#     }
+# }
 
 
 
@@ -144,3 +158,11 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR,"media")
 )
 
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+
+CELERY_RESULT_BACKEND = 'django-db'

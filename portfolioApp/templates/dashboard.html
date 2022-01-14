@@ -426,5 +426,30 @@
 <!-- Order Section Ends -->
 
 
+{% if user.is_superuser %}
+<div class="row pt-2 pb-5">
+<h4>Repeating Entries</h4>
+<div class="col-sm-3">
+<a href="{% url 'repeatIncome' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:gray;">
+<div class="title text-light"><h6>Income</h6></div>
+<div class="icon"><a href="{% url 'repeatIncome' %}"style="float:right;color:yellow;"><i class="fas fa-2x fa-plus mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-3">
+<a href="{% url 'repeatExpense' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:gray;">
+<div class="title text-light"><h6>Expense</h6></div>
+<div class="icon"><a href="{% url 'repeatExpense' %}" style="float:right;color:yellow;"><i class="fas fa-2x fa-plus mx-1"></i></a></div>
+</div>
+</a>
+</div>
+
+{% endif %}
+
+
+
 </section>
 {% endblock body %}
