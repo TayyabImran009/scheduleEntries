@@ -1,5 +1,4 @@
 from celery import shared_task
-import sqlite3
 import schedule
 import time
 from portfolioApp.models import Income, RepeatIncome, RepeatExpense, Expense

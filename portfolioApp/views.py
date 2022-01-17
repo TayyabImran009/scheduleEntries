@@ -708,16 +708,16 @@ def reportsearchresults(request):
     cashsum= Payment.objects.filter(PaymentMethod="Cash",Date=date).aggregate(Sum('Amount')).get('Amount__sum') or 0
     card11sum= Payment.objects.filter(PaymentMethod="Card11",Date=date).aggregate(Sum('Amount')).get('Amount__sum') or 0
     card14sum= Payment.objects.filter(PaymentMethod="Card14",Date=date).aggregate(Sum('Amount')).get('Amount__sum') or 0
-    banktransfersum= Payment.objects.filter(PaymentMethod="Bank Transfer",Date=date).aggregate(Sum('Amount')).get('Amount__sum') or 0
-    loansum= Payment.objects.filter(PaymentMethod="Loan",Date=date).aggregate(Sum('Amount')).get('Amount__sum') or 0
-    total=cashsum+card11sum+card14sum+banktransfersum+loansum
+    BACS= Payment.objects.filter(PaymentMethod="BACS",Date=date).aggregate(Sum('Amount')).get('Amount__sum') or 0
+    finance= Payment.objects.filter(PaymentMethod="Finance",Date=date).aggregate(Sum('Amount')).get('Amount__sum') or 0
+    total=cashsum+card11sum+card14sum+BACS+finance
     context={
         'payment':'active',
         'cashsum':cashsum,
         'card11sum':card11sum,
         'card14sum':card14sum,
-        'banktransfersum':banktransfersum,
-        'loansum':loansum,
+        'BACS':BACS,
+        'finance':finance,
         'date':date ,
         'total':total,
 
@@ -814,16 +814,16 @@ def paymentdailyreport(request):
     cashsum= Payment.objects.filter(Date=date,PaymentMethod="Cash").aggregate(Sum('Amount')).get('Amount__sum') or 0
     card11sum= Payment.objects.filter(Date=date,PaymentMethod="Card11").aggregate(Sum('Amount')).get('Amount__sum') or 0
     card14sum= Payment.objects.filter(Date=date,PaymentMethod="Card14").aggregate(Sum('Amount')).get('Amount__sum') or 0
-    banktransfersum= Payment.objects.filter(Date=date,PaymentMethod="Bank Transfer").aggregate(Sum('Amount')).get('Amount__sum') or 0
-    loansum= Payment.objects.filter(Date=date,PaymentMethod="Loan").aggregate(Sum('Amount')).get('Amount__sum') or 0
-    total=cashsum+card11sum+card14sum+banktransfersum+loansum
+    BACS= Payment.objects.filter(Date=date,PaymentMethod="BACS").aggregate(Sum('Amount')).get('Amount__sum') or 0
+    finance= Payment.objects.filter(Date=date,PaymentMethod="Finance").aggregate(Sum('Amount')).get('Amount__sum') or 0
+    total=cashsum+card11sum+card14sum+BACS+finance
     context={
         'payment':'active',
         'cashsum':cashsum,
         'card11sum':card11sum,
         'card14sum':card14sum,
-        'banktransfersum':banktransfersum,
-        'loansum':loansum,
+        'BACS':BACS,
+        'finance':finance,
         'date':date ,
         'total':total,
 
@@ -836,8 +836,6 @@ def paymentfullreport(request):
     date=datetime.now().strftime("%Y-%m-%d")
     StartDate=date
     EndDate=date
-    allpayments=Payment.objects.filter(Date=date,Status="Pending").order_by('-Date')   
-    total= Payment.objects.filter(Date=date,Status="Pending").order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
     if "ChangePatientName" in request.POST:
         id=request.POST.get('id')
         editpayments=Payment.objects.get(id=id)
@@ -867,8 +865,15 @@ def paymentfullreport(request):
         id=request.POST.get('id')
         editpayments=Payment.objects.get(id=id)
         editpayments.Status="Archived"
-        editpayments.save()  
+        editpayments.save() 
 
+    if "Archive_All" in request.POST:
+        editpayments=Payment.objects.all()
+        for editpayment in editpayments:
+            editpayment.Status="Archived"
+            editpayment.save()
+    allpayments=Payment.objects.filter(Date=date,Status="Pending").order_by('-Date')   
+    total= Payment.objects.filter(Date=date,Status="Pending").order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
     context={
         'payment':'active',
         'allpayments':allpayments,

@@ -120,6 +120,12 @@
 <td class="pt-4"></td>
 <td class="pt-4"></td>
 <td class="pt-4"><b>£{{total|floatformat:2}}</b></td>
+<td class="pt-4">
+  <form action=""method="POST">
+    {% csrf_token %}
+      <input type="submit" class="btn px-2 py-0" value="Archive All" style="background:yellow;font-size:11px;" name="Archive_All"> 
+    </form>
+</td>
 </tr>
 
 </tbody>
