@@ -13,7 +13,7 @@
   <div class="row px-3 py-2">
   <h6 class="py-3">Referral Information</h6>
     
-    <div class="col-sm-12">
+<div class="col-sm-12">
 {% for message in messages %}
 <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"style="color:white;background:#294C3E;">
    {{message}}
@@ -23,8 +23,7 @@
 
        <div class="col-sm-6 my-3">
     <label for="Date">Date</label>
-      <select  class="form-control border-0" style="background:#EBEBEB" required="required" name="Date">
-      <option value="{{date}}" selected>{{date}}</option>
+      <input  class="form-control border-0" style="background:#EBEBEB" value={{date}} required="required" name="Date">
       </select>
     </div>
     

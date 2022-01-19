@@ -860,18 +860,102 @@ def paymentfullreport(request):
         id=request.POST.get('id')
         editpayments=Payment.objects.get(id=id)
         editpayments.Amount=request.POST.get('Amount')
-        editpayments.save()                            
+        editpayments.save()
+                                   
     if "Archive" in request.POST:
         id=request.POST.get('id')
         editpayments=Payment.objects.get(id=id)
+        if editpayments.PaymentMethod == "Cash":
+            try:
+                incomeObj = Income.objects.get(Title="CASH",Status="Pending")
+                incomeObj.Amount += editpayments.Amount
+                incomeObj.save()
+            except:
+                incomeObj = Income(Date=editpayments.Date, Title="CASH", Category="CASH-UP", Account = "MB-CASH", Status="Pending", Amount=editpayments.Amount)
+                incomeObj.save()
+        elif editpayments.PaymentMethod == "Card11":
+            try:
+                incomeObj = Income.objects.get(Title="Card11",Status="Pending")
+                incomeObj.Amount += editpayments.Amount
+                incomeObj.save()
+            except:
+                incomeObj = Income(Date=editpayments.Date, Title="Card11", Category="CASH-UP", Account = "BEHNAM LTD", Status="Pending", Amount=editpayments.Amount)
+                incomeObj.save()
+        elif editpayments.PaymentMethod == "Card14":
+            try:
+                incomeObj = Income.objects.get(Title="Card14",Status="Pending")
+                incomeObj.Amount += editpayments.Amount
+                incomeObj.save()
+            except:
+                incomeObj = Income(Date=editpayments.Date, Title="Card14", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayments.Amount)
+                incomeObj.save()
+        elif editpayments.PaymentMethod == "BACS":
+            try:
+                incomeObj = Income.objects.get(Title="BACS",Status="Pending")
+                incomeObj.Amount += editpayments.Amount
+                incomeObj.save()
+            except:
+                incomeObj = Income(Date=editpayments.Date, Title="BACS", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayments.Amount)
+                incomeObj.save()
+        elif editpayments.PaymentMethod == "Finance":
+            try:
+                incomeObj = Income.objects.get(Title="Finance",Status="Pending")
+                incomeObj.Amount += editpayments.Amount
+                incomeObj.save()
+            except:
+                incomeObj = Income(Date=editpayments.Date, Title="Finance", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayments.Amount)
+                incomeObj.save()
+
         editpayments.Status="Archived"
         editpayments.save() 
 
     if "Archive_All" in request.POST:
         editpayments=Payment.objects.all()
         for editpayment in editpayments:
-            editpayment.Status="Archived"
-            editpayment.save()
+            if editpayment.Status =="Pending":
+                editpayment.Status="Archived"
+                editpayment.save()
+                if editpayment.PaymentMethod == "Cash":
+                    try:
+                        incomeObj = Income.objects.get(Title="CASH",Status="Pending")
+                        incomeObj.Amount += editpayment.Amount
+                        incomeObj.save()
+                    except:
+                        incomeObj = Income(Date=editpayment.Date, Title="CASH", Category="CASH-UP", Account = "MB-CASH", Status="Pending", Amount=editpayment.Amount)
+                        incomeObj.save()
+                elif editpayment.PaymentMethod == "Card11":
+                    try:
+                        incomeObj = Income.objects.get(Title="Card11",Status="Pending")
+                        incomeObj.Amount += editpayment.Amount
+                        incomeObj.save()
+                    except:
+                        incomeObj = Income(Date=editpayment.Date, Title="Card11", Category="CASH-UP", Account = "BEHNAM LTD", Status="Pending", Amount=editpayment.Amount)
+                        incomeObj.save()
+                elif editpayment.PaymentMethod == "Card14":
+                    try:
+                        incomeObj = Income.objects.get(Title="Card14",Status="Pending")
+                        incomeObj.Amount += editpayment.Amount
+                        incomeObj.save()
+                    except:
+                        incomeObj = Income(Date=editpayment.Date, Title="Card14", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
+                        incomeObj.save()
+                elif editpayment.PaymentMethod == "BACS":
+                    try:
+                        incomeObj = Income.objects.get(Title="BACS",Status="Pending")
+                        incomeObj.Amount += editpayment.Amount
+                        incomeObj.save()
+                    except:
+                        incomeObj = Income(Date=editpayment.Date, Title="BACS", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
+                        incomeObj.save()
+                elif editpayment.PaymentMethod == "Finance":
+                    try:
+                        incomeObj = Income.objects.get(Title="Finance",Status="Pending")
+                        incomeObj.Amount += editpayment.Amount
+                        incomeObj.save()
+                    except:
+                        incomeObj = Income(Date=editpayment.Date, Title="Finance", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
+                        incomeObj.save()
+
     allpayments=Payment.objects.filter(Date=date,Status="Pending").order_by('-Date')   
     total= Payment.objects.filter(Date=date,Status="Pending").order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
     context={
@@ -1401,6 +1485,7 @@ def repeatExpense(request):
         if not IncomeExpenseCategory.objects.filter(Category=Category).exists():
             newcategory=IncomeExpenseCategory(Category=Category)
             newcategory.save()
+        messages.success(request,"Expense has been added successfully!")
     context={
         'payment':'active',       
         'date':date,
