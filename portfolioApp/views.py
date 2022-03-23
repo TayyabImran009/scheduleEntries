@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 import schedule
 import time
 from tasks import entries
+from django.http import FileResponse
 # Create your views here.
 
 # Dashboard
@@ -861,13 +862,13 @@ def paymentfullreport(request):
         editpayments=Payment.objects.get(id=id)
         editpayments.Amount=request.POST.get('Amount')
         editpayments.save()
-                                   
+                                
     if "Archive" in request.POST:
         id=request.POST.get('id')
         editpayments=Payment.objects.get(id=id)
         if editpayments.PaymentMethod == "Cash":
             try:
-                incomeObj = Income.objects.get(Title="CASH",Status="Pending")
+                incomeObj = Income.objects.get(Date=editpayments.Date,Title="CASH")
                 incomeObj.Amount += editpayments.Amount
                 incomeObj.save()
             except:
@@ -875,7 +876,7 @@ def paymentfullreport(request):
                 incomeObj.save()
         elif editpayments.PaymentMethod == "Card11":
             try:
-                incomeObj = Income.objects.get(Title="Card11",Status="Pending")
+                incomeObj = Income.objects.get(Date=editpayments.Date,Title="Card11")
                 incomeObj.Amount += editpayments.Amount
                 incomeObj.save()
             except:
@@ -883,7 +884,7 @@ def paymentfullreport(request):
                 incomeObj.save()
         elif editpayments.PaymentMethod == "Card14":
             try:
-                incomeObj = Income.objects.get(Title="Card14",Status="Pending")
+                incomeObj = Income.objects.get(Date=editpayments.Date,Title="Card14")
                 incomeObj.Amount += editpayments.Amount
                 incomeObj.save()
             except:
@@ -891,20 +892,21 @@ def paymentfullreport(request):
                 incomeObj.save()
         elif editpayments.PaymentMethod == "BACS":
             try:
-                incomeObj = Income.objects.get(Title="BACS",Status="Pending")
+                incomeObj = Income.objects.get(Date=editpayments.Date,Title="BACS")
                 incomeObj.Amount += editpayments.Amount
                 incomeObj.save()
             except:
                 incomeObj = Income(Date=editpayments.Date, Title="BACS", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayments.Amount)
-                incomeObj.save()
+                incomeObj.save() 
         elif editpayments.PaymentMethod == "Finance":
             try:
-                incomeObj = Income.objects.get(Title="Finance",Status="Pending")
+                incomeObj = Income.objects.get(Date=editpayments.Date,Title="Finance")
                 incomeObj.Amount += editpayments.Amount
                 incomeObj.save()
             except:
                 incomeObj = Income(Date=editpayments.Date, Title="Finance", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayments.Amount)
-                incomeObj.save()
+                incomeObj.save() 
+            
 
         editpayments.Status="Archived"
         editpayments.save() 
@@ -917,7 +919,7 @@ def paymentfullreport(request):
                 editpayment.save()
                 if editpayment.PaymentMethod == "Cash":
                     try:
-                        incomeObj = Income.objects.get(Title="CASH",Status="Pending")
+                        incomeObj = Income.objects.get(Date=editpayment.Date,Title="CASH")
                         incomeObj.Amount += editpayment.Amount
                         incomeObj.save()
                     except:
@@ -925,7 +927,7 @@ def paymentfullreport(request):
                         incomeObj.save()
                 elif editpayment.PaymentMethod == "Card11":
                     try:
-                        incomeObj = Income.objects.get(Title="Card11",Status="Pending")
+                        incomeObj = Income.objects.get(Date=editpayment.Date,Title="Card11")
                         incomeObj.Amount += editpayment.Amount
                         incomeObj.save()
                     except:
@@ -933,28 +935,30 @@ def paymentfullreport(request):
                         incomeObj.save()
                 elif editpayment.PaymentMethod == "Card14":
                     try:
-                        incomeObj = Income.objects.get(Title="Card14",Status="Pending")
+                        incomeObj = Income.objects.get(Date=editpayment.Date,Title="Card14")
                         incomeObj.Amount += editpayment.Amount
                         incomeObj.save()
                     except:
                         incomeObj = Income(Date=editpayment.Date, Title="Card14", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
-                        incomeObj.save()
+                        incomeObj.save() 
                 elif editpayment.PaymentMethod == "BACS":
                     try:
-                        incomeObj = Income.objects.get(Title="BACS",Status="Pending")
+                        incomeObj = Income.objects.get(Date=editpayment.Date,Title="BACS")
                         incomeObj.Amount += editpayment.Amount
                         incomeObj.save()
                     except:
                         incomeObj = Income(Date=editpayment.Date, Title="BACS", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
                         incomeObj.save()
+                    
                 elif editpayment.PaymentMethod == "Finance":
                     try:
-                        incomeObj = Income.objects.get(Title="Finance",Status="Pending")
+                        incomeObj = Income.objects.get(Date=editpayment.Date,Title="Finance")
                         incomeObj.Amount += editpayment.Amount
                         incomeObj.save()
                     except:
                         incomeObj = Income(Date=editpayment.Date, Title="Finance", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
                         incomeObj.save()
+                    
 
     allpayments=Payment.objects.filter(Date=date,Status="Pending").order_by('-Date')   
     total= Payment.objects.filter(Date=date,Status="Pending").order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
@@ -968,6 +972,19 @@ def paymentfullreport(request):
 
     }
     return render(request,'paymentfullreport.html',context)
+
+def saveincome(request,id):
+    incomeObj = Income.objects.get(id=id)
+    incomeObj.Status = "Approved"
+    incomeObj.save()
+    return redirect('account')
+
+def saveexpense(request,id):
+    expenseObj = Expense.objects.get(id=id)
+    expenseObj.Status = "Approved"
+    expenseObj.save()
+    return redirect('account')
+
 
 @login_required(login_url='login')
 def paymentfullreportarchived(request):
@@ -1156,15 +1173,31 @@ def incomeandexpensereportapproved(request):
     }
     return render(request,'incomeandexpensereportapproved.html',context)
 
+def account(request):
+    date=datetime.now().strftime("%Y-%m-%d")
+    StartDate=date
+    EndDate=date
+    incomereport=Income.objects.all().order_by('-Date')
+    expensereport=Expense.objects.all().order_by('-Date')
+    context={
+        'payment':'active',
+        'incomereport':incomereport,
+        'expensereport':expensereport,
+        'date':date,
+        'StartDate':StartDate,
+        'EndDate':EndDate,
+    }
+    return render(request,'account.html',context)
+
 def deleteincome(request,id):
     incomedata=Income.objects.get(id=id)
     incomedata.delete()
-    return redirect('incomeandexpensereport')
+    return redirect('account')
 
 def deleteexpense(request,id):
     expensedata=Expense.objects.get(id=id)
     expensedata.delete()
-    return redirect('incomeandexpensereport')
+    return redirect('account')
 
 def editincome(request,id):
     date=datetime.now().strftime("%Y-%m-%d")
@@ -1204,7 +1237,7 @@ def updateincome(request,id):
     incomedata.Status=request.POST.get('Status')
     incomedata.Note=request.POST.get('Note')
     incomedata.save()
-    return redirect('incomeandexpensereport')
+    return redirect('account')
     
 def updateexpense(request,id):
     date=datetime.now().strftime("%Y-%m-%d")
@@ -1217,7 +1250,7 @@ def updateexpense(request,id):
     expensedata.Status=request.POST.get('Status')
     expensedata.Note=request.POST.get('Note')
     expensedata.save()
-    return redirect('incomeandexpensereport')
+    return redirect('account')
     
 
 # Labs
@@ -1380,7 +1413,7 @@ def orders(request):
         editorder=Order.objects.get(id=id)
         editorder.Status="Archived"
         editorder.save()          
-                           
+                        
     context={
         'orders':'active',
         'order':order,
@@ -1541,3 +1574,9 @@ def test():
     title=IncomeExpenseTitle.objects.all().order_by('Title')
     for t in title:
         print(t)
+
+def file_download(request,id):
+    patientObj = Patient.objects.get(id=id)
+    path = patientObj.file
+    print(path,"*******************")
+    return FileResponse(open("media/"+str(path), 'rb'))

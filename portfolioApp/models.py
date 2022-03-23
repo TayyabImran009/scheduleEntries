@@ -65,6 +65,7 @@ class Patient(models.Model):
     ))
     InternalStatus=models.CharField(max_length=30,null=True,default="On")
     Date=models.DateField(auto_now_add=True)
+    file=models.FileField(null=True)
     def __str__(self):
         return str(self.id) + "  |  " + self.PatientName + "  |  " + str(self.Date) 
     

@@ -38,6 +38,12 @@
 
 <h5 class="py-1"><b>Date</b></h5>
 <h6><b class="text-secondary">Date:</b>  <span style="font-size:13px;color:black;">{{patient.Date}}</span></h6>
+
+<h5 class="py-1"><b>File</b></h5>
+{% if patient.file %}
+<h6><b class="text-secondary">File:</b>  <span style="font-size:13px;color:black;"><a class="text-primary py-1 my-3 rounded"href="{% url 'file_download' patient.id %}" download>Download</a></span></h6>
+{% endif %}
+
 </div>
 
 <div class="col-sm-6">

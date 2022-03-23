@@ -58,6 +58,12 @@ urlpatterns = [
     path('incomeandexpenserepeat', views.incomeandexpenserepeat, name='incomeandexpenserepeat'),
     path('incomeandexpensereportapproved', views.incomeandexpensereportapproved, name='incomeandexpensereportapproved'),
     path('deleteincome/<int:id>', views.deleteincome, name='deleteincome'),
+
+    path('account', views.account, name='account'),
+
+    path('saveincome/<int:id>', views.saveincome, name='saveincome'),
+    path('saveexpense/<int:id>', views.saveexpense, name='saveexpense'),
+
     path('deleteexpense/<int:id>', views.deleteexpense, name='deleteexpense'),
     path('editincome/<int:id>', views.editincome, name='editincome'),
     path('editexpense/<int:id>', views.editexpense, name='editexpense'),
@@ -84,5 +90,7 @@ urlpatterns = [
     path('repeatExpense/',views.repeatExpense, name="repeatExpense"),
     path('repeatIncome/', views.repeatIncome, name="repeatIncome"),
     path('startScript/', views.startScript, name="startScript"),
+
+    path('file_download/<int:id>/', views.file_download, name="file_download"),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
