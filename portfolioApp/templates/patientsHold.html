@@ -35,18 +35,17 @@
 <table class="table ">
 <thead class="text-secondary">
 <tr>
-  <th scope="col">Date</th>
-  <th scope="col">Patient name</th>
-  <th scope="col">Clinic</th>
-  <th scope="col">Prescribe</th>
-  <th scope="col">Agent</th>
-  <th scope="col">Code</th>
-  <th scope="col">Treatment</th>
-  <th scope="col">Progress</th>
-  <th scope="col">Status</th>
-  <th scope="col">Stage</th>
-  <th scope="col">Note</th>
-  <th scope="col">Action</th>
+<th scope="col">Date</th>
+<th scope="col">Patient name</th>
+<th scope="col">Clinic</th>
+<th scope="col">Progress</th>
+<th scope="col">Status</th>
+{% if user.is_superuser %}
+<th scope="col">Dentist Note</th>
+{% endif %}
+{% if not user.is_superuser %}
+<th scope="col">Admin Note</th>
+{% endif %}
 
 </tr>
 </thead>
@@ -63,15 +62,14 @@
 <td class="text-secondary">{{patients.PatientName}} {{patients.PatientSurname}}</td>
 {% endif %}
 <td>{{patients.Clinic}}</td>
-<td>{{patients.Prescriber}}</td>
-<td>{{patients.Dentist}}</td>
-<td>Code</td>
-<td>{{patients.Treatment}}</td>
+<td>{{patients.InternalStatus}}</td>
 <td>{{patients.Status}}</td>
-<td>{{patients.AdminStatus}}</td>
-<td>{{patients.Stage}}</td>
-<td style="max-width:300px;">{{patients.Note}}</td>
-<td>{{patients.Action}}</td>
+{% if user.is_superuser %}
+<td style="max-width:300px;">{{patients.DentistNote}}</td>
+{% endif %}
+{% if not user.is_superuser %}
+<td style="max-width:300px;">{{patients.AdminNote}}</td>
+{% endif %}
 </tr>
 
 

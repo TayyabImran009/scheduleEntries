@@ -12,6 +12,8 @@ import schedule
 import time
 from tasks import entries
 from django.http import FileResponse
+from django.db.models import Q
+
 # Create your views here.
 
 # Dashboard
@@ -95,13 +97,68 @@ def dashboard(request):
 # Patients
 @login_required(login_url='login')
 def patients(request):
+    if request.POST:
+        print("Save")
+        print(request.POST.get('id'), request.POST.get('Treatment'), request.POST.get('Status'))
+        patientObj = Patient.objects.get(id=request.POST.get('id'))
+        patientObj.Treatment = request.POST.get('Treatment')
+        patientObj.Status = request.POST.get('Status')
+        patientObj.save()
+
     if request.user.is_superuser or request.user.is_staff:
-        mypatients=Patient.objects.order_by("PatientName")
+        # mypatients=Patient.objects.order_by("PatientName")
+        mypatientsAccept=Patient.objects.distinct().filter(
+            Q(Status__icontains="Accept") &
+            ~Q(Action="TC")
+        ).order_by("PatientName")
+
+        mypatientsReview=Patient.objects.distinct().filter(
+            Q(Status__icontains="Review") &
+            ~Q(Action="TC")
+        ).order_by("PatientName")
+
+
+        mypatientsDecline=Patient.objects.distinct().filter(
+            Q(Status__icontains="Decline") &
+            ~Q(Action="TC")
+        ).order_by("PatientName")
+        
+        mypatientsOn_Hold=Patient.objects.distinct().filter(
+            Q(Status__icontains="On-Hold") &
+            ~Q(Action="TC")
+        ).order_by("PatientName")
     else:
-        mypatients=Patient.objects.filter(Dentist=request.user).order_by("PatientName")
+        # mypatients=Patient.objects.filter(Dentist=request.user).order_by("PatientName")
+
+        mypatientsAccept = Patient.objects.distinct().filter(
+            Q(Dentist=request.user) &
+            Q(Status__icontains="Accept") &
+            ~Q(Action="TC")
+        ).order_by("PatientName")
+
+        mypatientsReview = Patient.objects.distinct().filter(
+            Q(Dentist=request.user) &
+            Q(Status__icontains="Review")
+        ).order_by("PatientName")
+
+        mypatientsDecline = Patient.objects.distinct().filter(
+            Q(Dentist=request.user) &
+            Q(Status__icontains="Decline") &
+            ~Q(Action="TC")
+        ).order_by("PatientName")
+
+        mypatientsOn_Hold = Patient.objects.distinct().filter(
+            Q(Dentist=request.user) &
+            Q(Status__icontains="On-Hold") &
+            ~Q(Action="TC")
+        ).order_by("PatientName")
+
     context={
         'patients':'active',
-        'mypatients':mypatients,
+        'mypatientsAccept':mypatientsAccept,
+        'mypatientsReview':mypatientsReview,
+        'mypatientsDecline':mypatientsDecline,
+        'mypatientsOn_Hold':mypatientsOn_Hold
     }
 
     return render(request,'patients.html',context)
@@ -127,8 +184,8 @@ def patientaccepted(request):
 
 @login_required(login_url='login')
 def patientarchived(request):
-    if request.user.is_superuser or request.user.is_staff:
-        mypatients=Patient.objects.filter(InternalStatus="Archived").order_by("PatientName")
+    # if request.user.is_superuser or request.user.is_staff:
+    mypatients=Patient.objects.filter(Action="TC").order_by("PatientName")
     context={
         'patients':'active',
         'mypatients':mypatients,

@@ -59,7 +59,46 @@
 <a href="{% url 'addnewpatient' %}" class="btn btn-sm text-light bg-success"><i class="fas fa-plus mx-1"></i> Add new patient</a>
 </div>
 
+
 <div class="col-sm-2">
+	<a href="{% url 'addnewpatient' %}">
+		<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+		<div class="title text-light"><h6 style="font-size:14px;"><b>Add new case</b></h6></div>
+		</div>
+	</a>
+</div>
+
+<div class="col-sm-2">
+	<a href="{% url 'patientnew' %}">
+		<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+		<div class="title text-light"><h6 style="font-size:14px;"><b>New Entry</b></h6></div>
+		<div class="number text-warning"><h4><b>{{newpatientscount}}</b></h4></div>
+		<div class="icon"><a href="{% url 'patientnew' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+		</div>
+	</a>
+</div>
+
+<div class="col-sm-2">
+	<a href="{% url 'patients' %}">
+	<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+	<div class="title text-light"><h6 style="font-size:14px;"><b>Total</b></h6></div>
+	<div class="number text-warning"><h4><b>{{totalpatientscount}}</b></h4></div>
+	<div class="icon"><a href="{% url 'patients' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+	</div>
+	</a>
+</div>
+
+<div class="col-sm-2">
+	<a href="{% url 'patientarchived' %}">
+	<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
+	<div class="title text-light"><h6 style="font-size:14px;"><b>Archived</b></h6></div>
+	<div class="number text-warning"><h4><b>{{archivedpatientcount}}</b></h4></div>
+	<div class="icon"><a href="{% url 'patientarchived' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+	</div>
+	</a>
+</div>
+
+<!-- <div class="col-sm-2">
 <a href="{% url 'patientnew' %}">
 <div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
 <div class="title text-light"><h6 style="font-size:14px;"><b>New Entry</b></h6></div>
@@ -194,7 +233,7 @@
 
 {% endif %}
 
-</div>
+</div> -->
 <!-- Patient section Ends -->
 
 <!-- Referral section starts -->

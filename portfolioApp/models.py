@@ -6,6 +6,8 @@ from colorfield.fields import ColorField
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser
+from django.db import models
 
 # Create your models here.
 
@@ -66,8 +68,18 @@ class Patient(models.Model):
     InternalStatus=models.CharField(max_length=30,null=True,default="On")
     Date=models.DateField(auto_now_add=True)
     file=models.FileField(null=True)
+    AdminStatus = models.CharField(max_length=1000,null=True)
+    Stage = models.CharField(max_length=1000,null=True)
+    Note = models.CharField(max_length=10000,null=True)
+    Action = models.CharField(max_length=1000,null=True)
     def __str__(self):
         return str(self.id) + "  |  " + self.PatientName + "  |  " + str(self.Date) 
+
+class userType(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    userType = models.CharField(max_length=50) 
+    def __str__(self):
+        return str(self.user.username) + "  |  " + self.userType
     
 class PatientProposedTreatment(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)
@@ -273,3 +285,17 @@ class RepeatIncome(models.Model):
 
     def __str__(self):
         return str(self.Date) + " | " + self.Title + " | " + self.Category
+
+class Account(AbstractBaseUser):
+    email 					= models.EmailField(verbose_name="email", max_length=60, unique=True)
+    username 				= models.CharField(max_length=30, unique=True)
+    date_joined				= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
+    last_login				= models.DateTimeField(verbose_name='last login', auto_now=True)
+    is_admin				= models.BooleanField(default=False)
+    is_active				= models.BooleanField(default=True)
+    is_staff				= models.BooleanField(default=False)
+    is_superuse             = models.BooleanField(default=False)
+    is_reception            = models.BooleanField(default=False)
+    is_Nurse                = models.BooleanField(default=False)
+    is_dentist              = models.BooleanField(default=False)
+    hide_email				= models.BooleanField(default=True)
