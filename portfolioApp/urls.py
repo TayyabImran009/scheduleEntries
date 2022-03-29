@@ -92,5 +92,6 @@ urlpatterns = [
     path('startScript/', views.startScript, name="startScript"),
 
     path('file_download/<int:id>/', views.file_download, name="file_download"),
+    
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()

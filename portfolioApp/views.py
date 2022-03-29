@@ -97,71 +97,74 @@ def dashboard(request):
 # Patients
 @login_required(login_url='login')
 def patients(request):
-    if request.POST:
-        print("Save")
-        print(request.POST.get('id'), request.POST.get('Treatment'), request.POST.get('Status'))
-        patientObj = Patient.objects.get(id=request.POST.get('id'))
-        patientObj.Treatment = request.POST.get('Treatment')
-        patientObj.Status = request.POST.get('Status')
-        patientObj.save()
+    if request.user.is_admin or request.user.is_dentist:
+        if request.POST:
+            print("Save")
+            print(request.POST.get('id'), request.POST.get('Treatment'), request.POST.get('Status'))
+            patientObj = Patient.objects.get(id=request.POST.get('id'))
+            patientObj.Treatment = request.POST.get('Treatment')
+            patientObj.Status = request.POST.get('Status')
+            patientObj.save()
 
-    if request.user.is_superuser or request.user.is_staff:
-        # mypatients=Patient.objects.order_by("PatientName")
-        mypatientsAccept=Patient.objects.distinct().filter(
-            Q(Status__icontains="Accept") &
-            ~Q(Action="TC")
-        ).order_by("PatientName")
+        if request.user.is_superuser or request.user.is_staff:
+            # mypatients=Patient.objects.order_by("PatientName")
+            mypatientsAccept=Patient.objects.distinct().filter(
+                Q(Status__icontains="Accept") &
+                ~Q(Action="TC")
+            ).order_by("PatientName")
 
-        mypatientsReview=Patient.objects.distinct().filter(
-            Q(Status__icontains="Review") &
-            ~Q(Action="TC")
-        ).order_by("PatientName")
+            mypatientsReview=Patient.objects.distinct().filter(
+                Q(Status__icontains="Review") &
+                ~Q(Action="TC")
+            ).order_by("PatientName")
 
 
-        mypatientsDecline=Patient.objects.distinct().filter(
-            Q(Status__icontains="Decline") &
-            ~Q(Action="TC")
-        ).order_by("PatientName")
-        
-        mypatientsOn_Hold=Patient.objects.distinct().filter(
-            Q(Status__icontains="On-Hold") &
-            ~Q(Action="TC")
-        ).order_by("PatientName")
+            mypatientsDecline=Patient.objects.distinct().filter(
+                Q(Status__icontains="Decline") &
+                ~Q(Action="TC")
+            ).order_by("PatientName")
+            
+            mypatientsOn_Hold=Patient.objects.distinct().filter(
+                Q(Status__icontains="On-Hold") &
+                ~Q(Action="TC")
+            ).order_by("PatientName")
+        else:
+            # mypatients=Patient.objects.filter(Dentist=request.user).order_by("PatientName")
+
+            mypatientsAccept = Patient.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(Status__icontains="Accept") &
+                ~Q(Action="TC")
+            ).order_by("PatientName")
+
+            mypatientsReview = Patient.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(Status__icontains="Review")
+            ).order_by("PatientName")
+
+            mypatientsDecline = Patient.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(Status__icontains="Decline") &
+                ~Q(Action="TC")
+            ).order_by("PatientName")
+
+            mypatientsOn_Hold = Patient.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(Status__icontains="On-Hold") &
+                ~Q(Action="TC")
+            ).order_by("PatientName")
+
+        context={
+            'patients':'active',
+            'mypatientsAccept':mypatientsAccept,
+            'mypatientsReview':mypatientsReview,
+            'mypatientsDecline':mypatientsDecline,
+            'mypatientsOn_Hold':mypatientsOn_Hold
+        }
+
+        return render(request,'patients.html',context)
     else:
-        # mypatients=Patient.objects.filter(Dentist=request.user).order_by("PatientName")
-
-        mypatientsAccept = Patient.objects.distinct().filter(
-            Q(Dentist=request.user) &
-            Q(Status__icontains="Accept") &
-            ~Q(Action="TC")
-        ).order_by("PatientName")
-
-        mypatientsReview = Patient.objects.distinct().filter(
-            Q(Dentist=request.user) &
-            Q(Status__icontains="Review")
-        ).order_by("PatientName")
-
-        mypatientsDecline = Patient.objects.distinct().filter(
-            Q(Dentist=request.user) &
-            Q(Status__icontains="Decline") &
-            ~Q(Action="TC")
-        ).order_by("PatientName")
-
-        mypatientsOn_Hold = Patient.objects.distinct().filter(
-            Q(Dentist=request.user) &
-            Q(Status__icontains="On-Hold") &
-            ~Q(Action="TC")
-        ).order_by("PatientName")
-
-    context={
-        'patients':'active',
-        'mypatientsAccept':mypatientsAccept,
-        'mypatientsReview':mypatientsReview,
-        'mypatientsDecline':mypatientsDecline,
-        'mypatientsOn_Hold':mypatientsOn_Hold
-    }
-
-    return render(request,'patients.html',context)
+        return redirect('dashboard')
 
 @login_required(login_url='login')
 def patientaccepted(request):
@@ -210,27 +213,29 @@ def patientmp(request):
 
 @login_required(login_url='login')
 def patientnew(request):
-    if request.user.is_superuser or request.user.is_staff:
-        mypatients=Patient.objects.filter(Status="New").order_by("-Date")
-        if "Save" in request.POST:
-            id=request.POST.get('id')
-            editpatient=Patient.objects.get(id=id)
-            editpatient.Status="On"
-            editpatient.InternalStatus=request.POST.get('InternalStatus')
-            editpatient.save()
+    if request.user.is_admin or request.user.is_dentist: 
+        if request.user.is_superuser or request.user.is_staff:
+            mypatients=Patient.objects.filter(Status="New").order_by("-Date")
+            if "Save" in request.POST:
+                id=request.POST.get('id')
+                editpatient=Patient.objects.get(id=id)
+                editpatient.Status="On"
+                editpatient.InternalStatus=request.POST.get('InternalStatus')
+                editpatient.save()
+        else:
+            mypatients=Patient.objects.filter(Dentist=request.user,Status="New").order_by("-Date")
+            if "Save" in request.POST:
+                id=request.POST.get('id')
+                editpatient=Patient.objects.get(id=id)
+                editpatient.Status=request.POST.get('Status')
+                editpatient.save()
+        context={
+            'patients':'active',
+            'mypatients':mypatients,
+        }
+        return render(request,'patientnew.html',context)
     else:
-        mypatients=Patient.objects.filter(Dentist=request.user,Status="New").order_by("-Date")
-        if "Save" in request.POST:
-            id=request.POST.get('id')
-            editpatient=Patient.objects.get(id=id)
-            editpatient.Status=request.POST.get('Status')
-            editpatient.save()
-    context={
-        'patients':'active',
-        'mypatients':mypatients,
-    }
-
-    return render(request,'patientnew.html',context)
+        return redirect('dashboard')
 
 @login_required(login_url='login')
 def patientoh(request):
@@ -844,191 +849,200 @@ def paymentfullsearchresultsbypatient(request):
 
 # Reception
 @login_required(login_url='login')
-def addpayment(request): 
-    user=request.user
-    date=datetime.now().strftime("%Y-%m-%d")
-    if request.method=="POST":
-        Date=request.POST.get('Date')
-        User=request.POST.get('user')
-        PatientName=request.POST.get('PatientName')
-        Dentist=request.POST.get('Dentist')
-        Scheme=request.POST.get('Scheme')
-        PaymentMethod=request.POST.get('PaymentMethod')
-        Amount=request.POST.get('Amount',default="0")
-        payment=Payment(Date=Date,User=User,PatientName=PatientName,Dentist=Dentist,Scheme=Scheme,PaymentMethod=PaymentMethod,Amount=Amount)
-        payment.save()
-        messages.success(request,"Payment has been added successfully!")
+def addpayment(request):
+    if not request.user.is_dentist:
+        user=request.user
+        date=datetime.now().strftime("%Y-%m-%d")
+        if request.method=="POST":
+            Date=request.POST.get('Date')
+            User=request.POST.get('user')
+            PatientName=request.POST.get('PatientName')
+            Dentist=request.POST.get('Dentist')
+            Scheme=request.POST.get('Scheme')
+            PaymentMethod=request.POST.get('PaymentMethod')
+            Amount=request.POST.get('Amount',default="0")
+            payment=Payment(Date=Date,User=User,PatientName=PatientName,Dentist=Dentist,Scheme=Scheme,PaymentMethod=PaymentMethod,Amount=Amount)
+            payment.save()
+            messages.success(request,"Payment has been added successfully!")
 
-    context={
-        'payment':'active',        
-        'user':user,
-        'date':date,
-    }
-    return render(request,'addpayment.html',context)
+        context={
+            'payment':'active',        
+            'user':user,
+            'date':date,
+        }
+        return render(request,'addpayment.html',context)
+    else:
+        return redirect('dashboard')
 
 @login_required(login_url='login')
 def paymentdailyreport(request):
-    date=datetime.now().strftime("%Y-%m-%d")
-    cashsum= Payment.objects.filter(Date=date,PaymentMethod="Cash").aggregate(Sum('Amount')).get('Amount__sum') or 0
-    card11sum= Payment.objects.filter(Date=date,PaymentMethod="Card11").aggregate(Sum('Amount')).get('Amount__sum') or 0
-    card14sum= Payment.objects.filter(Date=date,PaymentMethod="Card14").aggregate(Sum('Amount')).get('Amount__sum') or 0
-    BACS= Payment.objects.filter(Date=date,PaymentMethod="BACS").aggregate(Sum('Amount')).get('Amount__sum') or 0
-    finance= Payment.objects.filter(Date=date,PaymentMethod="Finance").aggregate(Sum('Amount')).get('Amount__sum') or 0
-    total=cashsum+card11sum+card14sum+BACS+finance
-    context={
-        'payment':'active',
-        'cashsum':cashsum,
-        'card11sum':card11sum,
-        'card14sum':card14sum,
-        'BACS':BACS,
-        'finance':finance,
-        'date':date ,
-        'total':total,
+    if not request.user.is_dentist:
+        date=datetime.now().strftime("%Y-%m-%d")
+        cashsum= Payment.objects.filter(Date=date,PaymentMethod="Cash").aggregate(Sum('Amount')).get('Amount__sum') or 0
+        card11sum= Payment.objects.filter(Date=date,PaymentMethod="Card11").aggregate(Sum('Amount')).get('Amount__sum') or 0
+        card14sum= Payment.objects.filter(Date=date,PaymentMethod="Card14").aggregate(Sum('Amount')).get('Amount__sum') or 0
+        BACS= Payment.objects.filter(Date=date,PaymentMethod="BACS").aggregate(Sum('Amount')).get('Amount__sum') or 0
+        finance= Payment.objects.filter(Date=date,PaymentMethod="Finance").aggregate(Sum('Amount')).get('Amount__sum') or 0
+        total=cashsum+card11sum+card14sum+BACS+finance
+        context={
+            'payment':'active',
+            'cashsum':cashsum,
+            'card11sum':card11sum,
+            'card14sum':card14sum,
+            'BACS':BACS,
+            'finance':finance,
+            'date':date ,
+            'total':total,
 
-    }
-    return render(request,'paymentdailyreport.html',context)
+        }
+        return render(request,'paymentdailyreport.html',context)
+    else:
+        return redirect('dashboard')
 
 
 @login_required(login_url='login')
 def paymentfullreport(request):
-    date=datetime.now().strftime("%Y-%m-%d")
-    StartDate=date
-    EndDate=date
-    if "ChangePatientName" in request.POST:
-        id=request.POST.get('id')
-        editpayments=Payment.objects.get(id=id)
-        editpayments.PatientName=request.POST.get('PatientName')
-        editpayments.save() 
-    if "Dentist" in request.POST:
-        id=request.POST.get('id')
-        editpayments=Payment.objects.get(id=id)
-        editpayments.Dentist=request.POST.get('Dentist')
-        editpayments.save()  
-    if "Scheme" in request.POST:
-        id=request.POST.get('id')
-        editpayments=Payment.objects.get(id=id)
-        editpayments.Scheme=request.POST.get('Scheme')
-        editpayments.save()    
-    if "PaymentMethod" in request.POST:
-        id=request.POST.get('id')
-        editpayments=Payment.objects.get(id=id)
-        editpayments.PaymentMethod=request.POST.get('PaymentMethod')
-        editpayments.save()      
-    if "ChangeAmount" in request.POST:
-        id=request.POST.get('id')
-        editpayments=Payment.objects.get(id=id)
-        editpayments.Amount=request.POST.get('Amount')
-        editpayments.save()
-                                
-    if "Archive" in request.POST:
-        id=request.POST.get('id')
-        editpayments=Payment.objects.get(id=id)
-        if editpayments.PaymentMethod == "Cash":
-            try:
-                incomeObj = Income.objects.get(Date=editpayments.Date,Title="CASH")
-                incomeObj.Amount += editpayments.Amount
-                incomeObj.save()
-            except:
-                incomeObj = Income(Date=editpayments.Date, Title="CASH", Category="CASH-UP", Account = "MB-CASH", Status="Pending", Amount=editpayments.Amount)
-                incomeObj.save()
-        elif editpayments.PaymentMethod == "Card11":
-            try:
-                incomeObj = Income.objects.get(Date=editpayments.Date,Title="Card11")
-                incomeObj.Amount += editpayments.Amount
-                incomeObj.save()
-            except:
-                incomeObj = Income(Date=editpayments.Date, Title="Card11", Category="CASH-UP", Account = "BEHNAM LTD", Status="Pending", Amount=editpayments.Amount)
-                incomeObj.save()
-        elif editpayments.PaymentMethod == "Card14":
-            try:
-                incomeObj = Income.objects.get(Date=editpayments.Date,Title="Card14")
-                incomeObj.Amount += editpayments.Amount
-                incomeObj.save()
-            except:
-                incomeObj = Income(Date=editpayments.Date, Title="Card14", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayments.Amount)
-                incomeObj.save()
-        elif editpayments.PaymentMethod == "BACS":
-            try:
-                incomeObj = Income.objects.get(Date=editpayments.Date,Title="BACS")
-                incomeObj.Amount += editpayments.Amount
-                incomeObj.save()
-            except:
-                incomeObj = Income(Date=editpayments.Date, Title="BACS", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayments.Amount)
-                incomeObj.save() 
-        elif editpayments.PaymentMethod == "Finance":
-            try:
-                incomeObj = Income.objects.get(Date=editpayments.Date,Title="Finance")
-                incomeObj.Amount += editpayments.Amount
-                incomeObj.save()
-            except:
-                incomeObj = Income(Date=editpayments.Date, Title="Finance", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayments.Amount)
-                incomeObj.save() 
-            
+    if not request.user.is_dentist:
+        date=datetime.now().strftime("%Y-%m-%d")
+        StartDate=date
+        EndDate=date
+        if "ChangePatientName" in request.POST:
+            id=request.POST.get('id')
+            editpayments=Payment.objects.get(id=id)
+            editpayments.PatientName=request.POST.get('PatientName')
+            editpayments.save() 
+        if "Dentist" in request.POST:
+            id=request.POST.get('id')
+            editpayments=Payment.objects.get(id=id)
+            editpayments.Dentist=request.POST.get('Dentist')
+            editpayments.save()  
+        if "Scheme" in request.POST:
+            id=request.POST.get('id')
+            editpayments=Payment.objects.get(id=id)
+            editpayments.Scheme=request.POST.get('Scheme')
+            editpayments.save()    
+        if "PaymentMethod" in request.POST:
+            id=request.POST.get('id')
+            editpayments=Payment.objects.get(id=id)
+            editpayments.PaymentMethod=request.POST.get('PaymentMethod')
+            editpayments.save()      
+        if "ChangeAmount" in request.POST:
+            id=request.POST.get('id')
+            editpayments=Payment.objects.get(id=id)
+            editpayments.Amount=request.POST.get('Amount')
+            editpayments.save()
+                                    
+        if "Archive" in request.POST:
+            id=request.POST.get('id')
+            editpayments=Payment.objects.get(id=id)
+            if editpayments.PaymentMethod == "Cash":
+                try:
+                    incomeObj = Income.objects.get(Date=editpayments.Date,Title="CASH")
+                    incomeObj.Amount += editpayments.Amount
+                    incomeObj.save()
+                except:
+                    incomeObj = Income(Date=editpayments.Date, Title="CASH", Category="CASH-UP", Account = "MB-CASH", Status="Pending", Amount=editpayments.Amount)
+                    incomeObj.save()
+            elif editpayments.PaymentMethod == "Card11":
+                try:
+                    incomeObj = Income.objects.get(Date=editpayments.Date,Title="Card11")
+                    incomeObj.Amount += editpayments.Amount
+                    incomeObj.save()
+                except:
+                    incomeObj = Income(Date=editpayments.Date, Title="Card11", Category="CASH-UP", Account = "BEHNAM LTD", Status="Pending", Amount=editpayments.Amount)
+                    incomeObj.save()
+            elif editpayments.PaymentMethod == "Card14":
+                try:
+                    incomeObj = Income.objects.get(Date=editpayments.Date,Title="Card14")
+                    incomeObj.Amount += editpayments.Amount
+                    incomeObj.save()
+                except:
+                    incomeObj = Income(Date=editpayments.Date, Title="Card14", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayments.Amount)
+                    incomeObj.save()
+            elif editpayments.PaymentMethod == "BACS":
+                try:
+                    incomeObj = Income.objects.get(Date=editpayments.Date,Title="BACS")
+                    incomeObj.Amount += editpayments.Amount
+                    incomeObj.save()
+                except:
+                    incomeObj = Income(Date=editpayments.Date, Title="BACS", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayments.Amount)
+                    incomeObj.save() 
+            elif editpayments.PaymentMethod == "Finance":
+                try:
+                    incomeObj = Income.objects.get(Date=editpayments.Date,Title="Finance")
+                    incomeObj.Amount += editpayments.Amount
+                    incomeObj.save()
+                except:
+                    incomeObj = Income(Date=editpayments.Date, Title="Finance", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayments.Amount)
+                    incomeObj.save() 
+                
 
-        editpayments.Status="Archived"
-        editpayments.save() 
+            editpayments.Status="Archived"
+            editpayments.save() 
 
-    if "Archive_All" in request.POST:
-        editpayments=Payment.objects.all()
-        for editpayment in editpayments:
-            if editpayment.Status =="Pending":
-                editpayment.Status="Archived"
-                editpayment.save()
-                if editpayment.PaymentMethod == "Cash":
-                    try:
-                        incomeObj = Income.objects.get(Date=editpayment.Date,Title="CASH")
-                        incomeObj.Amount += editpayment.Amount
-                        incomeObj.save()
-                    except:
-                        incomeObj = Income(Date=editpayment.Date, Title="CASH", Category="CASH-UP", Account = "MB-CASH", Status="Pending", Amount=editpayment.Amount)
-                        incomeObj.save()
-                elif editpayment.PaymentMethod == "Card11":
-                    try:
-                        incomeObj = Income.objects.get(Date=editpayment.Date,Title="Card11")
-                        incomeObj.Amount += editpayment.Amount
-                        incomeObj.save()
-                    except:
-                        incomeObj = Income(Date=editpayment.Date, Title="Card11", Category="CASH-UP", Account = "BEHNAM LTD", Status="Pending", Amount=editpayment.Amount)
-                        incomeObj.save()
-                elif editpayment.PaymentMethod == "Card14":
-                    try:
-                        incomeObj = Income.objects.get(Date=editpayment.Date,Title="Card14")
-                        incomeObj.Amount += editpayment.Amount
-                        incomeObj.save()
-                    except:
-                        incomeObj = Income(Date=editpayment.Date, Title="Card14", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
-                        incomeObj.save() 
-                elif editpayment.PaymentMethod == "BACS":
-                    try:
-                        incomeObj = Income.objects.get(Date=editpayment.Date,Title="BACS")
-                        incomeObj.Amount += editpayment.Amount
-                        incomeObj.save()
-                    except:
-                        incomeObj = Income(Date=editpayment.Date, Title="BACS", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
-                        incomeObj.save()
-                    
-                elif editpayment.PaymentMethod == "Finance":
-                    try:
-                        incomeObj = Income.objects.get(Date=editpayment.Date,Title="Finance")
-                        incomeObj.Amount += editpayment.Amount
-                        incomeObj.save()
-                    except:
-                        incomeObj = Income(Date=editpayment.Date, Title="Finance", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
-                        incomeObj.save()
-                    
+        if "Archive_All" in request.POST:
+            editpayments=Payment.objects.all()
+            for editpayment in editpayments:
+                if editpayment.Status =="Pending":
+                    editpayment.Status="Archived"
+                    editpayment.save()
+                    if editpayment.PaymentMethod == "Cash":
+                        try:
+                            incomeObj = Income.objects.get(Date=editpayment.Date,Title="CASH")
+                            incomeObj.Amount += editpayment.Amount
+                            incomeObj.save()
+                        except:
+                            incomeObj = Income(Date=editpayment.Date, Title="CASH", Category="CASH-UP", Account = "MB-CASH", Status="Pending", Amount=editpayment.Amount)
+                            incomeObj.save()
+                    elif editpayment.PaymentMethod == "Card11":
+                        try:
+                            incomeObj = Income.objects.get(Date=editpayment.Date,Title="Card11")
+                            incomeObj.Amount += editpayment.Amount
+                            incomeObj.save()
+                        except:
+                            incomeObj = Income(Date=editpayment.Date, Title="Card11", Category="CASH-UP", Account = "BEHNAM LTD", Status="Pending", Amount=editpayment.Amount)
+                            incomeObj.save()
+                    elif editpayment.PaymentMethod == "Card14":
+                        try:
+                            incomeObj = Income.objects.get(Date=editpayment.Date,Title="Card14")
+                            incomeObj.Amount += editpayment.Amount
+                            incomeObj.save()
+                        except:
+                            incomeObj = Income(Date=editpayment.Date, Title="Card14", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
+                            incomeObj.save() 
+                    elif editpayment.PaymentMethod == "BACS":
+                        try:
+                            incomeObj = Income.objects.get(Date=editpayment.Date,Title="BACS")
+                            incomeObj.Amount += editpayment.Amount
+                            incomeObj.save()
+                        except:
+                            incomeObj = Income(Date=editpayment.Date, Title="BACS", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
+                            incomeObj.save()
+                        
+                    elif editpayment.PaymentMethod == "Finance":
+                        try:
+                            incomeObj = Income.objects.get(Date=editpayment.Date,Title="Finance")
+                            incomeObj.Amount += editpayment.Amount
+                            incomeObj.save()
+                        except:
+                            incomeObj = Income(Date=editpayment.Date, Title="Finance", Category="CASH-UP", Account = "MBDENTAL LTD", Status="Pending", Amount=editpayment.Amount)
+                            incomeObj.save()
+                        
 
-    allpayments=Payment.objects.filter(Date=date,Status="Pending").order_by('-Date')   
-    total= Payment.objects.filter(Date=date,Status="Pending").order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
-    context={
-        'payment':'active',
-        'allpayments':allpayments,
-        'date':date,
-        'total':total,
-        'StartDate':StartDate,
-        'EndDate':EndDate,
+        allpayments=Payment.objects.filter(Date=date,Status="Pending").order_by('-Date')   
+        total= Payment.objects.filter(Date=date,Status="Pending").order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
+        context={
+            'payment':'active',
+            'allpayments':allpayments,
+            'date':date,
+            'total':total,
+            'StartDate':StartDate,
+            'EndDate':EndDate,
 
-    }
-    return render(request,'paymentfullreport.html',context)
+        }
+        return render(request,'paymentfullreport.html',context)
+    else:
+        return redirect('dashboard')
 
 def saveincome(request,id):
     incomeObj = Income.objects.get(id=id)
@@ -1045,39 +1059,42 @@ def saveexpense(request,id):
 
 @login_required(login_url='login')
 def paymentfullreportarchived(request):
-    date=datetime.now().strftime("%Y-%m-%d")
-    StartDate=date
-    EndDate=date
-    allpayments=Payment.objects.filter(Date=date,Status="Archived").order_by('-Date')   
-    total= Payment.objects.filter(Date=date,Status="Archived").order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
-    if "Search" in request.GET:
-        StartDate=request.GET['StartDate']
-        EndDate=request.GET['EndDate']
-        Dentist=request.GET['Dentist']
-        Scheme=request.GET['Scheme']
-        if Dentist == "All" and Scheme != "All":
-            allpayments=Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Scheme=Scheme).order_by("-Date")        
-            total= Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Scheme=Scheme).order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
-        elif Scheme == "All" and Dentist != "All":
-            allpayments=Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Dentist=Dentist).order_by("-Date")        
-            total= Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Dentist=Dentist).order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
-        elif Scheme=="All" and Dentist=="All":
-            allpayments=Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate]).order_by("-Date")        
-            total= Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate]).order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0            
-        else:
-            allpayments=Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Dentist=Dentist,Scheme=Scheme).order_by("-Date")        
-            total= Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Dentist=Dentist,Scheme=Scheme).order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
+    if request.user.is_admin:
+        date=datetime.now().strftime("%Y-%m-%d")
+        StartDate=date
+        EndDate=date
+        allpayments=Payment.objects.filter(Date=date,Status="Archived").order_by('-Date')   
+        total= Payment.objects.filter(Date=date,Status="Archived").order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
+        if "Search" in request.GET:
+            StartDate=request.GET['StartDate']
+            EndDate=request.GET['EndDate']
+            Dentist=request.GET['Dentist']
+            Scheme=request.GET['Scheme']
+            if Dentist == "All" and Scheme != "All":
+                allpayments=Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Scheme=Scheme).order_by("-Date")        
+                total= Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Scheme=Scheme).order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
+            elif Scheme == "All" and Dentist != "All":
+                allpayments=Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Dentist=Dentist).order_by("-Date")        
+                total= Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Dentist=Dentist).order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
+            elif Scheme=="All" and Dentist=="All":
+                allpayments=Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate]).order_by("-Date")        
+                total= Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate]).order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0            
+            else:
+                allpayments=Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Dentist=Dentist,Scheme=Scheme).order_by("-Date")        
+                total= Payment.objects.filter(Status="Archived",Date__range=[StartDate,EndDate],Dentist=Dentist,Scheme=Scheme).order_by('-Date').aggregate(Sum('Amount')).get('Amount__sum') or 0
 
-    context={
-        'payment':'active',
-        'allpayments':allpayments,
-        'date':date,
-        'total':total,
-        'StartDate':StartDate,
-        'EndDate':EndDate,
+        context={
+            'payment':'active',
+            'allpayments':allpayments,
+            'date':date,
+            'total':total,
+            'StartDate':StartDate,
+            'EndDate':EndDate,
 
-    }
-    return render(request,'paymentfullreportarchived.html',context)
+        }
+        return render(request,'paymentfullreportarchived.html',context)
+    else:
+        return redirect('dashboard')
 
 # Income and Expense
 @login_required(login_url='login')
@@ -1376,31 +1393,34 @@ def labspending(request):
 
 @login_required(login_url='login')
 def labsarchived(request):
-    labwork=LabWork.objects.filter(Status="Archived").order_by("PatientName")
-    sum= LabWork.objects.filter(Status="Archived").aggregate(Sum('Fee')).get('Fee__sum') or 0
+    if request.user.is_admin:
+        labwork=LabWork.objects.filter(Status="Archived").order_by("PatientName")
+        sum= LabWork.objects.filter(Status="Archived").aggregate(Sum('Fee')).get('Fee__sum') or 0
 
-    if "Approve" in request.POST:
-        id=request.POST.get('id')
-        editlab=LabWork.objects.get(id=id)
-        editlab.Status="Approved"
-        editlab.save()
-    
-    if "Search" in request.GET:
-        StartDate=request.GET['StartDate']
-        EndDate=request.GET['EndDate']
-        Dentist=request.GET['Dentist']
-        Scheme=request.GET['Scheme']
-        Lab=request.GET['Lab']
-        labwork=LabWork.objects.filter(Status="Archived",PaidDate__range=[StartDate,EndDate],Dentist=Dentist,Scheme=Scheme,Lab=Lab).order_by("PatientName")        
-        sum= LabWork.objects.filter(Status="Archived",PaidDate__range=[StartDate,EndDate],Dentist=Dentist,Scheme=Scheme,Lab=Lab).aggregate(Sum('Fee')).get('Fee__sum') or 0
+        if "Approve" in request.POST:
+            id=request.POST.get('id')
+            editlab=LabWork.objects.get(id=id)
+            editlab.Status="Approved"
+            editlab.save()
+        
+        if "Search" in request.GET:
+            StartDate=request.GET['StartDate']
+            EndDate=request.GET['EndDate']
+            Dentist=request.GET['Dentist']
+            Scheme=request.GET['Scheme']
+            Lab=request.GET['Lab']
+            labwork=LabWork.objects.filter(Status="Archived",PaidDate__range=[StartDate,EndDate],Dentist=Dentist,Scheme=Scheme,Lab=Lab).order_by("PatientName")        
+            sum= LabWork.objects.filter(Status="Archived",PaidDate__range=[StartDate,EndDate],Dentist=Dentist,Scheme=Scheme,Lab=Lab).aggregate(Sum('Fee')).get('Fee__sum') or 0
 
-    context={
-        'labs':'active',
-        'labwork':labwork,
-        'sum':sum,
-    }
+        context={
+            'labs':'active',
+            'labwork':labwork,
+            'sum':sum,
+        }
 
-    return render(request,'labsarchived.html',context)
+        return render(request,'labsarchived.html',context)
+    else:
+        return redirect('dashboard')
 
 # Orders
 @login_required(login_url='login')
@@ -1520,7 +1540,8 @@ def signup(request):
             
             if form.is_valid() and profile_form.is_valid():
                 user=form.save()
-                
+                user.is_dentist = True
+                user.save()
                 profile=profile_form.save(commit=False)
                 profile.user=user
                 profile.save()
@@ -1555,68 +1576,74 @@ def logoutuser(request):
 
 @login_required(login_url='login')
 def repeatExpense(request):
-    date=datetime.now().strftime("%Y-%m-%d")
-    title=IncomeExpenseTitle.objects.all().order_by('Title')
-    category=IncomeExpenseCategory.objects.all().order_by('Category')
-    if request.method=='POST':
-        Date=request.POST.get('Date')
-        Title=request.POST.get('Title')
-        Category=request.POST.get('Category')
-        Account=request.POST.get('Account')
-        Amount=request.POST.get('Amount',default=0)
-        Status="Pending"
-        Note=request.POST.get('Note')
+    if request.user.is_admin:
+        date=datetime.now().strftime("%Y-%m-%d")
+        title=IncomeExpenseTitle.objects.all().order_by('Title')
+        category=IncomeExpenseCategory.objects.all().order_by('Category')
+        if request.method=='POST':
+            Date=request.POST.get('Date')
+            Title=request.POST.get('Title')
+            Category=request.POST.get('Category')
+            Account=request.POST.get('Account')
+            Amount=request.POST.get('Amount',default=0)
+            Status="Pending"
+            Note=request.POST.get('Note')
 
-        expense=RepeatExpense(Date=Date,Title=Title,Category=Category,Account=Account,Amount=Amount,Status=Status,Note=Note)
-        expense.save()
-        if not IncomeExpenseTitle.objects.filter(Title=Title).exists():
-            newtitle=IncomeExpenseTitle(Title=Title)
-            newtitle.save()
-        if not IncomeExpenseCategory.objects.filter(Category=Category).exists():
-            newcategory=IncomeExpenseCategory(Category=Category)
-            newcategory.save()
-        messages.success(request,"Expense has been added successfully!")
-    context={
-        'payment':'active',       
-        'date':date,
-        'title':title,
-        'category':category,
-    }
-    return render(request, 'repeatExpense.html',context)
+            expense=RepeatExpense(Date=Date,Title=Title,Category=Category,Account=Account,Amount=Amount,Status=Status,Note=Note)
+            expense.save()
+            if not IncomeExpenseTitle.objects.filter(Title=Title).exists():
+                newtitle=IncomeExpenseTitle(Title=Title)
+                newtitle.save()
+            if not IncomeExpenseCategory.objects.filter(Category=Category).exists():
+                newcategory=IncomeExpenseCategory(Category=Category)
+                newcategory.save()
+            messages.success(request,"Expense has been added successfully!")
+        context={
+            'payment':'active',       
+            'date':date,
+            'title':title,
+            'category':category,
+        }
+        return render(request, 'repeatExpense.html',context)
+    else:
+        return redirect('dashboard')
 
 @login_required(login_url='login')
 def repeatIncome(request):
-    date=datetime.now().strftime("%Y-%m-%d")
-    title=IncomeExpenseTitle.objects.all().order_by('Title')
-    category=IncomeExpenseCategory.objects.all().order_by('Category')
-    if request.method=="POST":
-        print("******************")
-        Date=request.POST.get('Date')
-        Title=request.POST.get('Title')
-        Category=request.POST.get('Category')
-        Account=request.POST.get('Account')
-        Amount=request.POST.get('Amount',default=0)
-        Status="Pending"
-        Note=request.POST.get('Note')
-        Repeat=request.POST.get('Repeat')
-        RepeatStatus="On"
-        income=RepeatIncome(Date=Date,Title=Title,Category=Category,Account=Account,Amount=Amount,Status=Status,Note=Note,Repeat=Repeat,RepeatStatus=RepeatStatus)
-        income.save()
-        if not IncomeExpenseTitle.objects.filter(Title=Title).exists():
-            newtitle=IncomeExpenseTitle(Title=Title)
-            newtitle.save()
-        if not IncomeExpenseCategory.objects.filter(Category=Category).exists():
-            newcategory=IncomeExpenseCategory(Category=Category)
-            newcategory.save()
-        messages.success(request,"Income has been added successfully!")
+    if request.user.is_admin:
+        date=datetime.now().strftime("%Y-%m-%d")
+        title=IncomeExpenseTitle.objects.all().order_by('Title')
+        category=IncomeExpenseCategory.objects.all().order_by('Category')
+        if request.method=="POST":
+            print("******************")
+            Date=request.POST.get('Date')
+            Title=request.POST.get('Title')
+            Category=request.POST.get('Category')
+            Account=request.POST.get('Account')
+            Amount=request.POST.get('Amount',default=0)
+            Status="Pending"
+            Note=request.POST.get('Note')
+            Repeat=request.POST.get('Repeat')
+            RepeatStatus="On"
+            income=RepeatIncome(Date=Date,Title=Title,Category=Category,Account=Account,Amount=Amount,Status=Status,Note=Note,Repeat=Repeat,RepeatStatus=RepeatStatus)
+            income.save()
+            if not IncomeExpenseTitle.objects.filter(Title=Title).exists():
+                newtitle=IncomeExpenseTitle(Title=Title)
+                newtitle.save()
+            if not IncomeExpenseCategory.objects.filter(Category=Category).exists():
+                newcategory=IncomeExpenseCategory(Category=Category)
+                newcategory.save()
+            messages.success(request,"Income has been added successfully!")
 
-    context={
-        'payment':'active',       
-        'date':date,
-        'title':title,
-        'category':category,
-    }
-    return render(request, 'repeatIncome.html',context)
+        context={
+            'payment':'active',       
+            'date':date,
+            'title':title,
+            'category':category,
+        }
+        return render(request, 'repeatIncome.html',context)
+    else:
+        return redirect('dashboard')
 
 @login_required(login_url='login')
 def startScript(request):

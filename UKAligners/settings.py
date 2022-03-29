@@ -27,6 +27,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['127.0.0.1']
 
+AUTH_USER_MODEL = 'account.Account'
 
 # Application definition
 
@@ -43,7 +44,7 @@ INSTALLED_APPS = [
     'colorfield',
     'django_celery_results',
     'celery',
-
+    'account',
 ]
 CKEDITOR_UPLOAD_PATH = "uploads/"
 

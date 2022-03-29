@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Patient,PatientProposedTreatment,DentistProfile,Referral,TreatmentRequestFile,ImageUploadAdmin,Payment,Income,Expense,IncomeExpenseTitle,IncomeExpenseCategory,LabWork,Order,RepeatExpense, RepeatIncome, userType, Account
+from .models import Patient,PatientProposedTreatment,DentistProfile,Referral,TreatmentRequestFile,ImageUploadAdmin,Payment,Income,Expense,IncomeExpenseTitle,IncomeExpenseCategory,LabWork,Order,RepeatExpense, RepeatIncome, userType
 # Register your models here.
 admin.site.register(Patient)
 admin.site.register(PatientProposedTreatment)
@@ -23,5 +23,3 @@ admin.site.register(RepeatExpense)
 admin.site.register(RepeatIncome)
 
 admin.site.register(userType)
-
-admin.site.register(Account)

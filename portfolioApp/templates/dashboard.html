@@ -4,7 +4,7 @@
 <section class="px-4">
 <h4 class="py-3"><b>Dashboard</b></h4>
 
-{% if user.is_superuser or user.is_staff %}
+{% if not user.is_dentist %}
 <!-- Reception Section Starts -->
 <div class="row pt-2 pb-5">
 <h4>Payments</h4>
@@ -68,6 +68,7 @@
 	</a>
 </div>
 
+{% if user.is_superuser or user.is_dentist %}
 <div class="col-sm-2">
 	<a href="{% url 'patientnew' %}">
 		<div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
@@ -98,6 +99,7 @@
 	</a>
 </div>
 
+{% endif %}
 <!-- <div class="col-sm-2">
 <a href="{% url 'patientnew' %}">
 <div class="card border shadow rounded px-3 py-3 my-3"style="background:#32567D;height:110px;">
