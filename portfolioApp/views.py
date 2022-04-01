@@ -100,7 +100,6 @@ def patients(request):
     if request.user.is_admin or request.user.is_dentist:
         if request.POST:
             print("Save")
-            print(request.POST.get('id'), request.POST.get('Treatment'), request.POST.get('Status'))
             patientObj = Patient.objects.get(id=request.POST.get('id'))
             patientObj.Treatment = request.POST.get('Treatment')
             patientObj.Status = request.POST.get('Status')
@@ -494,13 +493,73 @@ def patientdetail(request,id):
 # Referrals
 @login_required(login_url='login')
 def referrals(request):
+
+    if request.method=="POST":
+
+        referral_obj = Referral.objects.get(id=request.POST.get('id'))
+        referral_obj.ReferralReason = request.POST.get('ReferralReason')
+        referral_obj.Status = request.POST.get('Status')
+        referral_obj.save()
+
     if request.user.is_superuser or request.user.is_staff:
-        myreferrals=Referral.objects.order_by("PatientName")
+        implant_referral = Referral.objects.distinct().filter(
+                Q(ReferralReason="Implant") &
+                ~Q(Status="TC") &
+                ~Q(Status="Declined")
+            ).order_by("PatientName")
+
+        orthodontics_referral = Referral.objects.distinct().filter(
+                Q(ReferralReason="Orthodontics") &
+                ~Q(Status="TC") &
+                ~Q(Status="Declined")
+            ).order_by("PatientName")
+
+        root_canal_referral = Referral.objects.distinct().filter(
+                Q(ReferralReason="Root Canal") &
+                ~Q(Status="TC") &
+                ~Q(Status="Declined")
+            ).order_by("PatientName")
+
+        crown_referral = Referral.objects.distinct().filter(
+                Q(ReferralReason="Crown") &
+                ~Q(Status="TC") &
+                ~Q(Status="Declined")
+            ).order_by("PatientName")
     else:
-        myreferrals=Referral.objects.filter(Dentist=request.user).order_by("PatientName")
+        implant_referral = Referral.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(ReferralReason="Implant") &
+                ~Q(Status="TC") &
+                ~Q(Status="Declined")
+            ).order_by("PatientName")
+
+        orthodontics_referral = Referral.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(ReferralReason="Orthodontics") &
+                ~Q(Status="TC") &
+                ~Q(Status="Declined")
+            ).order_by("PatientName")
+
+        root_canal_referral = Referral.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(ReferralReason="Root Canal") &
+                ~Q(Status="TC") &
+                ~Q(Status="Declined")
+            ).order_by("PatientName")
+
+        crown_referral = Referral.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(ReferralReason="Crown") &
+                ~Q(Status="TC") &
+                ~Q(Status="Declined")
+            ).order_by("PatientName")
+
     context={
         'referral':'active',
-        'myreferrals':myreferrals,
+        'implant_referral': implant_referral,
+        'orthodontics_referral': orthodontics_referral,
+        'root_canal_referral': root_canal_referral,
+        'crown_referral': crown_referral
     }
 
     return render(request,'referrals.html',context)
@@ -723,9 +782,16 @@ def refdeclined(request):
 @login_required(login_url='login')
 def reftc(request):
     if request.user.is_superuser or request.user.is_staff:
-        myreferrals=Referral.objects.filter(Status="TC").order_by("PatientName")
+        myreferrals = Referral.objects.distinct().filter(
+                Q(Status="TC") or
+                Q(Status="Declined")
+            ).order_by("PatientName")
     else:
-        myreferrals=Referral.objects.filter(Dentist=request.user,Status="TC").order_by("PatientName")
+        myreferrals = Referral.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(Status="TC") or
+                Q(Status="Declined")
+            ).order_by("PatientName")
     context={
         'referrals':'active',
         'myreferrals':myreferrals,

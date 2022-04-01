@@ -246,11 +246,9 @@
 </div>
 
 <div class="col-sm-2">
-<a href="{% url 'referrals' %}">
+<a href="{% url 'addnewreferral' %}">
 <div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
-<div class="title text-light"><h6 style="font-size:14px;"><b>Total</b></h6></div>
-<div class="number text-warning"><h4><b>{{reftotalcount}}</b></h4></div>
-<div class="icon"><a href="{% url 'referrals' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+<div class="title text-light"><h6 style="font-size:14px;"><b>Add new referral</b></h6></div>
 </div>
 </a>
 </div>
@@ -265,6 +263,27 @@
 </a>
 </div>
 
+<div class="col-sm-2">
+<a href="{% url 'referrals' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Total</b></h6></div>
+<div class="number text-warning"><h4><b>{{reftotalcount}}</b></h4></div>
+<div class="icon"><a href="{% url 'referrals' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<div class="col-sm-2">
+<a href="{% url 'reftc' %}">
+<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
+<div class="title text-light"><h6 style="font-size:14px;"><b>Archive</b></h6></div>
+<div class="number text-warning"><h4><b>{{reftccount}}</b></h4></div>
+<div class="icon"><a href="{% url 'reftc' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
+</div>
+</a>
+</div>
+
+<!-- 
 <div class="col-sm-2">
 <a href="{% url 'refconsultations' %}">
 <div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
@@ -323,17 +342,7 @@
 <div class="icon"><a href="{% url 'refdeclined' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
 </div>
 </a>
-</div>
-
-<div class="col-sm-2">
-<a href="{% url 'reftc' %}">
-<div class="card border shadow rounded px-3 py-3 my-3"style="background:#0B7678;height:110px;">
-<div class="title text-light"><h6 style="font-size:14px;"><b>TC</b></h6></div>
-<div class="number text-warning"><h4><b>{{reftccount}}</b></h4></div>
-<div class="icon"><a href="{% url 'reftc' %}"style="float:right;color:white;font-size:12px;">Check Details</a></div>
-</div>
-</a>
-</div>
+</div> -->
 
 
 </div>
