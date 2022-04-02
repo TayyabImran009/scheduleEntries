@@ -25,7 +25,7 @@ SECRET_KEY = 'c!%x46n4kcbwa2ee(u3lg8@rt(5otp0+gwp7j3@q5fs^=#*1sb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['178.62.7.79']
 
 AUTH_USER_MODEL = 'account.Account'
 
