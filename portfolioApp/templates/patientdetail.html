@@ -11,24 +11,24 @@
 <div class="col-sm-6">
 
 <h5 class="py-1"><b>Patient</b></h5>
-<h6><b class="text-secondary">Patient ID:</b>  <span class="border rounded px-3 py-0"style="font-size:13px;color:black;">{{patient.id}}</span></h6>
-<h6><b class="text-secondary">Patient name:</b>  <span style="font-size:13px;color:black;">{{patient.PatientName}}</span></h6>
-<h6><b class="text-secondary">Patient Emaill:</b>  <span style="font-size:13px;color:black;">{{patient.Email}}</span></h6>
-<h6><b class="text-secondary">Patient Telephone:</b>  <span style="font-size:13px;color:black;">{{patient.Telephone}}</span></h6>
-<h6><b class="text-secondary">Patient Gender:</b>  <span style="font-size:13px;color:black;">{{patient.Sex}}</span></h6>
-<h6><b class="text-secondary">Patient Age:</b>  <span style="font-size:13px;color:black;">{{patient.Age}}</span></h6>
-<h6><b class="text-secondary">Treatment In Past:</b>  <span style="font-size:13px;color:black;">{{patient.TreatmentInPast}}</span></h6>
-<h6><b class="text-secondary">Address 1:</b>  <span style="font-size:13px;color:black;">{{patient.Address1}}</span></h6>
-<h6><b class="text-secondary">Address 2:</b>  <span style="font-size:13px;color:black;">{{patient.Address2}}</span></h6>
+<h6><b class="text-secondary">Patient ID:</b>  <span class="border rounded px-3 py-0"style="font-size:19px;color:#000000c9;;">{{patient.id}}</span></h6>
+<h6><b class="text-secondary">Patient name:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.PatientName}}</span></h6>
+<h6><b class="text-secondary">Patient Emaill:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Email}}</span></h6>
+<h6><b class="text-secondary">Patient Telephone:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Telephone}}</span></h6>
+<h6><b class="text-secondary">Patient Gender:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Sex}}</span></h6>
+<h6><b class="text-secondary">Patient Age:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Age}}</span></h6>
+<h6><b class="text-secondary">Treatment In Past:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.TreatmentInPast}}</span></h6>
+<h6><b class="text-secondary">Address 1:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Address1}}</span></h6>
+<h6><b class="text-secondary">Address 2:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Address2}}</span></h6>
 
 
 <h5 class="py-1"><b>Clinic</b></h5>
-<h6><b class="text-secondary">Clinic:</b>  <span style="font-size:13px;color:black;">{{patient.Clinic}}</span></h6>
+<h6><b class="text-secondary">Clinic:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Clinic}}</span></h6>
 <h5 class="py-1"><b>Dentist</b></h5>
-<h6><b class="text-secondary">Prescriber:</b>  <span style="font-size:13px;color:black;">{{patient.Prescriber}}</span></h6>
+<h6><b class="text-secondary">Prescriber:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Prescriber}}</span></h6>
 <h5 class="py-1"><b>Status</b></h5>
-<h6><b class="text-secondary">Status:</b>  <span style="font-size:13px;color:black;">{{patient.Status}}</span></h6>
-<h6><b class="text-secondary">Internal Status:</b>  <span style="font-size:13px;color:black;">{{patient.InternalStatus}}</span></h6>
+<h6><b class="text-secondary">Status:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Status}}</span></h6>
+<h6><b class="text-secondary">Internal Status:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.InternalStatus}}</span></h6>
 <h5 class="py-1"><b>Photos</b></h5>
 <a class="text-primary py-1 my-3 rounded"href="{{patient.Photo1.url}}" download>Download Photo 1</a> | 
 <a class="text-primary py-1 my-3 rounded"href="{{patient.Photo2.url}}" download>Download Photo 2</a> | 
@@ -37,84 +37,56 @@
 
 
 <h5 class="py-1"><b>Date</b></h5>
-<h6><b class="text-secondary">Date:</b>  <span style="font-size:13px;color:black;">{{patient.Date}}</span></h6>
+<h6><b class="text-secondary">Date:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Date}}</span></h6>
 
 <h5 class="py-1"><b>File</b></h5>
 {% if patient.file %}
-<h6><b class="text-secondary">File:</b>  <span style="font-size:13px;color:black;"><a class="text-primary py-1 my-3 rounded"href="{% url 'file_download' patient.id %}" download>Download</a></span></h6>
+<h6><b class="text-secondary">File:</b>  <span style="font-size:19px;color:#000000c9;;"><a class="text-primary py-1 my-3 rounded"href="{% url 'file_download' patient.id %}" download>Download</a></span></h6>
 {% endif %}
 
 </div>
 
 <div class="col-sm-6">
 <h5 class="py-1"><b>Treatment</b></h5>
-<h6><b class="text-secondary">Treatment:</b>  <span style="font-size:13px;color:black;">{{patient.Treatment}}</span></h6>
-<h6><b class="text-secondary">Oral Scan:</b>  <span style="font-size:13px;color:black;">{{patient.OralScan}}</span></h6>
-<h6><b class="text-secondary">Impression:</b>  <span style="font-size:13px;color:black;">{{patient.Impression}}</span></h6>
+<h6><b class="text-secondary">Treatment:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Treatment}}</span></h6>
+<h6><b class="text-secondary">Oral Scan:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.OralScan}}</span></h6>
+<h6><b class="text-secondary">Impression:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Impression}}</span></h6>
 <h6><b class="text-secondary">Upper Jaw:</b>  <span style="font-size:10px;"><a class="text-primary px-2 py-1 rounded"href="{{patient.UpperJaw.url}}" download>Download to view</a></span></h6>
 <h6><b class="text-secondary">Lower Jaw:</b>  <span style="font-size:10px;"><a class="text-primary px-2 py-1 rounded"href="{{patient.LowerJaw.url}}" download>Download to view</a></span></h6>
-<h6><b class="text-secondary">Treatment Required:</b> <span style="font-size:13px;color:black;">{{patient.TreatmentRequired}}</span></h6>
-<h6><b class="text-secondary">Aligners:</b>  <span style="font-size:13px;color:black;">{{patient.Aligners}}</span></h6>
-<h6><b class="text-secondary">Treatment Limit:</b>  <span style="font-size:13px;color:black;">{{patient.TreatmentLimit}}</span></h6>
-<h6><b class="text-secondary">Overbite:</b>  <span style="font-size:13px;color:black;">{{patient.Overbite}}</span></h6>
-<h6><b class="text-secondary">Overjet:</b>  <span style="font-size:13px;color:black;">{{patient.Overjet}}</span></h6>
-<h6><b class="text-secondary">Expension:</b>  <span style="font-size:13px;color:black;">{{patient.Expension}}</span></h6>
-<h6><b class="text-secondary">IPR:</b>  <span style="font-size:13px;color:black;">{{patient.IPR}}</span></h6>
-<h6><b class="text-secondary">Procline:</b>  <span style="font-size:13px;color:black;">{{patient.Procline}}</span></h6>
-<h6><b class="text-secondary">Distalize:</b>  <span style="font-size:13px;color:black;">{{patient.Distalize}}</span></h6>
-<h6><b class="text-secondary">Upper Midline:</b>  <span style="font-size:13px;color:black;">{{patient.UpperMidline}}</span></h6>
-<h6><b class="text-secondary">Lower Midline:</b>  <span style="font-size:13px;color:black;">{{patient.LowerMidline}}</span></h6>
-<h6><b class="text-secondary">Arch Form:</b>  <span style="font-size:13px;color:black;">{{patient.ArchForm}}</span></h6>
-<h6><b class="text-secondary">Posterior Crossbite:</b>  <span style="font-size:13px;color:black;">{{patient.PCrossbite}}</span></h6>
-<h6><b class="text-secondary">Hint 1:</b>  <span style="font-size:13px;color:black;">{{patient.Hint1}}</span></h6>
-<h6><b class="text-secondary">Hint 2:</b>  <span style="font-size:13px;color:black;">{{patient.Hint2}}</span></h6>
-<h6><b class="text-secondary">Hint 3:</b>  <span style="font-size:13px;color:black;">{{patient.Hint3}}</span></h6>
+<h6><b class="text-secondary">Treatment Required:</b> <span style="font-size:19px;color:#000000c9;;">{{patient.TreatmentRequired}}</span></h6>
+<h6><b class="text-secondary">Aligners:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Aligners}}</span></h6>
+<h6><b class="text-secondary">Treatment Limit:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.TreatmentLimit}}</span></h6>
+<h6><b class="text-secondary">Overbite:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Overbite}}</span></h6>
+<h6><b class="text-secondary">Overjet:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Overjet}}</span></h6>
+<h6><b class="text-secondary">Expension:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Expension}}</span></h6>
+<h6><b class="text-secondary">IPR:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.IPR}}</span></h6>
+<h6><b class="text-secondary">Procline:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Procline}}</span></h6>
+<h6><b class="text-secondary">Distalize:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Distalize}}</span></h6>
+<h6><b class="text-secondary">Upper Midline:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.UpperMidline}}</span></h6>
+<h6><b class="text-secondary">Lower Midline:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.LowerMidline}}</span></h6>
+<h6><b class="text-secondary">Arch Form:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.ArchForm}}</span></h6>
+<h6><b class="text-secondary">Posterior Crossbite:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.PCrossbite}}</span></h6>
+<h6><b class="text-secondary">Hint 1:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Hint1}}</span></h6>
+<h6><b class="text-secondary">Hint 2:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Hint2}}</span></h6>
+<h6><b class="text-secondary">Hint 3:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.Hint3}}</span></h6>
 
 </div>
 
 <hr class="my-3">
 <h5 class=""><b>Notes</b></h5>
 <div class="col-sm-6 dentist-note">
-<h6><b class="text-secondary">Dentist Note:</b>  <span style="font-size:13px;color:black;">{{patient.DentistNote}}</span></h6>
+<h6><b class="text-secondary">Dentist Note:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.DentistNote}}</span></h6>
 </div>
 <div class="col-sm-6 admin-note">
-<h6><b class="text-secondary">Admin Note:</b>  <span style="font-size:13px;color:black;">{{patient.AdminNote}}</span></h6>
+<h6><b class="text-secondary">Admin Note:</b>  <span style="font-size:19px;color:#000000c9;;">{{patient.AdminNote}}</span></h6>
 </div>
 </div>
 </div>
 <!-- Patient submitted details end -->
-<hr class="my-3">
 
-<!-- Admin Proposed Treatment start -->
-<div class="response">
-
-
-  <div class="row px-3 py-2">
-    
-    <div class="col-sm-12">
-{% for message in messages %}
-<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"style="color:white;background:#294C3E;">
-   {{message}}
- </div>
-{% endfor %}
-</div>
-</div>
 
 <!-- Proposed -->
 <div class="patient-details rounded mx-5 my-3 p-3"style="border:1px solid gray;">
-
-<div class="row">
-<!-- Proposed Treatment Details -->
-<div class="col-sm-4">
-{% for proposed in proposed %}
-  <h5 class="py-1"><b>Proposed Treatment</b></h5>
-<h6><b class="text-secondary">Proposed treatment(pdf):</b>  <span style="font-size:10px;color:black;"><a class="text-light bg-primary px-2 py-1 rounded"href="{{proposed.ProposedTreatment.url}}" download>Download</a></span></h6>
-<h6><b class="text-secondary">3D View:</b>  <span style="font-size:10px;color:black;"><a class="text-light bg-primary px-2 py-1 rounded"href="{{proposed.ThreeDViewProposed.url}}" download>Download</a></span></h6>
-<h6><b class="text-secondary">Invoice:</b>  <span style="font-size:10px;color:black;"><a class="text-light bg-primary px-2 py-1 rounded"href="{{proposed.Invoice.url}}" download>Download</a></span></h6>
-{% endfor %}
-</div>
-<!-- Proposed Treatment Details -->
-
 <!-- Admin Uploaded Images -->
 <div class="col-sm-8">
 {% for adminuploads in adminuploads %}
@@ -136,18 +108,35 @@
 <div class="row my-3">
 <h5><b>Upload Proposed Treatment</b></h5>
        <div class="col-sm-4 my-3">
-    <label for="ProposedTreatment">Treatment Proposed(PDF)</label>
-      <input type="file" class="form-control border-0" style="background:#EBEBEB" placeholder="ProposedTreatment" name="ProposedTreatment">
-    </div>
+        <label for="ProposedTreatment">Treatment Proposed(PDF)</label>
+        <input type="file" class="form-control border-0" style="background:#EBEBEB" placeholder="ProposedTreatment" name="ProposedTreatment">
+        
+       
+        {% if proposed.ProposedTreatment.url != None %}
+          <h6 style="margin-top: 35px;"><b class="text-secondary">Proposed treatment(pdf):</b>  <span style="font-size:10px;color:black;"><a class="text-light bg-primary px-2 py-1 rounded"href="{{proposed.ProposedTreatment.url}}" download>Download</a></span></h6>
+        {% endif %}
+      </div>
 
     <div class="col-sm-4 my-3">
-    <label for="3DView">Upload 3D View</label>
+      <label for="3DView">Upload 3D View</label>
       <input type="file" class="form-control border-0" style="background:#EBEBEB" placeholder="ThreeDViewProposed" name="ThreeDViewProposed">
+      
+      
+      {% if proposed.ThreeDViewProposed.url != None %}
+        <h6 style="margin-top: 35px;"><b class="text-secondary">3D View:</b>  <span style="font-size:10px;color:black;"><a class="text-light bg-primary px-2 py-1 rounded"href="{{proposed.ThreeDViewProposed.url}}" download>Download</a></span></h6>
+      {% endif %}
+
     </div>
 
     <div class="col-sm-4 my-3">
-    <label for="Invoice">Invoice</label>
+      <label for="Invoice">Invoice</label>
       <input type="file" class="form-control border-0" style="background:#EBEBEB" placeholder="Invoice" name="Invoice">
+
+      
+      {% if proposed.Invoice.url != None %}
+        <h6 style="margin-top: 35px;"><b class="text-secondary">Invoice:</b>  <span style="font-size:10px;color:black;"><a class="text-light bg-primary px-2 py-1 rounded"href="{{proposed.Invoice.url}}" download>Download</a></span></h6>
+      {% endif %}
+
     </div>
  
 </div>
@@ -157,6 +146,176 @@
     </form>
 <!-- proposed treatment form ends -->
 
+<!------------------------------------ box ----------------------------------------------->
+<hr>
+
+<div>
+  {% if patient.box1 == 0 %}
+  <form method="POST" action="">
+    {% csrf_token %}
+    <p>Enter Number of boxes:</p>
+    <input type="number" name="line1Length">
+    <br>
+    <input type="submit" class="btn btn-primary px-5 py-2" style="margin-top: 20px;" name="lineAmount" value="Submit">
+  </form>
+  {% else %}
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div style="display: flex; align-items: center;">
+      <p style="margin: 0px; font-size: 20px;" >1st Line:</p>
+      <div style="display: flex;">
+        {% if patientBox1.stage1 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage1" id="line1-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage1" id="line1-option">
+        {% endif %}
+
+        {% if patientBox1.stage2 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage2" id="line1-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage2" id="line1-option">
+        {% endif %}
+
+        {% if patientBox1.stage3 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage3" id="line1-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage3" id="line1-option">
+        {% endif %}
+
+        {% if patientBox1.stage4 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage4" id="line1-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage4" id="line1-option">
+        {% endif %}
+
+        {% if patientBox1.stage5 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage5" id="line1-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage5" id="line1-option">
+        {% endif %}
+
+        {% if patientBox1.stage6 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage6" id="line1-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage6" id="line1-option">
+        {% endif %}
+
+        {% if patientBox1.stage7 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage7" id="line1-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage7" id="line1-option">
+        {% endif %}
+
+        {% if patientBox1.stage8 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage8" id="line1-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage8" id="line1-option">
+        {% endif %}
+
+        {% if patientBox1.stage9 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage9" id="line1-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage9" id="line1-option">
+        {% endif %}
+
+        {% if patientBox1.stage10 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage10" id="line1-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage10" id="line1-option">
+        {% endif %}
+
+        <input type="hidden" value="{{patient.box1}}" id="box1-length">
+      </div>   
+    </div>
+    <input type="submit" class="btn btn-primary px-5 py-2" style="margin-top: 20px;" name="line1" value="Submit">
+  </form>
+  {% endif %}
+</div>
+
+<hr>
+
+<div>
+  {% if patient.box2 == 0 %}
+  <form method="POST" action="">
+    {% csrf_token %}
+    <p>Enter Number of boxes:</p>
+    <input type="number" name="line2Length">
+    <br>
+    <input type="submit" class="btn btn-primary px-5 py-2" style="margin-top: 20px;" name="lineAmount2" value="Submit">
+  </form>
+  {% else %}
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div style="display: flex; align-items: center;">
+      <p style="margin: 0px; font-size: 20px;" >2nd Line:</p>
+      <div style="display: flex;">
+        {% if patientBox2.stage1 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage1" id="line2-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage1" id="line2-option">
+        {% endif %}
+
+        {% if patientBox2.stage2 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage2" id="line2-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage2" id="line2-option">
+        {% endif %}
+
+        {% if patientBox2.stage3 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage3" id="line2-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage3" id="line2-option">
+        {% endif %}
+
+        {% if patientBox2.stage4 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage4" id="line2-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage4" id="line2-option">
+        {% endif %}
+
+        {% if patientBox2.stage5 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage5" id="line2-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage5" id="line2-option">
+        {% endif %}
+
+        {% if patientBox2.stage6 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage6" id="line2-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage6" id="line2-option">
+        {% endif %}
+
+        {% if patientBox2.stage7 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage7" id="line2-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage7" id="line2-option">
+        {% endif %}
+
+        {% if patientBox2.stage8 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage8" id="line2-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage8" id="line2-option">
+        {% endif %}
+
+        {% if patientBox2.stage9 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage9" id="line2-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage9" id="line2-option">
+        {% endif %}
+
+        {% if patientBox2.stage10 == True %}
+        <input style="margin-left: 10px;" type="checkbox" name="stage10" id="line2-option" checked>
+        {% else %}
+          <input style="margin-left: 10px;" type="checkbox" name="stage10" id="line2-option">
+        {% endif %}
+
+        <input type="hidden" value="{{patient.box2}}" id="box2-length">
+      </div>   
+    </div>
+    <input type="submit" class="btn btn-primary px-5 py-2" style="margin-top: 20px;" name="line2" value="Submit">
+  </form>
+  {% endif %}
+</div>
 <!-- Upload Images form start -->
 <form method="POST" action="" enctype="multipart/form-data">
 {% csrf_token %}
@@ -184,7 +343,6 @@
     </div>
     </form>
 <!-- Upload Images form ends -->
-
 <hr class="my-3">
 <!-- internal Status start -->
 <div class="status">
@@ -237,13 +395,8 @@
 </div>
 <!-- Internal Status end -->
     </div>
-
-
-
 <!-- Admin Proposed Treatment start -->
-
 <hr class="my-3">
-
 <!-- Status start -->
 {% if not user.is_superuser %}
 <div class="status py-5 px-3">
@@ -278,11 +431,8 @@
 
 </form>
 </div>
-
 {% endif %}
 <!-- Status end -->
-
-
 <!-- Note form start -->
 <form method="POST" action="" enctype="multipart/form-data">
 {% csrf_token %}
@@ -305,8 +455,32 @@
     </div>
     </form>
 <!-- Note form ends -->
-
 </div>
 </div>
 </section>
 {% endblock body %}
+
+{% block js %}
+<script>
+  console.log("Hello");
+  const line1_option = document.querySelectorAll("#line1-option");
+  const line1_amount = document.getElementById("box1-length").value;
+  for(let i=0; i<line1_option.length; i++){
+    if(i < line1_amount){
+      line1_option[i].style.display = "block";
+    }else{
+      line1_option[i].style.display = "none";
+    }
+  }
+
+  const line2_option = document.querySelectorAll("#line2-option");
+  const line2_amount = document.getElementById("box2-length").value;
+  for(let i=0; i<line2_option.length; i++){
+    if(i < line2_amount){
+      line2_option[i].style.display = "block";
+    }else{
+      line2_option[i].style.display = "none";
+    }
+  }
+</script>
+{% endblock js %}

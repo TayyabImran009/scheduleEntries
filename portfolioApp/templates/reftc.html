@@ -34,6 +34,7 @@
 
 <div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
 <table class="table ">
+  <h1 style="font-size: 40px; color: #07ff41;; margin-bottom: 15px;">TC</h1>
 <thead class="text-secondary">
 <tr>
 <th scope="col">Dentist</th>
@@ -50,7 +51,7 @@
 
 <tbody>
 
-{% for referrals in myreferrals %}
+{% for referrals in myreferralsTC %}
 
 <tr>
 <td>{{referrals.DentistName}}</td>
@@ -74,6 +75,50 @@
 </tbody>
 </table>
 </div>
+
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
+  <table class="table ">
+    <h1 style="font-size: 40px; color: #ff0707;; margin-bottom: 15px;">Declined</h1>
+  <thead class="text-secondary">
+  <tr>
+  <th scope="col">Dentist</th>
+  <th scope="col">Date</th>
+  <th scope="col">Patient name</th>
+  <th scope="col">Patient phone</th>
+  <th scope="col">Patient email</th>
+  <th scope="col">Referral Reason</th>
+  <th scope="col">Status</th>
+  
+  
+  </tr>
+  </thead>
+  
+  <tbody>
+  
+  {% for referrals in myreferralsDeclined %}
+  
+  <tr>
+  <td>{{referrals.DentistName}}</td>
+  <td>{{referrals.Date}}</td>
+  {% if not user.is_staff or user.is_superuser %}
+  <td><a href="/referraldetail/{{referrals.id}}/">{{referrals.PatientName}}</a></td>
+  {% else %}
+  <td class="text-secondary">{{referrals.PatientName}}</td>
+  {% endif %}
+  <td>{{referrals.PatientPhone}}</td>
+  <td>{{referrals.PatientEmail}}</td>
+  <td>{{referrals.ReferralReason}}</td>
+  <td>{{referrals.Status}}</td>
+  
+  <td style="max-width:300px;">{{patients.Note}}</td>
+  </tr>
+  
+  
+  {% endfor %}
+  
+  </tbody>
+  </table>
+  </div>
 
 
 </div>

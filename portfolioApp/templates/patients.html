@@ -48,7 +48,7 @@
 <th scope="col">Stage</th>
 <th scope="col">Note</th>
 <th scope="col">Action</th>
-{% if not user.is_superuser %}
+{% if user.is_admin or user.is_dentist %}
 <th scope="col">Save</th>
 {% endif %}
 
@@ -60,63 +60,56 @@
 {% for patients in mypatientsAccept %}
 
 <tr>
-<td>{{patients.Date}}</td>
-{% if not user.is_staff or user.is_superuser %}
-<td><a href="/patientdetail/{{patients.id}}/">{{patients.PatientName}} {{patients.PatientSurname}}</a></td>
-{% else %}
-<td class="text-secondary">{{patients.PatientName}} {{patients.PatientSurname}}</td>
-{% endif %}
-<td>{{patients.Clinic}}</td>
-<td>{{patients.Prescriber}}</td>
-<td>{{patients.Dentist}}</td>
-<td><p>Code</p></td>
 <form action="" method="POST">
   {% csrf_token %}
-    <input type="hidden" name="id"value="{{patients.id}}">
-
-<td style="width: 225px;">
-  {% if user.is_superuser %}
-    {{patients.Treatment}}
-  {% else %} 
-    {% if patients.Treatment == "No Selection" %}
-      <select name="Treatment" id="Treatment" style="width: 225px;">
-        <option value="{{patients.Treatment}}"selected>{{patients.Treatment}}</option>
-        <option value="TREATMENT PLAN: includes 3D visualisation and STL files to print models in house" >TREATMENT PLAN: includes 3D visualisation and STL files to print models in house</option>
-      <option value="Full TREATMENT: including 3D and all set of aligners" >Full TREATMENT: including 3D and all set of aligners</option>
-    </select> 
-    {% else %}
-      {{patients.Treatment}}
-      {% endif %}
+  <td>{{patients.Date}}</td>
+  {% if not user.is_staff or user.is_superuser %}
+    <td><a href="/patientdetail/{{patients.id}}/">{{patients.PatientName}} {{patients.PatientSurname}}</a></td>
+  {% else %}
+    <td class="text-secondary">{{patients.PatientName}} {{patients.PatientSurname}}</td>
   {% endif %}
-</td>
-
-<td>
-{% if not user.is_superuser or not user.is_staff %}
-    {% if patients.Status == "Accept" %}
-    Accept
-    {% else %}
-    <select name="Status" id="Status">
-        <option value="{{patients.Status}}"selected>{{patients.Status}}</option>
-        <option value="Accepted">Accept</option>
-        <option value="Review">Review</option>
-        <option value="On Hold">On Hold</option>
-        <option value="Declined">Decline</option>
+  <td>{{patients.Clinic}}</td>
+  <td>{{patients.Prescriber}}</td>
+  <td>{{patients.Dentist}}</td>
+  <td><p>Code</p></td>
+  <td style="width: 180px;">{{patients.Treatment}}</td>
+  <td><p>Progress</p></td>
+  <td>{{patients.Status}}</td>
+  
+  {% if user.is_admin or user.is_dentist %}
+  <td>
+    <select name="Stage" id="Stage">
+      <option value="{{patients.Stage}}"selected>{{patients.Stage}}</option>
+      <option value="File Sent">File Sent</option>
+      <option value="Model Prod">Model Prod</option>
+      <option value="Aligner Prod">Aligner Prod</option>
+      <option value="Ready">Ready</option>
     </select>
-    {% endif %}
-{% else %}
-{{patients.Status}}     
- <input type="hidden" name="Status"value="{{patients.Status}}">
-{% endif %}
-</td>
-<td>{{patients.AdminStatus}}</td>
-<td>{{patients.Stage}}</td>
-<td>{{patients.Note}}</td>
-<td>{{patients.Action}}</td>
-<td>
-  {% if not user.is_superuser %}
-    <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+  </td>
+  {% else %}
+      <td>{{patients.Stage}}</td>
   {% endif %}
-</td>
+
+  <td style="width: 180px;">{{patients.Note}}</td>
+
+  {% if user.is_admin or user.is_dentist %}
+  <td>
+    <select name="Action" id="Action">
+      <option value="{{patients.Action}}"selected>{{patients.Action}}</option>
+      <option value="In progress">In progress</option>
+      <option value="TC">TC</option>
+    </select>
+  </td>
+  {% else %}
+      <td>{{patients.Action}}</td>
+  {% endif %}
+
+  <td>
+    {% if user.is_admin or user.is_dentist %}
+      <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+    {% endif %}
+  </td>
+  <input type="hidden" name="id" value="{{patients.id}}">
 </form>
 </tr>
 
@@ -128,7 +121,7 @@
 </div>
 
 <div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
-  <h1 style="font-size: 40px; color: #ffac62;; margin-bottom: 15px;">Review</h1>
+  <h1 style="font-size: 40px; color: #ffac62; margin-bottom: 15px;">Review</h1>
 <table class="table ">
 <thead class="text-secondary">
 <tr>
@@ -144,7 +137,7 @@
 <th scope="col">Stage</th>
 <th scope="col">Note</th>
 <th scope="col">Action</th>
-{% if not user.is_superuser %}
+{% if user.is_admin or user.is_dentist %}
 <th scope="col">Save</th>
 {% endif %}
 
@@ -156,63 +149,68 @@
 {% for patients in mypatientsReview %}
 
 <tr>
-<td>{{patients.Date}}</td>
-{% if not user.is_staff or user.is_superuser %}
-<td><a href="/patientdetail/{{patients.id}}/">{{patients.PatientName}} {{patients.PatientSurname}}</a></td>
-{% else %}
-<td class="text-secondary">{{patients.PatientName}} {{patients.PatientSurname}}</td>
-{% endif %}
-<td>{{patients.Clinic}}</td>
-<td>{{patients.Prescriber}}</td>
-<td>{{patients.Dentist}}</td>
-<td><p>Code</p></td>
 <form action="" method="POST">
   {% csrf_token %}
-    <input type="hidden" name="id"value="{{patients.id}}">
-
-<td style="width: 225px;">
-  {% if user.is_superuser %}
-    {{patients.Treatment}}
-  {% else %} 
-    {% if patients.Treatment == "No Selection" %}
-      <select name="Treatment" id="Treatment" style="width: 225px;">
-        <option value="{{patients.Treatment}}"selected>{{patients.Treatment}}</option>
-        <option value="TREATMENT PLAN: includes 3D visualisation and STL files to print models in house" >TREATMENT PLAN: includes 3D visualisation and STL files to print models in house</option>
-      <option value="Full TREATMENT: including 3D and all set of aligners" >Full TREATMENT: including 3D and all set of aligners</option>
-    </select> 
-    {% else %}
-      {{patients.Treatment}}
-      {% endif %}
+  <td>{{patients.Date}}</td>
+  {% if not user.is_staff or user.is_superuser %}
+    <td><a href="/patientdetail/{{patients.id}}/">{{patients.PatientName}} {{patients.PatientSurname}}</a></td>
+  {% else %}
+    <td class="text-secondary">{{patients.PatientName}} {{patients.PatientSurname}}</td>
   {% endif %}
-</td>
-
-<td>
-{% if not user.is_superuser or not user.is_staff %}
-    {% if patients.Status == "Accept" %}
-    Accept
-    {% else %}
+  <td>{{patients.Clinic}}</td>
+  <td>{{patients.Prescriber}}</td>
+  <td>{{patients.Dentist}}</td>
+  <td><p>Code</p></td>
+  <td style="width: 180px;">{{patients.Treatment}}</td>
+  <td><p>Progress</p></td>
+  {% if user.is_admin or user.is_dentist %}
+  <td>
     <select name="Status" id="Status">
-        <option value="{{patients.Status}}"selected>{{patients.Status}}</option>
-        <option value="Accepted">Accept</option>
-        <option value="Review">Review</option>
-        <option value="On Hold">On Hold</option>
-        <option value="Declined">Decline</option>
+      <option value="{{patients.Status}}"selected>{{patients.Status}}</option>
+      <option value="Accept">Accept</option>
+      <option value="Review">Review</option>
+      <option value="On-Hold">On-Hold</option>
+      <option value="Declined">Decline</option>
     </select>
-    {% endif %}
-{% else %}
-{{patients.Status}}     
- <input type="hidden" name="Status"value="{{patients.Status}}">
-{% endif %}
-</td>
-<td>{{patients.AdminStatus}}</td>
-<td>{{patients.Stage}}</td>
-<td>{{patients.Note}}</td>
-<td>{{patients.Action}}</td>
-<td>
-  {% if not user.is_superuser %}
-    <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+  </td>
+  {% else %}
+      <td>{{patients.Status}}</td>
   {% endif %}
-</td>
+
+  {% if user.is_admin or user.is_dentist %}
+  <td>
+    <select name="Stage" id="Stage">
+      <option value="{{patients.Stage}}"selected>{{patients.Stage}}</option>
+      <option value="File Sent">File Sent</option>
+      <option value="Model Prod">Model Prod</option>
+      <option value="Aligner Prod">Aligner Prod</option>
+      <option value="Ready">Ready</option>
+    </select>
+  </td>
+  {% else %}
+      <td>{{patients.Stage}}</td>
+  {% endif %}
+
+  <td style="width: 180px;">{{patients.Note}}</td>
+
+  {% if user.is_admin or user.is_dentist %}
+  <td>
+    <select name="Action" id="Action">
+      <option value="{{patients.Action}}"selected>{{patients.Action}}</option>
+      <option value="In progress">In progress</option>
+      <option value="TC">TC</option>
+    </select>
+  </td>
+  {% else %}
+      <td>{{patients.Action}}</td>
+  {% endif %}
+
+  <td>
+    {% if user.is_admin or user.is_dentist %}
+      <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+    {% endif %}
+  </td>
+  <input type="hidden" name="id" value="{{patients.id}}">
 </form>
 </tr>
 
@@ -224,7 +222,7 @@
 </div>
 
 <div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
-  <h1 style="font-size: 40px; color: #47c1f4;; margin-bottom: 15px;">On-Hold</h1>
+  <h1 style="font-size: 40px; color: #47c1f4; margin-bottom: 15px;">On-Hold</h1>
 <table class="table ">
 <thead class="text-secondary">
 <tr>
@@ -240,7 +238,7 @@
 <th scope="col">Stage</th>
 <th scope="col">Note</th>
 <th scope="col">Action</th>
-{% if not user.is_superuser %}
+{% if user.is_admin or user.is_dentist %}
 <th scope="col">Save</th>
 {% endif %}
 
@@ -252,63 +250,68 @@
 {% for patients in mypatientsOn_Hold %}
 
 <tr>
-<td>{{patients.Date}}</td>
-{% if not user.is_staff or user.is_superuser %}
-<td><a href="/patientdetail/{{patients.id}}/">{{patients.PatientName}} {{patients.PatientSurname}}</a></td>
-{% else %}
-<td class="text-secondary">{{patients.PatientName}} {{patients.PatientSurname}}</td>
-{% endif %}
-<td>{{patients.Clinic}}</td>
-<td>{{patients.Prescriber}}</td>
-<td>{{patients.Dentist}}</td>
-<td><p>Code</p></td>
 <form action="" method="POST">
   {% csrf_token %}
-    <input type="hidden" name="id"value="{{patients.id}}">
-
-<td style="width: 225px;">
-  {% if user.is_superuser %}
-    {{patients.Treatment}}
-  {% else %} 
-    {% if patients.Treatment == "No Selection" %}
-      <select name="Treatment" id="Treatment" style="width: 225px;">
-        <option value="{{patients.Treatment}}"selected>{{patients.Treatment}}</option>
-        <option value="TREATMENT PLAN: includes 3D visualisation and STL files to print models in house" >TREATMENT PLAN: includes 3D visualisation and STL files to print models in house</option>
-      <option value="Full TREATMENT: including 3D and all set of aligners" >Full TREATMENT: including 3D and all set of aligners</option>
-    </select> 
-    {% else %}
-      {{patients.Treatment}}
-      {% endif %}
+  <td>{{patients.Date}}</td>
+  {% if not user.is_staff or user.is_superuser %}
+    <td><a href="/patientdetail/{{patients.id}}/">{{patients.PatientName}} {{patients.PatientSurname}}</a></td>
+  {% else %}
+    <td class="text-secondary">{{patients.PatientName}} {{patients.PatientSurname}}</td>
   {% endif %}
-</td>
-
-<td>
-{% if not user.is_superuser or not user.is_staff %}
-    {% if patients.Status == "Accept" %}
-    Accept
-    {% else %}
+  <td>{{patients.Clinic}}</td>
+  <td>{{patients.Prescriber}}</td>
+  <td>{{patients.Dentist}}</td>
+  <td><p>Code</p></td>
+  <td style="width: 180px;">{{patients.Treatment}}</td>
+  <td><p>Progress</p></td>
+  {% if user.is_admin or user.is_dentist %}
+  <td>
     <select name="Status" id="Status">
-        <option value="{{patients.Status}}"selected>{{patients.Status}}</option>
-        <option value="Accepted">Accept</option>
-        <option value="Review">Review</option>
-        <option value="On Hold">On Hold</option>
-        <option value="Declined">Decline</option>
+      <option value="{{patients.Status}}"selected>{{patients.Status}}</option>
+      <option value="Accept">Accept</option>
+      <option value="Review">Review</option>
+      <option value="On-Hold">On-Hold</option>
+      <option value="Declined">Decline</option>
     </select>
-    {% endif %}
-{% else %}
-{{patients.Status}}     
- <input type="hidden" name="Status"value="{{patients.Status}}">
-{% endif %}
-</td>
-<td>{{patients.AdminStatus}}</td>
-<td>{{patients.Stage}}</td>
-<td>{{patients.Note}}</td>
-<td>{{patients.Action}}</td>
-<td>
-  {% if not user.is_superuser %}
-    <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+  </td>
+  {% else %}
+      <td>{{patients.Status}}</td>
   {% endif %}
-</td>
+
+  {% if user.is_admin or user.is_dentist %}
+  <td>
+    <select name="Stage" id="Stage">
+      <option value="{{patients.Stage}}"selected>{{patients.Stage}}</option>
+      <option value="File Sent">File Sent</option>
+      <option value="Model Prod">Model Prod</option>
+      <option value="Aligner Prod">Aligner Prod</option>
+      <option value="Ready">Ready</option>
+    </select>
+  </td>
+  {% else %}
+      <td>{{patients.Stage}}</td>
+  {% endif %}
+
+  <td style="width: 180px;">{{patients.Note}}</td>
+
+  {% if user.is_admin or user.is_dentist %}
+  <td>
+    <select name="Action" id="Action">
+      <option value="{{patients.Action}}"selected>{{patients.Action}}</option>
+      <option value="In progress">In progress</option>
+      <option value="TC">TC</option>
+    </select>
+  </td>
+  {% else %}
+      <td>{{patients.Action}}</td>
+  {% endif %}
+
+  <td>
+    {% if user.is_admin or user.is_dentist %}
+      <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+    {% endif %}
+  </td>
+  <input type="hidden" name="id" value="{{patients.id}}">
 </form>
 </tr>
 
@@ -336,7 +339,7 @@
 <th scope="col">Stage</th>
 <th scope="col">Note</th>
 <th scope="col">Action</th>
-{% if not user.is_superuser %}
+{% if user.is_admin or user.is_dentist %}
 <th scope="col">Save</th>
 {% endif %}
 
@@ -348,63 +351,68 @@
 {% for patients in mypatientsDecline %}
 
 <tr>
-<td>{{patients.Date}}</td>
-{% if not user.is_staff or user.is_superuser %}
-<td><a href="/patientdetail/{{patients.id}}/">{{patients.PatientName}} {{patients.PatientSurname}}</a></td>
-{% else %}
-<td class="text-secondary">{{patients.PatientName}} {{patients.PatientSurname}}</td>
-{% endif %}
-<td>{{patients.Clinic}}</td>
-<td>{{patients.Prescriber}}</td>
-<td>{{patients.Dentist}}</td>
-<td><p>Code</p></td>
 <form action="" method="POST">
   {% csrf_token %}
-    <input type="hidden" name="id"value="{{patients.id}}">
-
-<td style="width: 225px;">
-  {% if user.is_superuser %}
-    {{patients.Treatment}}
-  {% else %} 
-    {% if patients.Treatment == "No Selection" %}
-      <select name="Treatment" id="Treatment" style="width: 225px;">
-        <option value="{{patients.Treatment}}"selected>{{patients.Treatment}}</option>
-        <option value="TREATMENT PLAN: includes 3D visualisation and STL files to print models in house" >TREATMENT PLAN: includes 3D visualisation and STL files to print models in house</option>
-      <option value="Full TREATMENT: including 3D and all set of aligners" >Full TREATMENT: including 3D and all set of aligners</option>
-    </select> 
-    {% else %}
-      {{patients.Treatment}}
-      {% endif %}
+  <td>{{patients.Date}}</td>
+  {% if not user.is_staff or user.is_superuser %}
+    <td><a href="/patientdetail/{{patients.id}}/">{{patients.PatientName}} {{patients.PatientSurname}}</a></td>
+  {% else %}
+    <td class="text-secondary">{{patients.PatientName}} {{patients.PatientSurname}}</td>
   {% endif %}
-</td>
-
-<td>
-{% if not user.is_superuser or not user.is_staff %}
-    {% if patients.Status == "Accept" %}
-    Accept
-    {% else %}
+  <td>{{patients.Clinic}}</td>
+  <td>{{patients.Prescriber}}</td>
+  <td>{{patients.Dentist}}</td>
+  <td><p>Code</p></td>
+  <td style="width: 180px;">{{patients.Treatment}}</td>
+  <td><p>Progress</p></td>
+  {% if user.is_admin or user.is_dentist %}
+  <td>
     <select name="Status" id="Status">
-        <option value="{{patients.Status}}"selected>{{patients.Status}}</option>
-        <option value="Accepted">Accept</option>
-        <option value="Review">Review</option>
-        <option value="On Hold">On Hold</option>
-        <option value="Declined">Decline</option>
+      <option value="{{patients.Status}}"selected>{{patients.Status}}</option>
+      <option value="Accept">Accept</option>
+      <option value="Review">Review</option>
+      <option value="On-Hold">On-Hold</option>
+      <option value="Declined">Decline</option>
     </select>
-    {% endif %}
-{% else %}
-{{patients.Status}}     
- <input type="hidden" name="Status"value="{{patients.Status}}">
-{% endif %}
-</td>
-<td>{{patients.AdminStatus}}</td>
-<td>{{patients.Stage}}</td>
-<td>{{patients.Note}}</td>
-<td>{{patients.Action}}</td>
-<td>
-  {% if not user.is_superuser %}
-    <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+  </td>
+  {% else %}
+      <td>{{patients.Status}}</td>
   {% endif %}
-</td>
+
+  {% if user.is_admin or user.is_dentist %}
+  <td>
+    <select name="Stage" id="Stage">
+      <option value="{{patients.Stage}}"selected>{{patients.Stage}}</option>
+      <option value="File Sent">File Sent</option>
+      <option value="Model Prod">Model Prod</option>
+      <option value="Aligner Prod">Aligner Prod</option>
+      <option value="Ready">Ready</option>
+    </select>
+  </td>
+  {% else %}
+      <td>{{patients.Stage}}</td>
+  {% endif %}
+
+  <td style="width: 180px;">{{patients.Note}}</td>
+
+  {% if user.is_admin or user.is_dentist %}
+  <td>
+    <select name="Action" id="Action">
+      <option value="{{patients.Action}}"selected>{{patients.Action}}</option>
+      <option value="In progress">In progress</option>
+      <option value="TC">TC</option>
+    </select>
+  </td>
+  {% else %}
+      <td>{{patients.Action}}</td>
+  {% endif %}
+
+  <td>
+    {% if user.is_admin or user.is_dentist %}
+      <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+    {% endif %}
+  </td>
+  <input type="hidden" name="id" value="{{patients.id}}">
 </form>
 </tr>
 
@@ -414,7 +422,6 @@
 </tbody>
 </table>
 </div>
-
 
 </div>
 

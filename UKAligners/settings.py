@@ -25,7 +25,7 @@ SECRET_KEY = 'c!%x46n4kcbwa2ee(u3lg8@rt(5otp0+gwp7j3@q5fs^=#*1sb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['178.62.7.79']
+ALLOWED_HOSTS = ['178.62.7.79', 'localhost']
 
 AUTH_USER_MODEL = 'account.Account'
 
@@ -167,4 +167,13 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 
 CELERY_RESULT_BACKEND = 'django-db'
+
+#Email Setting...
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'kabocha608@gmail.com'
+EMAIL_HOST_PASSWORD = 'pqzeytgaklzhxzzq'
+DEFAULT_FROM_EMAIL = "sardarfahadashfaq@gmail.com"  
 

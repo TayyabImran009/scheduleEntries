@@ -1,8 +1,9 @@
+from optparse import Option
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.db.models import Sum
 from datetime import datetime
-from .models import LabWork, Patient,User,PatientProposedTreatment, DentistProfile,Referral,TreatmentRequestFile,ImageUploadAdmin,Payment,Income,Expense,IncomeExpenseTitle,IncomeExpenseCategory,LabWork,Order,RepeatExpense,RepeatIncome
+from .models import LabWork, Patient,User,PatientProposedTreatment, DentistProfile,Referral,TreatmentRequestFile,ImageUploadAdmin,Payment,Income,Expense,IncomeExpenseTitle,IncomeExpenseCategory,LabWork,Order,RepeatExpense,RepeatIncome,PatientBox1,PatientBox2
 from django.contrib.auth.forms import UserCreationForm
 from .forms import DentistProfileForm
 from .forms import CreateUserForm
@@ -99,13 +100,13 @@ def dashboard(request):
 def patients(request):
     if request.user.is_admin or request.user.is_dentist:
         if request.POST:
-            print("Save")
             patientObj = Patient.objects.get(id=request.POST.get('id'))
-            patientObj.Treatment = request.POST.get('Treatment')
+            patientObj.Stage = request.POST.get('Stage')
             patientObj.Status = request.POST.get('Status')
+            patientObj.Action = request.POST.get('Action')
             patientObj.save()
 
-        if request.user.is_superuser or request.user.is_staff:
+        if request.user.is_admin:
             # mypatients=Patient.objects.order_by("PatientName")
             mypatientsAccept=Patient.objects.distinct().filter(
                 Q(Status__icontains="Accept") &
@@ -116,7 +117,6 @@ def patients(request):
                 Q(Status__icontains="Review") &
                 ~Q(Action="TC")
             ).order_by("PatientName")
-
 
             mypatientsDecline=Patient.objects.distinct().filter(
                 Q(Status__icontains="Decline") &
@@ -216,11 +216,9 @@ def patientnew(request):
         if request.user.is_superuser or request.user.is_staff:
             mypatients=Patient.objects.filter(Status="New").order_by("-Date")
             if "Save" in request.POST:
-                id=request.POST.get('id')
-                editpatient=Patient.objects.get(id=id)
-                editpatient.Status="On"
-                editpatient.InternalStatus=request.POST.get('InternalStatus')
-                editpatient.save()
+                patientObj = Patient.objects.get(id=request.POST.get('id'))
+                patientObj.Status = request.POST.get('Status')
+                patientObj.save()
         else:
             mypatients=Patient.objects.filter(Dentist=request.user,Status="New").order_by("-Date")
             if "Save" in request.POST:
@@ -228,6 +226,8 @@ def patientnew(request):
                 editpatient=Patient.objects.get(id=id)
                 editpatient.Status=request.POST.get('Status')
                 editpatient.save()
+                print(request.POST.get('Status'))
+                print("else wala save0000000000000")
         context={
             'patients':'active',
             'mypatients':mypatients,
@@ -436,6 +436,10 @@ def addnewpatient(request):
         AdminNote="TBA"
         patient=Patient(Dentist=Dentist,Prescriber=Prescriber,Clinic=Clinic,Email=Email,Telephone=Telephone,Address1=Address1,Address2=Address2,PatientName=PatientName,Sex=Sex,TreatmentInPast=TreatmentInPast,Age=Age,OralScan=OralScan,Impression=Impression,UpperJaw=UpperJaw,LowerJaw=LowerJaw,Photo1=Photo1,Photo2=Photo2,Photo3=Photo3,Photo4=Photo4,Treatment=Treatment,TreatmentRequired=TreatmentRequired,Aligners=Aligners,TreatmentLimit=TreatmentLimit,Overbite=Overbite,Overjet=Overjet,Expension=Expension,IPR=IPR,Procline=Procline,Distalize=Distalize,UpperMidline=UpperMidline,LoverMidline=LoverMidline,ArchForm=ArchForm,PCrossbite=PCrossbite,Hint1=Hint1,Hint2=Hint2,Hint3=Hint3,Status=Status,DentistNote=DentistNote,AdminNote=AdminNote)
         patient.save()
+        patientBox1 = PatientBox1.objects.create(patient=patient)
+        patientBox1.save()
+        patientBox2 = PatientBox2.objects.create(patient=patient)
+        patientBox2.save()
         messages.success(request,"Patient has been added successfully!")
 
     context={
@@ -447,17 +451,26 @@ def addnewpatient(request):
 @login_required(login_url='login')
 def patientdetail(request,id):
     patient=Patient.objects.get(id=id)
-    proposed=PatientProposedTreatment.objects.filter(Patient=patient).order_by('-id')[:1]
     adminuploads=ImageUploadAdmin.objects.filter(Patient=patient).order_by('-id')[:1]
     if "Proposed" in request.POST:
-        ProposedTreatment=request.FILES.get('ProposedTreatment',default="images/Logo2.png")
-        Invoice=request.FILES.get('Invoice',default="images/Logo2.png")
-        ThreeDViewProposed=request.FILES.get('ThreeDViewProposed',default="images/Logo2.png")
-        InternalStatus=request.POST.get('InternalStatus',default="On")
-        Proposed=PatientProposedTreatment(ProposedTreatment=ProposedTreatment,Invoice=Invoice,ThreeDViewProposed=ThreeDViewProposed,Patient=patient,user=request.user)
-        Proposed.save()
-        patient.Admin=request.POST.get('Note')
-        patient.save()
+        ProposedTreatment=request.FILES.get('ProposedTreatment')
+        Invoice=request.FILES.get('Invoice')
+        ThreeDViewProposed=request.FILES.get('ThreeDViewProposed')
+        try:
+            proposed_objs=PatientProposedTreatment.objects.get(Patient=patient, user=request.user)
+            if ProposedTreatment:
+                proposed_objs.ProposedTreatment = ProposedTreatment
+            if ThreeDViewProposed:
+                proposed_objs.ThreeDViewProposed = ThreeDViewProposed
+            if Invoice:
+                proposed_objs.Invoice = Invoice
+            proposed_objs.save()
+
+        except:
+            proposed_objs=PatientProposedTreatment(ProposedTreatment=ProposedTreatment,Invoice=Invoice,ThreeDViewProposed=ThreeDViewProposed,Patient=patient,user=request.user)
+            proposed_objs.save()
+            patient.Admin=request.POST.get('Note')
+            patient.save()
 
     if "UploadImages" in request.POST:
         Image1=request.FILES.get('Image1',default="images/Logo2.png")
@@ -481,10 +494,137 @@ def patientdetail(request,id):
         else:
             patient.DentistNote=request.POST.get('DentistNote')
             patient.save()
+    if "lineAmount" in request.POST:
+        amount = request.POST.get('line1Length')
+        if int(amount) > 0 and int(amount) < 11:
+            patient.box1 = amount
+            patient.save()
+    
+    if "lineAmount2" in request.POST:
+        amount = request.POST.get('line2Length')
+        if int(amount) > 0 and int(amount) < 11:
+            patient.box2 = amount
+            patient.save()
 
+    if "line1" in request.POST:
+        patientBox1Obj = PatientBox1.objects.get(patient=patient)
+        option1 = request.POST.get('stage1')
+        option2 = request.POST.get('stage2')
+        option3 = request.POST.get('stage3')
+        option4 = request.POST.get('stage4')
+        option5 = request.POST.get('stage5')
+        option6 = request.POST.get('stage6')
+        option7 = request.POST.get('stage7')
+        option8 = request.POST.get('stage8')
+        option9 = request.POST.get('stage9')
+        option10 = request.POST.get('stage10')
+        if option1 == "on":
+            patientBox1Obj.stage1 = True
+        else:
+            patientBox1Obj.stage1 = False
+        if option2 == "on":
+            patientBox1Obj.stage2 = True
+        else:
+            patientBox1Obj.stage2 = False
+        if option3 == "on":
+            patientBox1Obj.stage3 = True
+        else:
+            patientBox1Obj.stage3 = False
+        if option4 == "on":
+            patientBox1Obj.stage4 = True
+        else:
+            patientBox1Obj.stage4 = False
+        if option5 == "on":
+            patientBox1Obj.stage5 = True
+        else:
+            patientBox1Obj.stage5 = False
+        if option6 == "on":
+            patientBox1Obj.stage6 = True
+        else:
+            patientBox1Obj.stage6 = False
+        if option7 == "on":
+            patientBox1Obj.stage7 = True
+        else:
+            patientBox1Obj.stage7 = False
+        if option8 == "on":
+            patientBox1Obj.stage8 = True
+        else:
+            patientBox1Obj.stage8 = False
+        if option9 == "on":
+            patientBox1Obj.stage9 = True
+        else:
+            patientBox1Obj.stage9 = False
+        if option10 == "on":
+            patientBox1Obj.stage10 = True 
+        else:
+            patientBox1Obj.stage10 = False 
+        patientBox1Obj.save()  
+    
+    if "line2" in request.POST:
+        patientBox1Obj = PatientBox2.objects.get(patient=patient)
+        option1 = request.POST.get('stage1')
+        option2 = request.POST.get('stage2')
+        option3 = request.POST.get('stage3')
+        option4 = request.POST.get('stage4')
+        option5 = request.POST.get('stage5')
+        option6 = request.POST.get('stage6')
+        option7 = request.POST.get('stage7')
+        option8 = request.POST.get('stage8')
+        option9 = request.POST.get('stage9')
+        option10 = request.POST.get('stage10')
+        if option1 == "on":
+            patientBox1Obj.stage1 = True
+        else:
+            patientBox1Obj.stage1 = False
+        if option2 == "on":
+            patientBox1Obj.stage2 = True
+        else:
+            patientBox1Obj.stage2 = False
+        if option3 == "on":
+            patientBox1Obj.stage3 = True
+        else:
+            patientBox1Obj.stage3 = False
+        if option4 == "on":
+            patientBox1Obj.stage4 = True
+        else:
+            patientBox1Obj.stage4 = False
+        if option5 == "on":
+            patientBox1Obj.stage5 = True
+        else:
+            patientBox1Obj.stage5 = False
+        if option6 == "on":
+            patientBox1Obj.stage6 = True
+        else:
+            patientBox1Obj.stage6 = False
+        if option7 == "on":
+            patientBox1Obj.stage7 = True
+        else:
+            patientBox1Obj.stage7 = False
+        if option8 == "on":
+            patientBox1Obj.stage8 = True
+        else:
+            patientBox1Obj.stage8 = False
+        if option9 == "on":
+            patientBox1Obj.stage9 = True
+        else:
+            patientBox1Obj.stage9 = False
+        if option10 == "on":
+            patientBox1Obj.stage10 = True 
+        else:
+            patientBox1Obj.stage10 = False 
+        patientBox1Obj.save() 
 
+    try:
+        proposed=PatientProposedTreatment.objects.get(Patient=patient, user=request.user)
+    except:
+        proposed = "None"
+
+    patientBox1 = PatientBox1.objects.get(patient=patient)
+    patientBox2 = PatientBox2.objects.get(patient=patient)
     context={
         'patient':patient,
+        'patientBox1':patientBox1,
+        'patientBox2':patientBox2,
         'proposed':proposed,
         'adminuploads':adminuploads,
     }
@@ -504,54 +644,57 @@ def referrals(request):
     if request.user.is_superuser or request.user.is_staff:
         implant_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Implant") &
-                ~Q(Status="TC") &
-                ~Q(Status="Declined")
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         orthodontics_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Orthodontics") &
-                ~Q(Status="TC") &
-                ~Q(Status="Declined")
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         root_canal_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Root Canal") &
-                ~Q(Status="TC") &
-                ~Q(Status="Declined")
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         crown_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Crown") &
-                ~Q(Status="TC") &
-                ~Q(Status="Declined")
+                Q(Status="Booked")
+            ).order_by("PatientName")
+        
+        consultation_referral = Referral.objects.distinct().filter(
+                Q(ReferralReason="Consultation") &
+                Q(Status="Booked")
             ).order_by("PatientName")
     else:
         implant_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Implant") &
-                ~Q(Status="TC") &
-                ~Q(Status="Declined")
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         orthodontics_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Orthodontics") &
-                ~Q(Status="TC") &
-                ~Q(Status="Declined")
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         root_canal_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Root Canal") &
-                ~Q(Status="TC") &
-                ~Q(Status="Declined")
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         crown_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Crown") &
-                ~Q(Status="TC") &
-                ~Q(Status="Declined")
+                Q(Status="Booked")
+            ).order_by("PatientName")
+
+        consultation_referral = Referral.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(ReferralReason="Consultation") &
+                Q(Status="Booked")
             ).order_by("PatientName")
 
     context={
@@ -559,7 +702,8 @@ def referrals(request):
         'implant_referral': implant_referral,
         'orthodontics_referral': orthodontics_referral,
         'root_canal_referral': root_canal_referral,
-        'crown_referral': crown_referral
+        'crown_referral': crown_referral,
+        'consultation_referral':consultation_referral
     }
 
     return render(request,'referrals.html',context)
@@ -782,19 +926,27 @@ def refdeclined(request):
 @login_required(login_url='login')
 def reftc(request):
     if request.user.is_superuser or request.user.is_staff:
-        myreferrals = Referral.objects.distinct().filter(
-                Q(Status="TC") or
+        myreferralsTC = Referral.objects.distinct().filter(
+                Q(Status="TC")
+            ).order_by("PatientName")
+
+        myreferralsDeclined = Referral.objects.distinct().filter(
                 Q(Status="Declined")
             ).order_by("PatientName")
     else:
-        myreferrals = Referral.objects.distinct().filter(
+        myreferralsTC = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
-                Q(Status="TC") or
+                Q(Status="TC")
+            ).order_by("PatientName")
+
+        myreferralsDeclined = Referral.objects.distinct().filter(
+                Q(Dentist=request.user) &
                 Q(Status="Declined")
             ).order_by("PatientName")
     context={
         'referrals':'active',
-        'myreferrals':myreferrals,
+        'myreferralsTC':myreferralsTC,
+        'myreferralsDeclined':myreferralsDeclined
     }
 
     return render(request,'reftc.html',context)

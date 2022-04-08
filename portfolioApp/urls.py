@@ -5,6 +5,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.contrib.auth import views as auth_views
 
 # Admin Panel Title
 admin.site.site_header="UKALIGNERS Admin Login"
@@ -92,6 +93,15 @@ urlpatterns = [
     path('startScript/', views.startScript, name="startScript"),
 
     path('file_download/<int:id>/', views.file_download, name="file_download"),
+
+
+    path('reset_password/', auth_views.PasswordResetView.as_view(template_name="restPassword/restPassword.html"), name="reset_password"),
+    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="restPassword/passwordRestSend.html"),
+          name="password_reset_done"),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="restPassword/newPssword.html"),
+          name="password_reset_confirm"),
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name="restPassword/passwordResetComplete.html"),
+          name="password_reset_complete"),
     
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
