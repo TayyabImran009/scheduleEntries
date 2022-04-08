@@ -210,13 +210,7 @@ a.nav-link.active {
   <div class="dropdown-container text-light"style="padding-left:70px;">
     <a class="py-0 text-light dropdowntext" href="{% url 'patients' %}"style="display:block;">Total</a>
     <a class="py-0 text-light dropdowntext" href="{% url 'patientnew' %}"style="display:block;">New</a>
-    <a class="py-0 text-light dropdowntext" href="{% url 'patientaccepted' %}"style="display:block;">Accepted</a>
-    <a class="py-0 text-light dropdowntext" href="{% url 'patientreview' %}"style="display:block;">Review</a>
-    <a class="py-0 text-light dropdowntext" href="{% url 'patientdeclined' %}"style="display:block;">Declined</a>
     {% if user.is_superuser %}
-    <a class="py-0 text-light dropdowntext" href="{% url 'patientwa' %}"style="display:block;">Waiting Acceptance</a>
-    <a class="py-0 text-light dropdowntext" href="{% url 'patienttdv' %}"style="display:block;">3D View</a>
-    <a class="py-0 text-light dropdowntext" href="{% url 'patientar' %}"style="display:block;">Aligners Ready</a>
     <a class="py-0 text-light dropdowntext" href="{% url 'patientarchived' %}"style="display:block;">Archived</a>
     <a class="py-0 text-light dropdowntext" href="{% url 'addnewpatient' %}"style="display:block;">Add New</a>
     {% endif %}
@@ -228,12 +222,6 @@ a.nav-link.active {
   <div class="dropdown-container text-light"style="padding-left:70px;">
     <a class="py-0 text-light dropdowntext" href="{% url 'referrals' %}"style="display:block;">Total</a>
     <a class="py-0 text-light dropdowntext" href="{% url 'refnew' %}"style="display:block;">New</a>
-    <a class="py-0 text-light dropdowntext" href="{% url 'refconsultations' %}"style="display:block;">Consultation</a>
-    <a class="py-0 text-light dropdowntext" href="{% url 'refimplants' %}"style="display:block;">Implants</a>
-    <a class="py-0 text-light dropdowntext" href="{% url 'reforthodontics' %}"style="display:block;">Orthodontics</a>
-    <a class="py-0 text-light dropdowntext" href="{% url 'refrootcanals' %}"style="display:block;">Root Canal</a>
-    <a class="py-0 text-light dropdowntext" href="{% url 'refcrowns' %}"style="display:block;">Crown</a>
-    <a class="py-0 text-light dropdowntext" href="{% url 'refdeclined' %}"style="display:block;">Declined</a>
     <a class="py-0 text-light dropdowntext" href="{% url 'reftc' %}"style="display:block;">TC</a>
     <a class="py-0 text-light dropdowntext" href="{% url 'addnewreferral' %}"style="display:block;">Add New</a>
   </div>
