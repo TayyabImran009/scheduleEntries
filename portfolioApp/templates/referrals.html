@@ -45,8 +45,9 @@
   <th scope="col">Status</th>
   <th scope="col">Stage</th>
   
-  
-  <th scope="col">Action</th>
+  {% if not user.is_dentist %}
+    <th scope="col">Action</th>
+  {% endif %}
 </tr>
 </thead>
 
@@ -71,8 +72,7 @@
     {% if not user.is_dentist %}
       <td>
         <select name="Status" id="Status">
-          <option value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
-          <option value="Booked" >Booked</option>
+          <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
           <option value="Declined">Declined</option>
           <option value="TC" >TC</option>
           
@@ -84,25 +84,27 @@
 
   {% if not user.is_dentist %}
   <td>
-    <select name="ReferralReason" id="ReferralReason">
-      <option value="{{referrals.ReferralReason}}"selected>{{referrals.ReferralReason}}</option>
-      <option value="Implant" >Implant</option>
-      <option value="Orthodontics" >Orthodontics</option>
-      <option value="Root Canal" >Root Canal</option>
-      <option value="Crown" >Crown</option>
+    <select name="Stage" id="Stage">
+      <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Stage}}"selected>{{referrals.Stage}}</option>
+      <option value="XLA">XLA</option>
+      <option value="Implant">Implant</option>
+      <option value="Impression">Impression</option>
+      <option value="Fit">Fit</option>
+      <option value="Review">Review</option>
       
     </select>
   </td>
   <input style="display: none;" name="id" value="{{referrals.id}}">
   {% else %}
-    <td>{{referrals.ReferralReason}}</td>
+    <td>{{referrals.Stage}}</td>
   {% endif %}
   
   
-
-  <td>
-    <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
-  </td>
+  {% if not user.is_dentist %}
+    <td>
+      <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+    </td>
+  {% endif %}
   </form>
 </tr>
 
@@ -115,7 +117,7 @@
 
 <div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
   <table class="table ">
-    <h1 style="font-size: 40px; color: #ffac62;; margin-bottom: 15px;">Orthodontics</h1>
+    <h1 style="font-size: 40px; color: #ffac62; margin-bottom: 15px;">Orthodontics</h1>
   <thead class="text-secondary">
   <tr>
     <th scope="col">Dentist</th>
@@ -126,8 +128,9 @@
     <th scope="col">Status</th>
     <th scope="col">Stage</th>
     
-    
-    <th scope="col">Action</th>
+    {% if not user.is_dentist %}
+      <th scope="col">Action</th>
+    {% endif %}
   </tr>
   </thead>
   
@@ -152,8 +155,7 @@
     {% if not user.is_dentist %}
       <td>
         <select name="Status" id="Status">
-          <option value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
-          <option value="Booked" >Booked</option>
+          <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
           <option value="Declined">Declined</option>
           <option value="TC" >TC</option>
           
@@ -165,25 +167,28 @@
 
     {% if not user.is_dentist %}
     <td>
-      <select name="ReferralReason" id="ReferralReason">
-        <option value="{{referrals.ReferralReason}}"selected>{{referrals.ReferralReason}}</option>
-        <option value="Implant" >Implant</option>
-        <option value="Orthodontics" >Orthodontics</option>
-        <option value="Root Canal" >Root Canal</option>
-        <option value="Crown" >Crown</option>
+      <select name="Stage" id="Stage">
+        <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Stage}}"selected>{{referrals.Stage}}</option>
+        <option value="Consultation">Consultation</option>
+        <option value="Scan">Scan</option>
+        <option value="3D">3D</option>
+        <option value="In TMT">In TMT</option>
+        <option value="IPR">IPR</option>
+        <option value="Review">Review</option>
         
       </select>
     </td>
     <input style="display: none;" name="id" value="{{referrals.id}}">
     {% else %}
-      <td>{{referrals.ReferralReason}}</td>
+      <td>{{referrals.Stage}}</td>
     {% endif %}
     
     
-  
-    <td>
-      <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
-    </td>
+    {% if not user.is_dentist %}
+      <td>
+        <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+      </td>
+    {% endif %}
     </form>
   </tr>
   
@@ -196,7 +201,7 @@
 
 <div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
   <table class="table ">
-    <h1 style="font-size: 40px; color: #47c1f4;; margin-bottom: 15px;">Root Canal</h1>
+    <h1 style="font-size: 40px; color: #47c1f4; margin-bottom: 15px;">Root Canal</h1>
   <thead class="text-secondary">
   <tr>
     <th scope="col">Dentist</th>
@@ -207,8 +212,9 @@
     <th scope="col">Status</th>
     <th scope="col">Stage</th>
     
-    
-    <th scope="col">Action</th>
+    {% if not user.is_dentist %}
+      <th scope="col">Action</th>
+    {% endif %}
   </tr>
   </thead>
   
@@ -233,7 +239,7 @@
     {% if not user.is_dentist %}
       <td>
         <select name="Status" id="Status">
-          <option value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
+          <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
           <option value="Booked" >Booked</option>
           <option value="Declined">Declined</option>
           <option value="TC" >TC</option>
@@ -247,25 +253,26 @@
     
     {% if not user.is_dentist %}
     <td>
-      <select name="ReferralReason" id="ReferralReason">
-        <option value="{{referrals.ReferralReason}}"selected>{{referrals.ReferralReason}}</option>
-        <option value="Implant" >Implant</option>
-        <option value="Orthodontics" >Orthodontics</option>
-        <option value="Root Canal" >Root Canal</option>
-        <option value="Crown" >Crown</option>
+      <select name="Stage" id="Stage">
+        <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Stage}}"selected>{{referrals.Stage}}</option>
+        <option value="Consultation">Consultation</option>
+        <option value="RCT" >RCT</option>
+        <option value="Review">Review</option>
+        <option value="2nd opinion">2nd opinion</option>
         
       </select>
     </td>
     <input style="display: none;" name="id" value="{{referrals.id}}">
     {% else %}
-      <td>{{referrals.ReferralReason}}</td>
+      <td>{{referrals.Stage}}</td>
     {% endif %}
     
     
-  
-    <td>
-      <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
-    </td>
+    {% if not user.is_dentist %}
+      <td>
+        <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+      </td>
+    {% endif %}
     </form>
   </tr>
   
@@ -289,8 +296,9 @@
     <th scope="col">Status</th>
     <th scope="col">Stage</th>
     
-    
-    <th scope="col">Action</th>
+    {% if not user.is_dentist %}
+      <th scope="col">Action</th>
+    {% endif %}
   </tr>
   </thead>
   
@@ -315,7 +323,7 @@
     {% if not user.is_dentist %}
       <td>
         <select name="Status" id="Status">
-          <option value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
+          <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
           <option value="Booked" >Booked</option>
           <option value="Declined">Declined</option>
           <option value="TC" >TC</option>
@@ -330,12 +338,12 @@
       {% csrf_token %}
     {% if not user.is_dentist %}
     <td>
-      <select name="ReferralReason" id="ReferralReason">
-        <option value="{{referrals.ReferralReason}}"selected>{{referrals.ReferralReason}}</option>
-        <option value="Implant" >Implant</option>
-        <option value="Orthodontics" >Orthodontics</option>
-        <option value="Root Canal" >Root Canal</option>
-        <option value="Crown" >Crown</option>
+      <select name="Stage" id="Stage">
+        <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Stage}}"selected>{{referrals.Stage}}</option>
+        <option value="Consultation">Consultation</option>
+        <option value="Prep">Prep</option>
+        <option value="Fit">Fit</option>
+        <option value="Review">Review</option>
         
       </select>
     </td>
@@ -345,10 +353,11 @@
     {% endif %}
     
     
-  
+    {% if not user.is_dentist %}
     <td>
       <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
     </td>
+    {% endif %}
     </form>
   </tr>
   
@@ -359,87 +368,6 @@
   </table>
 </div>
 
-<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
-  <table class="table ">
-    <h1 style="font-size: 40px; color: #ffc107;; margin-bottom: 15px;">Consultation</h1>
-  <thead class="text-secondary">
-  <tr>
-    <th scope="col">Dentist</th>
-    <th scope="col">Date</th>
-    <th scope="col">Patient name</th>
-    <th scope="col">Patient phone</th>
-    <th scope="col">Patient email</th>
-    <th scope="col">Status</th>
-    <th scope="col">Stage</th>
-    
-    
-    <th scope="col">Action</th>
-  </tr>
-  </thead>
-  
-  <tbody>
-  
-  {% for referrals in consultation_referral %}
-  
-  <tr>
-    <td>{{referrals.DentistName}}</td>
-    <td>{{referrals.Date}}</td>
-    {% if not user.is_staff or user.is_superuser%}
-    <td><a href="/referraldetail/{{referrals.id}}/">{{referrals.PatientName}}</a></td>
-    {% else %}
-    <td class="text-secondary">{{referrals.PatientName}}</td>
-    {% endif %}
-    <td>{{referrals.PatientPhone}}</td>
-    <td>{{referrals.PatientEmail}}</td>
-  
-    <form action="" method="POST">
-
-    {% if not user.is_dentist %}
-      <td>
-        <select name="Status" id="Status">
-          <option value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
-          <option value="Booked" >Booked</option>
-          <option value="Declined">Declined</option>
-          <option value="TC" >TC</option>
-          
-        </select>
-      </td>
-    {% else %}
-      <td>{{referrals.Status}}</td>
-    {% endif %}  
-
-
-      {% csrf_token %}
-    {% if not user.is_dentist %}
-    <td>
-      <select name="ReferralReason" id="ReferralReason">
-        <option value="{{referrals.ReferralReason}}"selected>{{referrals.ReferralReason}}</option>
-        <option value="Implant" >Implant</option>
-        <option value="Orthodontics" >Orthodontics</option>
-        <option value="Root Canal" >Root Canal</option>
-        <option value="Crown" >Crown</option>
-        
-      </select>
-    </td>
-    <input style="display: none;" name="id" value="{{referrals.id}}">
-    {% else %}
-      <td>{{referrals.ReferralReason}}</td>
-    {% endif %}
-    
-    
-  
-    <td>
-      <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
-    </td>
-    </form>
-  </tr>
-  
-  
-  {% endfor %}
-  
-  </tbody>
-  </table>
-</div>
 
 
 </div>

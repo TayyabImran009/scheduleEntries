@@ -100,31 +100,37 @@ def dashboard(request):
 def patients(request):
     if request.user.is_admin or request.user.is_dentist:
         if request.POST:
-            patientObj = Patient.objects.get(id=request.POST.get('id'))
-            patientObj.Stage = request.POST.get('Stage')
-            patientObj.Status = request.POST.get('Status')
-            patientObj.Action = request.POST.get('Action')
-            patientObj.save()
+            if request.user.is_admin:
+                patientObj = Patient.objects.get(id=request.POST.get('id'))
+                patientObj.Stage = request.POST.get('Stage')
+                patientObj.Status = request.POST.get('Status')
+                patientObj.Action = request.POST.get('Action')
+                patientObj.save()
+            else:
+                patientObj = Patient.objects.get(id=request.POST.get('id'))
+                patientObj.Treatment = request.POST.get('Treatment')
+                patientObj.Progress = request.POST.get('Progress')
+                patientObj.save()
 
         if request.user.is_admin:
             # mypatients=Patient.objects.order_by("PatientName")
             mypatientsAccept=Patient.objects.distinct().filter(
-                Q(Status__icontains="Accept") &
+                Q(Progress__icontains="Accepted") &
                 ~Q(Action="TC")
             ).order_by("PatientName")
 
             mypatientsReview=Patient.objects.distinct().filter(
-                Q(Status__icontains="Review") &
+                Q(Progress__icontains="Review") &
                 ~Q(Action="TC")
             ).order_by("PatientName")
 
             mypatientsDecline=Patient.objects.distinct().filter(
-                Q(Status__icontains="Decline") &
+                Q(Progress__icontains="Decline") &
                 ~Q(Action="TC")
             ).order_by("PatientName")
             
             mypatientsOn_Hold=Patient.objects.distinct().filter(
-                Q(Status__icontains="On-Hold") &
+                Q(Progress__icontains="On-Hold") &
                 ~Q(Action="TC")
             ).order_by("PatientName")
         else:
@@ -132,24 +138,24 @@ def patients(request):
 
             mypatientsAccept = Patient.objects.distinct().filter(
                 Q(Dentist=request.user) &
-                Q(Status__icontains="Accept") &
+                Q(Progress__icontains="Accepted") &
                 ~Q(Action="TC")
             ).order_by("PatientName")
 
             mypatientsReview = Patient.objects.distinct().filter(
                 Q(Dentist=request.user) &
-                Q(Status__icontains="Review")
+                Q(Progress__icontains="Review")
             ).order_by("PatientName")
 
             mypatientsDecline = Patient.objects.distinct().filter(
                 Q(Dentist=request.user) &
-                Q(Status__icontains="Decline") &
+                Q(Progress__icontains="Decline") &
                 ~Q(Action="TC")
             ).order_by("PatientName")
 
             mypatientsOn_Hold = Patient.objects.distinct().filter(
                 Q(Dentist=request.user) &
-                Q(Status__icontains="On-Hold") &
+                Q(Progress__icontains="On-Hold") &
                 ~Q(Action="TC")
             ).order_by("PatientName")
 
@@ -214,20 +220,20 @@ def patientmp(request):
 def patientnew(request):
     if request.user.is_admin or request.user.is_dentist: 
         if request.user.is_superuser or request.user.is_staff:
-            mypatients=Patient.objects.filter(Status="New").order_by("-Date")
+            mypatients=Patient.objects.filter(Progress="New").order_by("-Date")
             if "Save" in request.POST:
                 patientObj = Patient.objects.get(id=request.POST.get('id'))
                 patientObj.Status = request.POST.get('Status')
+                patientObj.Stage = request.POST.get('Stage')
                 patientObj.save()
         else:
-            mypatients=Patient.objects.filter(Dentist=request.user,Status="New").order_by("-Date")
+            mypatients=Patient.objects.filter(Dentist=request.user,Progress="New").order_by("-Date")
             if "Save" in request.POST:
                 id=request.POST.get('id')
                 editpatient=Patient.objects.get(id=id)
-                editpatient.Status=request.POST.get('Status')
+                editpatient.Progress=request.POST.get('Progress')
+                editpatient.Treatment=request.POST.get('Treatment')
                 editpatient.save()
-                print(request.POST.get('Status'))
-                print("else wala save0000000000000")
         context={
             'patients':'active',
             'mypatients':mypatients,
@@ -434,7 +440,10 @@ def addnewpatient(request):
         DentistNote=request.POST.get('Note')
         Status="New"
         AdminNote="TBA"
-        patient=Patient(Dentist=Dentist,Prescriber=Prescriber,Clinic=Clinic,Email=Email,Telephone=Telephone,Address1=Address1,Address2=Address2,PatientName=PatientName,Sex=Sex,TreatmentInPast=TreatmentInPast,Age=Age,OralScan=OralScan,Impression=Impression,UpperJaw=UpperJaw,LowerJaw=LowerJaw,Photo1=Photo1,Photo2=Photo2,Photo3=Photo3,Photo4=Photo4,Treatment=Treatment,TreatmentRequired=TreatmentRequired,Aligners=Aligners,TreatmentLimit=TreatmentLimit,Overbite=Overbite,Overjet=Overjet,Expension=Expension,IPR=IPR,Procline=Procline,Distalize=Distalize,UpperMidline=UpperMidline,LoverMidline=LoverMidline,ArchForm=ArchForm,PCrossbite=PCrossbite,Hint1=Hint1,Hint2=Hint2,Hint3=Hint3,Status=Status,DentistNote=DentistNote,AdminNote=AdminNote)
+        Progress = "New"
+        Stage = "New"
+        Action = "In progress"
+        patient=Patient(Dentist=Dentist,Prescriber=Prescriber,Clinic=Clinic,Email=Email,Telephone=Telephone,Address1=Address1,Address2=Address2,PatientName=PatientName,Sex=Sex,TreatmentInPast=TreatmentInPast,Age=Age,OralScan=OralScan,Impression=Impression,UpperJaw=UpperJaw,LowerJaw=LowerJaw,Photo1=Photo1,Photo2=Photo2,Photo3=Photo3,Photo4=Photo4,Treatment=Treatment,TreatmentRequired=TreatmentRequired,Aligners=Aligners,TreatmentLimit=TreatmentLimit,Overbite=Overbite,Overjet=Overjet,Expension=Expension,IPR=IPR,Procline=Procline,Distalize=Distalize,UpperMidline=UpperMidline,LoverMidline=LoverMidline,ArchForm=ArchForm,PCrossbite=PCrossbite,Hint1=Hint1,Hint2=Hint2,Hint3=Hint3,Status=Status,DentistNote=DentistNote,AdminNote=AdminNote,Progress=Progress,Stage=Stage,Action=Action)
         patient.save()
         patientBox1 = PatientBox1.objects.create(patient=patient)
         patientBox1.save()
@@ -637,65 +646,65 @@ def referrals(request):
     if request.method=="POST":
 
         referral_obj = Referral.objects.get(id=request.POST.get('id'))
-        referral_obj.ReferralReason = request.POST.get('ReferralReason')
+        referral_obj.Stage = request.POST.get('Stage')
         referral_obj.Status = request.POST.get('Status')
         referral_obj.save()
 
     if request.user.is_superuser or request.user.is_staff:
         implant_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Implant") &
-                Q(Status="Booked")
+                Q(Status="In progress")
             ).order_by("PatientName")
 
         orthodontics_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Orthodontics") &
-                Q(Status="Booked")
+                Q(Status="In progress")
             ).order_by("PatientName")
 
         root_canal_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Root Canal") &
-                Q(Status="Booked")
+                Q(Status="In progress")
             ).order_by("PatientName")
 
         crown_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Crown") &
-                Q(Status="Booked")
+                Q(Status="In progress")
             ).order_by("PatientName")
         
-        consultation_referral = Referral.objects.distinct().filter(
-                Q(ReferralReason="Consultation") &
-                Q(Status="Booked")
-            ).order_by("PatientName")
+        # consultation_referral = Referral.objects.distinct().filter(
+        #         Q(ReferralReason="Consultation") &
+        #         Q(Status="In progress")
+        #     ).order_by("PatientName")
     else:
         implant_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Implant") &
-                Q(Status="Booked")
+                Q(Status="In progress")
             ).order_by("PatientName")
 
         orthodontics_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Orthodontics") &
-                Q(Status="Booked")
+                Q(Status="In progress")
             ).order_by("PatientName")
 
         root_canal_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Root Canal") &
-                Q(Status="Booked")
+                Q(Status="In progress")
             ).order_by("PatientName")
 
         crown_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Crown") &
-                Q(Status="Booked")
+                Q(Status="In progress")
             ).order_by("PatientName")
 
-        consultation_referral = Referral.objects.distinct().filter(
-                Q(Dentist=request.user) &
-                Q(ReferralReason="Consultation") &
-                Q(Status="Booked")
-            ).order_by("PatientName")
+        # consultation_referral = Referral.objects.distinct().filter(
+        #         Q(Dentist=request.user) &
+        #         Q(ReferralReason="Consultation") &
+        #         Q(Status="In progress")
+        #     ).order_by("PatientName")
 
     context={
         'referral':'active',
@@ -703,7 +712,6 @@ def referrals(request):
         'orthodontics_referral': orthodontics_referral,
         'root_canal_referral': root_canal_referral,
         'crown_referral': crown_referral,
-        'consultation_referral':consultation_referral
     }
 
     return render(request,'referrals.html',context)
@@ -748,8 +756,7 @@ def refnew(request):
             id=request.POST.get('id')
             editreferral=Referral.objects.get(id=id)
             editreferral.Status=request.POST.get('Status')
-            editreferral.BookedOn=request.POST.get('BookedOn')
-            editreferral.TreatmentPlan=request.POST.get('TreatmentPlan')
+            editreferral.ReferralReason=request.POST.get('ReferralReason')
             editreferral.save()        
     else:
         myreferrals=Referral.objects.filter(Dentist=request.user,Status="New").order_by("-Date")
@@ -757,8 +764,7 @@ def refnew(request):
             id=request.POST.get('id')
             editreferral=Referral.objects.get(id=id)
             editreferral.Status=request.POST.get('Status')
-            editreferral.BookedOn=request.POST.get('BookedOn')
-            editreferral.TreatmentPlan=request.POST.get('TreatmentPlan')
+            editreferral.ReferralReason=request.POST.get('ReferralReason')
             editreferral.save()         
     context={
         'referrals':'active',
@@ -926,27 +932,55 @@ def refdeclined(request):
 @login_required(login_url='login')
 def reftc(request):
     if request.user.is_superuser or request.user.is_staff:
-        myreferralsTC = Referral.objects.distinct().filter(
-                Q(Status="TC")
+        implant_referral = Referral.objects.distinct().filter(
+                Q(ReferralReason="Implant") &
+                ~Q(Status="In progress")
             ).order_by("PatientName")
 
-        myreferralsDeclined = Referral.objects.distinct().filter(
-                Q(Status="Declined")
+        orthodontics_referral = Referral.objects.distinct().filter(
+                Q(ReferralReason="Orthodontics") &
+                ~Q(Status="In progress")
+            ).order_by("PatientName")
+
+        root_canal_referral = Referral.objects.distinct().filter(
+                Q(ReferralReason="Root Canal") &
+                ~Q(Status="In progress")
+            ).order_by("PatientName")
+
+        crown_referral = Referral.objects.distinct().filter(
+                Q(ReferralReason="Crown") &
+                ~Q(Status="In progress")
             ).order_by("PatientName")
     else:
-        myreferralsTC = Referral.objects.distinct().filter(
+        implant_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
-                Q(Status="TC")
+                Q(ReferralReason="Implant") &
+                ~Q(Status="In progress")
             ).order_by("PatientName")
 
-        myreferralsDeclined = Referral.objects.distinct().filter(
+        orthodontics_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
-                Q(Status="Declined")
+                Q(ReferralReason="Orthodontics") &
+                ~Q(Status="In progress")
+            ).order_by("PatientName")
+
+        root_canal_referral = Referral.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(ReferralReason="Root Canal") &
+                ~Q(Status="In progress")
+            ).order_by("PatientName")
+
+        crown_referral = Referral.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                Q(ReferralReason="Crown") &
+                ~Q(Status="In progress")
             ).order_by("PatientName")
     context={
         'referrals':'active',
-        'myreferralsTC':myreferralsTC,
-        'myreferralsDeclined':myreferralsDeclined
+        'implant_referral':implant_referral,
+        'orthodontics_referral':orthodontics_referral,
+        'root_canal_referral': root_canal_referral,
+        'crown_referral': crown_referral
     }
 
     return render(request,'reftc.html',context)

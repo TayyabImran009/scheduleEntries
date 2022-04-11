@@ -9,7 +9,7 @@
 <h6><b>{{user.first_name}} {{user.last_name}}</b></h6>
 
 <div class="d-flex justify-content-between py-3">
-<h5><b>All Referrals</b></h5>
+<h5><b>Tc and Declined</b></h5>
 
 <!-- search bar starts -->
 <div class="search-bar">
@@ -34,39 +34,35 @@
 
 <div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
 <table class="table ">
-  <h1 style="font-size: 40px; color: #07ff41;; margin-bottom: 15px;">TC</h1>
+  <h1 style="font-size: 40px; color: green; margin-bottom: 15px;">Implant</h1>
 <thead class="text-secondary">
 <tr>
-<th scope="col">Dentist</th>
-<th scope="col">Date</th>
-<th scope="col">Patient name</th>
-<th scope="col">Patient phone</th>
-<th scope="col">Patient email</th>
-<th scope="col">Referral Reason</th>
-<th scope="col">Status</th>
-
-
+  <th scope="col">Dentist</th>
+  <th scope="col">Date</th>
+  <th scope="col">Patient name</th>
+  <th scope="col">Patient phone</th>
+  <th scope="col">Patient email</th>
+  <th scope="col">Status</th>
+  <th scope="col">Stage</th>
 </tr>
 </thead>
 
 <tbody>
 
-{% for referrals in myreferralsTC %}
+{% for referrals in implant_referral %}
 
 <tr>
-<td>{{referrals.DentistName}}</td>
-<td>{{referrals.Date}}</td>
-{% if not user.is_staff or user.is_superuser %}
-<td><a href="/referraldetail/{{referrals.id}}/">{{referrals.PatientName}}</a></td>
-{% else %}
-<td class="text-secondary">{{referrals.PatientName}}</td>
-{% endif %}
-<td>{{referrals.PatientPhone}}</td>
-<td>{{referrals.PatientEmail}}</td>
-<td>{{referrals.ReferralReason}}</td>
-<td>{{referrals.Status}}</td>
-
-<td style="max-width:300px;">{{patients.Note}}</td>
+  <td>{{referrals.DentistName}}</td>
+  <td>{{referrals.Date}}</td>
+  {% if not user.is_staff or user.is_superuser%}
+  <td><a href="/referraldetail/{{referrals.id}}/">{{referrals.PatientName}}</a></td>
+  {% else %}
+  <td class="text-secondary">{{referrals.PatientName}}</td>
+  {% endif %}
+  <td>{{referrals.PatientPhone}}</td>
+  <td>{{referrals.PatientEmail}}</td>
+  <td>{{referrals.Status}}</td>
+  <td>{{referrals.Stage}}</td>
 </tr>
 
 
@@ -78,39 +74,35 @@
 
 <div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
   <table class="table ">
-    <h1 style="font-size: 40px; color: #ff0707;; margin-bottom: 15px;">Declined</h1>
+    <h1 style="font-size: 40px; color: #ffac62; margin-bottom: 15px;">Orthodontics</h1>
   <thead class="text-secondary">
   <tr>
-  <th scope="col">Dentist</th>
-  <th scope="col">Date</th>
-  <th scope="col">Patient name</th>
-  <th scope="col">Patient phone</th>
-  <th scope="col">Patient email</th>
-  <th scope="col">Referral Reason</th>
-  <th scope="col">Status</th>
-  
-  
+    <th scope="col">Dentist</th>
+    <th scope="col">Date</th>
+    <th scope="col">Patient name</th>
+    <th scope="col">Patient phone</th>
+    <th scope="col">Patient email</th>
+    <th scope="col">Status</th>
+    <th scope="col">Stage</th>
   </tr>
   </thead>
   
   <tbody>
   
-  {% for referrals in myreferralsDeclined %}
+  {% for referrals in orthodontics_referral %}
   
   <tr>
-  <td>{{referrals.DentistName}}</td>
-  <td>{{referrals.Date}}</td>
-  {% if not user.is_staff or user.is_superuser %}
-  <td><a href="/referraldetail/{{referrals.id}}/">{{referrals.PatientName}}</a></td>
-  {% else %}
-  <td class="text-secondary">{{referrals.PatientName}}</td>
-  {% endif %}
-  <td>{{referrals.PatientPhone}}</td>
-  <td>{{referrals.PatientEmail}}</td>
-  <td>{{referrals.ReferralReason}}</td>
-  <td>{{referrals.Status}}</td>
-  
-  <td style="max-width:300px;">{{patients.Note}}</td>
+    <td>{{referrals.DentistName}}</td>
+    <td>{{referrals.Date}}</td>
+    {% if not user.is_staff or user.is_superuser%}
+    <td><a href="/referraldetail/{{referrals.id}}/">{{referrals.PatientName}}</a></td>
+    {% else %}
+    <td class="text-secondary">{{referrals.PatientName}}</td>
+    {% endif %}
+    <td>{{referrals.PatientPhone}}</td>
+    <td>{{referrals.PatientEmail}}</td>
+    <td>{{referrals.Status}}</td>
+    <td>{{referrals.Stage}}</td>
   </tr>
   
   
@@ -118,7 +110,127 @@
   
   </tbody>
   </table>
-  </div>
+</div>
+
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
+  <table class="table ">
+    <h1 style="font-size: 40px; color: #47c1f4; margin-bottom: 15px;">Root Canal</h1>
+  <thead class="text-secondary">
+  <tr>
+    <th scope="col">Dentist</th>
+    <th scope="col">Date</th>
+    <th scope="col">Patient name</th>
+    <th scope="col">Patient phone</th>
+    <th scope="col">Patient email</th>
+    <th scope="col">Status</th>
+    <th scope="col">Stage</th>
+  </tr>
+  </thead>
+  
+  <tbody>
+  
+  {% for referrals in root_canal_referral %}
+  
+  <tr>
+    <td>{{referrals.DentistName}}</td>
+    <td>{{referrals.Date}}</td>
+    {% if not user.is_staff or user.is_superuser%}
+    <td><a href="/referraldetail/{{referrals.id}}/">{{referrals.PatientName}}</a></td>
+    {% else %}
+    <td class="text-secondary">{{referrals.PatientName}}</td>
+    {% endif %}
+    <td>{{referrals.PatientPhone}}</td>
+    <td>{{referrals.PatientEmail}}</td>
+  
+    <form action="" method="POST">
+      {% csrf_token %}
+
+    {% if not user.is_dentist %}
+      <td>
+        <select name="Status" id="Status">
+          <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
+          <option value="Booked" >Booked</option>
+          <option value="Declined">Declined</option>
+          <option value="TC" >TC</option>
+          
+        </select>
+      </td>
+    {% else %}
+      <td>{{referrals.Status}}</td>
+    {% endif %}
+
+    
+    {% if not user.is_dentist %}
+    <td>
+      <select name="Stage" id="Stage">
+        <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Stage}}"selected>{{referrals.Stage}}</option>
+        <option value="Consultation">Consultation</option>
+        <option value="RCT" >RCT</option>
+        <option value="Review">Review</option>
+        <option value="2nd opinion">2nd opinion</option>
+        
+      </select>
+    </td>
+    <input style="display: none;" name="id" value="{{referrals.id}}">
+    {% else %}
+      <td>{{referrals.Stage}}</td>
+    {% endif %}
+    
+    
+  
+    <td>
+      <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
+    </td>
+    </form>
+  </tr>
+  
+  
+  {% endfor %}
+  
+  </tbody>
+  </table>
+</div>
+
+<div class="col-sm-12 px-0 pb-3 my-3 table-responsive"style="font-size:14px;">
+  <table class="table ">
+    <h1 style="font-size: 40px; color: red; margin-bottom: 15px;">Crown</h1>
+  <thead class="text-secondary">
+  <tr>
+    <th scope="col">Dentist</th>
+    <th scope="col">Date</th>
+    <th scope="col">Patient name</th>
+    <th scope="col">Patient phone</th>
+    <th scope="col">Patient email</th>
+    <th scope="col">Status</th>
+    <th scope="col">Stage</th>
+  </tr>
+  </thead>
+  
+  <tbody>
+  
+  {% for referrals in crown_referral %}
+  
+  <tr>
+    <td>{{referrals.DentistName}}</td>
+    <td>{{referrals.Date}}</td>
+    {% if not user.is_staff or user.is_superuser%}
+    <td><a href="/referraldetail/{{referrals.id}}/">{{referrals.PatientName}}</a></td>
+    {% else %}
+    <td class="text-secondary">{{referrals.PatientName}}</td>
+    {% endif %}
+    <td>{{referrals.PatientPhone}}</td>
+    <td>{{referrals.PatientEmail}}</td>
+    <td>{{referrals.Status}}</td>
+    <td>{{referrals.Stage}}</td>
+  </tr>
+  
+  
+  {% endfor %}
+  
+  </tbody>
+  </table>
+</div>
+
 
 
 </div>

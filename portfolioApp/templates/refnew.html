@@ -43,8 +43,6 @@
 <th scope="col">Patient email</th>
 <th scope="col">Referral Reason</th>
 <th scope="col">Status</th>
-<th scope="col">Booked</th>
-<th scope="col">Treatment Plan</th>
 <th scope="col">Action</th>
 </tr>
 </thead>
@@ -63,34 +61,26 @@
 {% endif %}
 <td>{{referrals.PatientPhone}}</td>
 <td>{{referrals.PatientEmail}}</td>
-<td>{{referrals.ReferralReason}}</td>
 
 <form action="" method="POST">
 {% csrf_token %}
 
 <td>
-  <input type="hidden" name="id"value="{{referrals.id}}">
-    <select name="Status" id="Status">
-        <option value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
-        <option value="Booked" >Booked</option>
-        <option value="Declined" >Declined</option>
-        <option value="Declined" >TC</option>
+    <select name="ReferralReason" id="ReferralReason">
+        <option  style="background: rgb(52, 143, 255); color: white;" value="{{referrals.ReferralReason}}"selected>{{referrals.ReferralReason}}</option>
+        <option value="Implant">Implant</option>
+        <option value="Orthodontics">Orthodontics</option>
+        <option value="Root Canal">Root Canal</option>
+        <option value="Crowns">Crowns</option>
     </select>
 </td>
 
-<td>
-      <input type="date" class="form-control border-0" style="background:#EBEBEB;padding:3px;font-size:11px;width:110px;" name="BookedOn"value="{{referrals.BookedOn}}">
-</td>
 
 <td>
-    <select name="TreatmentPlan" id="TreatmentPlan">
-        <option value="{{referrals.TreatmentPlan}}"selected>{{referrals.TreatmentPlan}}</option>
-        <option value="Consultation" >Consultation</option>
-        <option value="Implant" >Implant</option>
-        <option value="Orthodontics" >Orthodontics</option>
-        <option value="Root Canal" >Root Canal</option>
-        <option value="Crown" >Crown</option>
-        <option value="TC" >TC</option>
+  <input type="hidden" name="id"value="{{referrals.id}}">
+    <select name="Status" id="Status">
+        <option  style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
+        <option value="In progress" >In progress</option>
     </select>
 </td>
 
