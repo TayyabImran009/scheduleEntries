@@ -797,58 +797,272 @@ def patientdetail(request,id):
             UpperArchMaterialBoxObj.stage15 = False
         UpperArchMaterialBoxObj.save()
     if "line2" in request.POST:
-        UpperArchBoxObj = LowerArchBox.objects.get(patient=patient)
-        option1 = request.POST.get('stage1')
-        option2 = request.POST.get('stage2')
-        option3 = request.POST.get('stage3')
-        option4 = request.POST.get('stage4')
-        option5 = request.POST.get('stage5')
-        option6 = request.POST.get('stage6')
-        option7 = request.POST.get('stage7')
-        option8 = request.POST.get('stage8')
-        option9 = request.POST.get('stage9')
-        option10 = request.POST.get('stage10')
-        if option1 == "on":
-            UpperArchBoxObj.stage1 = True
+        LowerArchModelBoxObj = LowerArchBox.objects.get(patient=patient, name="Model")
+        LowerArchAlignerBoxObj = LowerArchBox.objects.get(patient=patient, name="Aligner")
+        LowerArchReadyBoxObj = LowerArchBox.objects.get(patient=patient, name="Ready")
+        LowerArchMaterialBoxObj = LowerArchBox.objects.get(patient=patient, name="Material")
+        Modelstage1 = request.POST.get('Modelstage1')
+        Modelstage2 = request.POST.get('Modelstage2')
+        Modelstage3 = request.POST.get('Modelstage3')
+        Modelstage4 = request.POST.get('Modelstage4')
+        Modelstage5 = request.POST.get('Modelstage5')
+        Modelstage6 = request.POST.get('Modelstage6')
+        Modelstage7 = request.POST.get('Modelstage7')
+        Modelstage8 = request.POST.get('Modelstage8')
+        Modelstage9 = request.POST.get('Modelstage9')
+        Modelstage10 = request.POST.get('Modelstage10')
+        Modelstage11 = request.POST.get('Modelstage11')
+        Modelstage12 = request.POST.get('Modelstage12')
+        Modelstage13 = request.POST.get('Modelstage13')
+        Modelstage14 = request.POST.get('Modelstage14')
+        Modelstage15 = request.POST.get('Modelstage15')
+        if Modelstage1 == "on":
+            LowerArchModelBoxObj.stage1 = True
         else:
-            UpperArchBoxObj.stage1 = False
-        if option2 == "on":
-            UpperArchBoxObj.stage2 = True
+            LowerArchModelBoxObj.stage1 = False
+        if Modelstage2 == "on":
+            LowerArchModelBoxObj.stage2 = True
         else:
-            UpperArchBoxObj.stage2 = False
-        if option3 == "on":
-            UpperArchBoxObj.stage3 = True
+            LowerArchModelBoxObj.stage2 = False
+        if Modelstage3 == "on":
+            LowerArchModelBoxObj.stage3 = True
         else:
-            UpperArchBoxObj.stage3 = False
-        if option4 == "on":
-            UpperArchBoxObj.stage4 = True
+            LowerArchModelBoxObj.stage3 = False
+        if Modelstage4 == "on":
+            LowerArchModelBoxObj.stage4 = True
         else:
-            UpperArchBoxObj.stage4 = False
-        if option5 == "on":
-            UpperArchBoxObj.stage5 = True
+            LowerArchModelBoxObj.stage4 = False
+        if Modelstage5 == "on":
+            LowerArchModelBoxObj.stage5 = True
         else:
-            UpperArchBoxObj.stage5 = False
-        if option6 == "on":
-            UpperArchBoxObj.stage6 = True
+            LowerArchModelBoxObj.stage5 = False
+        if Modelstage6 == "on":
+            LowerArchModelBoxObj.stage6 = True
         else:
-            UpperArchBoxObj.stage6 = False
-        if option7 == "on":
-            UpperArchBoxObj.stage7 = True
+            LowerArchModelBoxObj.stage6 = False
+        if Modelstage7 == "on":
+            LowerArchModelBoxObj.stage7 = True
         else:
-            UpperArchBoxObj.stage7 = False
-        if option8 == "on":
-            UpperArchBoxObj.stage8 = True
+            LowerArchModelBoxObj.stage7 = False
+        if Modelstage8 == "on":
+            LowerArchModelBoxObj.stage8 = True
         else:
-            UpperArchBoxObj.stage8 = False
-        if option9 == "on":
-            UpperArchBoxObj.stage9 = True
+            LowerArchModelBoxObj.stage8 = False
+        if Modelstage9 == "on":
+            LowerArchModelBoxObj.stage9 = True
         else:
-            UpperArchBoxObj.stage9 = False
-        if option10 == "on":
-            UpperArchBoxObj.stage10 = True 
+            LowerArchModelBoxObj.stage9 = False
+        if Modelstage10 == "on":
+            LowerArchModelBoxObj.stage10 = True 
         else:
-            UpperArchBoxObj.stage10 = False 
-        UpperArchBoxObj.save() 
+            LowerArchModelBoxObj.stage10 = False 
+        if Modelstage11 == "on":
+            LowerArchModelBoxObj.stage10 = True 
+        else:
+            LowerArchModelBoxObj.stage10 = False
+        if Modelstage12 == "on":
+            LowerArchModelBoxObj.stage10 = True 
+        else:
+            LowerArchModelBoxObj.stage10 = False
+        if Modelstage13 == "on":
+            LowerArchModelBoxObj.stage10 = True 
+        else:
+            LowerArchModelBoxObj.stage10 = False 
+        if Modelstage14 == "on":
+            LowerArchModelBoxObj.stage10 = True 
+        else:
+            LowerArchModelBoxObj.stage10 = False 
+        if Modelstage15 == "on":
+            LowerArchModelBoxObj.stage10 = True 
+        else:
+            LowerArchModelBoxObj.stage10 = False    
+        LowerArchModelBoxObj.save()  
+            #************************************************ Aligners
+        if request.POST.get('Alignerstage1') == "on":
+            LowerArchAlignerBoxObj.stage1 = True
+        else:
+            LowerArchAlignerBoxObj.stage1 = False
+        if request.POST.get('Alignerstage2') == "on":
+            LowerArchAlignerBoxObj.stage2 = True
+        else:
+            LowerArchAlignerBoxObj.stage2 = False
+        if request.POST.get('Alignerstage3') == "on":
+            LowerArchAlignerBoxObj.stage3 = True
+        else:
+            LowerArchAlignerBoxObj.stage3 = False
+        if request.POST.get('Alignerstage4') == "on":
+            LowerArchAlignerBoxObj.stage4 = True
+        else:
+            LowerArchAlignerBoxObj.stage4 = False
+        if request.POST.get('Alignerstage5') == "on":
+            LowerArchAlignerBoxObj.stage5 = True
+        else:
+            LowerArchAlignerBoxObj.stage5 = False
+        if request.POST.get('Alignerstage6') == "on":
+            LowerArchAlignerBoxObj.stage6 = True
+        else:
+            LowerArchAlignerBoxObj.stage6 = False
+        if request.POST.get('Alignerstage7') == "on":
+            LowerArchAlignerBoxObj.stage7 = True
+        else:
+            LowerArchAlignerBoxObj.stage7 = False
+        if request.POST.get('Alignerstage8') == "on":
+            LowerArchAlignerBoxObj.stage8 = True
+        else:
+            LowerArchAlignerBoxObj.stage8 = False
+        if request.POST.get('Alignerstage9') == "on":
+            LowerArchAlignerBoxObj.stage9 = True
+        else:
+            LowerArchAlignerBoxObj.stage9 = False
+        if request.POST.get('Alignerstage10') == "on":
+            LowerArchAlignerBoxObj.stage10 = True
+        else:
+            LowerArchAlignerBoxObj.stage10 = False
+        if request.POST.get('Alignerstage11') == "on":
+            LowerArchAlignerBoxObj.stage11 = True
+        else:
+            LowerArchAlignerBoxObj.stage11 = False
+        if request.POST.get('Alignerstage12') == "on":
+            LowerArchAlignerBoxObj.stage12 = True
+        else:
+            LowerArchAlignerBoxObj.stage12 = False
+        if request.POST.get('Alignerstage13') == "on":
+            LowerArchAlignerBoxObj.stage13 = True
+        else:
+            LowerArchAlignerBoxObj.stage13 = False
+        if request.POST.get('Alignerstage14') == "on":
+            LowerArchAlignerBoxObj.stage14 = True
+        else:
+            LowerArchAlignerBoxObj.stage14 = False
+        if request.POST.get('Alignerstage15') == "on":
+            LowerArchAlignerBoxObj.stage15 = True
+        else:
+            LowerArchAlignerBoxObj.stage15 = False
+        LowerArchAlignerBoxObj.save()
+            #************************************************ Ready
+        if request.POST.get('Readystage1') == "on":
+            LowerArchReadyBoxObj.stage1 = True
+        else:
+            LowerArchReadyBoxObj.stage1 = False
+        if request.POST.get('Readystage2') == "on":
+            LowerArchReadyBoxObj.stage2 = True
+        else:
+            LowerArchReadyBoxObj.stage2 = False
+        if request.POST.get('Readystage3') == "on":
+            LowerArchReadyBoxObj.stage3 = True
+        else:
+            LowerArchReadyBoxObj.stage3 = False
+        if request.POST.get('Readystage4') == "on":
+            LowerArchReadyBoxObj.stage4 = True
+        else:
+            LowerArchReadyBoxObj.stage4 = False
+        if request.POST.get('Readystage5') == "on":
+            LowerArchReadyBoxObj.stage5 = True
+        else:
+            LowerArchReadyBoxObj.stage5 = False
+        if request.POST.get('Readystage6') == "on":
+            LowerArchReadyBoxObj.stage6 = True
+        else:
+            LowerArchReadyBoxObj.stage6 = False
+        if request.POST.get('Readystage7') == "on":
+            LowerArchReadyBoxObj.stage7 = True
+        else:
+            LowerArchReadyBoxObj.stage7 = False
+        if request.POST.get('Readystage8') == "on":
+            LowerArchReadyBoxObj.stage8 = True
+        else:
+            LowerArchReadyBoxObj.stage8 = False
+        if request.POST.get('Readystage9') == "on":
+            LowerArchReadyBoxObj.stage9 = True
+        else:
+            LowerArchReadyBoxObj.stage9 = False
+        if request.POST.get('Readystage10') == "on":
+            LowerArchReadyBoxObj.stage10 = True
+        else:
+            LowerArchReadyBoxObj.stage10 = False
+        if request.POST.get('Readystage11') == "on":
+            LowerArchReadyBoxObj.stage11 = True
+        else:
+            LowerArchReadyBoxObj.stage11 = False
+        if request.POST.get('Readystage12') == "on":
+            LowerArchReadyBoxObj.stage12 = True
+        else:
+            LowerArchReadyBoxObj.stage12 = False
+        if request.POST.get('Readystage13') == "on":
+            LowerArchReadyBoxObj.stage13 = True
+        else:
+            LowerArchReadyBoxObj.stage13 = False
+        if request.POST.get('Readystage14') == "on":
+            LowerArchReadyBoxObj.stage14 = True
+        else:
+            LowerArchReadyBoxObj.stage14 = False
+        if request.POST.get('Readystage15') == "on":
+            LowerArchReadyBoxObj.stage15 = True
+        else:
+            LowerArchReadyBoxObj.stage15 = False
+        LowerArchReadyBoxObj.save()
+        #************************************************ Material
+        if request.POST.get('Materialstage1') == "on":
+            LowerArchMaterialBoxObj.stage1 = True
+        else:
+            LowerArchMaterialBoxObj.stage1 = False
+        if request.POST.get('Materialstage2') == "on":
+            LowerArchMaterialBoxObj.stage2 = True
+        else:
+            LowerArchMaterialBoxObj.stage2 = False
+        if request.POST.get('Materialstage3') == "on":
+            LowerArchMaterialBoxObj.stage3 = True
+        else:
+            LowerArchMaterialBoxObj.stage3 = False
+        if request.POST.get('Materialstage4') == "on":
+            LowerArchMaterialBoxObj.stage4 = True
+        else:
+            LowerArchMaterialBoxObj.stage4 = False
+        if request.POST.get('Materialstage5') == "on":
+            LowerArchMaterialBoxObj.stage5 = True
+        else:
+            LowerArchMaterialBoxObj.stage5 = False
+        if request.POST.get('Materialstage6') == "on":
+            LowerArchMaterialBoxObj.stage6 = True
+        else:
+            LowerArchMaterialBoxObj.stage6 = False
+        if request.POST.get('Materialstage7') == "on":
+            LowerArchMaterialBoxObj.stage7 = True
+        else:
+            LowerArchMaterialBoxObj.stage7 = False
+        if request.POST.get('Materialstage8') == "on":
+            LowerArchMaterialBoxObj.stage8 = True
+        else:
+            LowerArchMaterialBoxObj.stage8 = False
+        if request.POST.get('Materialstage9') == "on":
+            LowerArchMaterialBoxObj.stage9 = True
+        else:
+            LowerArchMaterialBoxObj.stage9 = False
+        if request.POST.get('Materialstage10') == "on":
+            LowerArchMaterialBoxObj.stage10 = True
+        else:
+            LowerArchMaterialBoxObj.stage10 = False
+        if request.POST.get('Materialstage11') == "on":
+            LowerArchMaterialBoxObj.stage11 = True
+        else:
+            LowerArchMaterialBoxObj.stage11 = False
+        if request.POST.get('Materialstage12') == "on":
+            LowerArchMaterialBoxObj.stage12 = True
+        else:
+            LowerArchMaterialBoxObj.stage12 = False
+        if request.POST.get('Materialstage13') == "on":
+            LowerArchMaterialBoxObj.stage13 = True
+        else:
+            LowerArchMaterialBoxObj.stage13 = False
+        if request.POST.get('Materialstage14') == "on":
+            LowerArchMaterialBoxObj.stage14 = True
+        else:
+            LowerArchMaterialBoxObj.stage14 = False
+        if request.POST.get('Materialstage15') == "on":
+            LowerArchMaterialBoxObj.stage15 = True
+        else:
+            LowerArchMaterialBoxObj.stage15 = False
+        LowerArchMaterialBoxObj.save() 
 
     try:
         proposed=PatientProposedTreatment.objects.get(Patient=patient, user=request.user)

@@ -161,6 +161,7 @@
   {% else %}
   <form method="POST" action="">
     {% csrf_token %}
+    <h5><b>Upper arch</b></h5>
     <!--******************************************************************************************** Model box -->
     <div style="display: flex; align-items: center;">
       <p style="margin: 0px; font-size: 20px; width: 70px;" >{{UpperArchBox.0.name}}:</p>
@@ -562,126 +563,396 @@
   {% else %}
   <form method="POST" action="">
     {% csrf_token %}
-    <div style="display: flex; align-items: center;">
-      <p style="margin: 0px; font-size: 20px;" >2nd Line:</p>
-      <div style="display: flex;">
-        {% if patientBox2.stage1 == True %}
-        <input style="margin-left: 10px;" type="checkbox" name="stage1" id="line2-option" checked>
-        {% else %}
-          <input style="margin-left: 10px;" type="checkbox" name="stage1" id="line2-option">
-        {% endif %}
+    <h5><b>Lower arch</b></h5>
+  <!--******************************************************************************************** Model box -->
+<div style="display: flex; align-items: center;">
+	<p style="margin: 0px; font-size: 20px; width: 70px;" >{{LowerArchBox.0.name}}:</p>
+	<div style="display: flex;">
+	  {% if LowerArchBox.0.stage1 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage1" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage1" id="LowerArchModelBox">
+	  {% endif %}
 
-        {% if patientBox2.stage2 == True %}
-        <input style="margin-left: 10px;" type="checkbox" name="stage2" id="line2-option" checked>
-        {% else %}
-          <input style="margin-left: 10px;" type="checkbox" name="stage2" id="line2-option">
-        {% endif %}
+	  {% if LowerArchBox.0.stage2 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage2" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage2" id="LowerArchModelBox">
+	  {% endif %}
 
-        {% if patientBox2.stage3 == True %}
-        <input style="margin-left: 10px;" type="checkbox" name="stage3" id="line2-option" checked>
-        {% else %}
-          <input style="margin-left: 10px;" type="checkbox" name="stage3" id="line2-option">
-        {% endif %}
+	  {% if LowerArchBox.0.stage3 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage3" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage3" id="LowerArchModelBox">
+	  {% endif %}
 
-        {% if patientBox2.stage4 == True %}
-        <input style="margin-left: 10px;" type="checkbox" name="stage4" id="line2-option" checked>
-        {% else %}
-          <input style="margin-left: 10px;" type="checkbox" name="stage4" id="line2-option">
-        {% endif %}
+	  {% if LowerArchBox.0.stage4 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage4" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage4" id="LowerArchModelBox">
+	  {% endif %}
 
-        {% if patientBox2.stage5 == True %}
-        <input style="margin-left: 10px;" type="checkbox" name="stage5" id="line2-option" checked>
-        {% else %}
-          <input style="margin-left: 10px;" type="checkbox" name="stage5" id="line2-option">
-        {% endif %}
+	  {% if LowerArchBox.0.stage5 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage5" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage5" id="LowerArchModelBox">
+	  {% endif %}
 
-        {% if patientBox2.stage6 == True %}
-        <input style="margin-left: 10px;" type="checkbox" name="stage6" id="line2-option" checked>
-        {% else %}
-          <input style="margin-left: 10px;" type="checkbox" name="stage6" id="line2-option">
-        {% endif %}
+	  {% if LowerArchBox.0.stage6 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage6" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage6" id="LowerArchModelBox">
+	  {% endif %}
 
-        {% if patientBox2.stage7 == True %}
-        <input style="margin-left: 10px;" type="checkbox" name="stage7" id="line2-option" checked>
-        {% else %}
-          <input style="margin-left: 10px;" type="checkbox" name="stage7" id="line2-option">
-        {% endif %}
+	  {% if LowerArchBox.0.stage7 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage7" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage7" id="LowerArchModelBox">
+	  {% endif %}
 
-        {% if patientBox2.stage8 == True %}
-        <input style="margin-left: 10px;" type="checkbox" name="stage8" id="line2-option" checked>
-        {% else %}
-          <input style="margin-left: 10px;" type="checkbox" name="stage8" id="line2-option">
-        {% endif %}
+	  {% if LowerArchBox.0.stage8 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage8" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage8" id="LowerArchModelBox">
+	  {% endif %}
 
-        {% if patientBox2.stage9 == True %}
-        <input style="margin-left: 10px;" type="checkbox" name="stage9" id="line2-option" checked>
-        {% else %}
-          <input style="margin-left: 10px;" type="checkbox" name="stage9" id="line2-option">
-        {% endif %}
+	  {% if LowerArchBox.0.stage9 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage9" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage9" id="LowerArchModelBox">
+	  {% endif %}
 
-        {% if patientBox2.stage10 == True %}
-        <input style="margin-left: 10px;" type="checkbox" name="stage10" id="line2-option" checked>
-        {% else %}
-          <input style="margin-left: 10px;" type="checkbox" name="stage10" id="line2-option">
-        {% endif %}
+	  {% if LowerArchBox.0.stage10 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage10" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage10" id="LowerArchModelBox">
+	  {% endif %}
 
-        <input type="hidden" value="{{patient.box2}}" id="box2-length">
-      </div>   
-    </div>
-    <input type="submit" class="btn btn-primary px-5 py-2" style="margin-top: 20px;" name="line2" value="Submit">
+	  {% if LowerArchBox.0.stage11 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage11" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage11" id="LowerArchModelBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.0.stage12 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage12" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage12" id="LowerArchModelBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.0.stage13 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage13" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage13" id="LowerArchModelBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.0.stage14 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage14" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage14" id="LowerArchModelBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.0.stage15 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Modelstage15" id="LowerArchModelBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Modelstage15" id="LowerArchModelBox">
+	  {% endif %}
+	  <input type="hidden" value="{{patient.LowerArch}}" id="LowerArch">
+	</div>   
+  </div>
+  <!--******************************************************************************************** Aligners box -->
+  <div style="display: flex; align-items: center;">
+	<p style="margin: 0px; font-size: 20px; width: 70px;" >{{LowerArchBox.1.name}}:</p>
+	<div style="display: flex;">
+	  {% if LowerArchBox.1.stage1 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage1" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage1" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage2 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage2" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage2" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage3 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage3" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage3" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage4 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage4" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage4" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage5 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage5" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage5" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage6 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage6" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage6" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage7 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage7" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage7" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage8 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage8" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage8" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage9 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage9" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage9" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage10 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage10" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage10" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage11 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage11" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage11" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage12 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage12" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage12" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage13 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage13" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage13" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage14 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage14" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage14" id="LowerArchAlignerBox">
+	  {% endif %}
+
+	  {% if LowerArchBox.1.stage15 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Alignerstage15" id="LowerArchAlignerBox" checked>
+	  {% else %}
+		<input style="margin-left: 10px;" type="checkbox" name="Alignerstage15" id="LowerArchAlignerBox">
+	  {% endif %}
+	</div>   
+  </div>
+  <!--******************************************************************************************** Ready box -->
+  <div style="display: flex; align-items: center;">
+	<p style="margin: 0px; font-size: 20px; width: 70px;" >{{LowerArchBox.2.name}}:</p>
+	<div style="display: flex;">
+	  {% if LowerArchBox.2.stage1 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage1" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage1" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage2 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage2" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage2" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage3 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage3" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage3" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage4 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage4" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage4" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage5 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage5" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage5" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage6 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage6" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage6" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage7 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage7" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage7" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage8 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage8" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage8" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage9 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage9" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage9" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage10 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage10" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage10" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage11 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage11" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage11" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage12 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage12" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage12" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage13 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage13" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage13" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage14 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage14" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage14" id="LowerArchReadyBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.2.stage15 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage15" id="LowerArchReadyBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Readystage15" id="LowerArchReadyBox">
+	  {% endif %}
+	</div>   
+	</div>
+  <!--******************************************************************************************** Material box -->
+  <div style="display: flex; align-items: center;">
+	<p style="margin: 0px; font-size: 20px; width: 70px;" >{{LowerArchBox.3.name}}:</p>
+	<div style="display: flex;">
+	  {% if LowerArchBox.3.stage1 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage1" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage1" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage2 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage2" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage2" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage3 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage3" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage3" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage4 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage4" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage4" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage5 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage5" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage5" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage6 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage6" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage6" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage7 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage7" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage7" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage8 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage8" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage8" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage9 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage9" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage9" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage10 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage10" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage10" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage11 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage11" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage11" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage12 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage12" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage12" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage13 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage13" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage13" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage14 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage14" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage14" id="LowerArchMaterialBox">
+	  {% endif %}
+  
+	  {% if LowerArchBox.3.stage15 == True %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage15" id="LowerArchMaterialBox" checked>
+	  {% else %}
+	  <input style="margin-left: 10px;" type="checkbox" name="Materialstage15" id="LowerArchMaterialBox">
+	  {% endif %}
+	</div>   
+	</div>
+  <input type="submit" class="btn btn-primary px-5 py-2" style="margin-top: 20px;" name="line2" value="Submit">
   </form>
   {% endif %}
 </div>
 <!-- Upload Images form start -->
 
 <!-- Upload Images form ends -->
-<hr class="my-3">
-<!-- internal Status start -->
-<div class="status">
-<h5 class="py-3"><b>Internal Status</b></h5>
-<form method="POST" action="" >
-{% csrf_token %}
-<div class="col-sm-12 d-flex justify-content-between py-3">
-    <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" checked value="In Progress"name="InternalStatus">
-  <label class="form-check-label" for="InProgress">In Progress</label>
-   </div>
 
-       <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" value="3D View" name="InternalStatus">
-  <label class="form-check-label" for="3Dview">3D View</label>
-   </div>
-       
-  <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" id="WaitingAcceptance" value="Waiting Acceptance" name="InternalStatus">
-  <label class="form-check-label" for="WaitingAcceptance">Waiting Acceptance</label>
-   </div>
-
-     <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" id="ModelProduction" value="Model Production" name="InternalStatus">
-  <label class="form-check-label" for="ModelProduction">Model Production</label>
-   </div>
-
-     <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" id="AlignersReady" value="Aligners Ready" name="InternalStatus">
-  <label class="form-check-label" for="AlignersReady">Aligners Ready</label>
-   </div>
-
-     <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" id="TC" value="TC" name="InternalStatus">
-  <label class="form-check-label" for="TC">TC</label>
-   </div>
-
-    <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" id="Archived" value="Archived" name="InternalStatus">
-  <label class="form-check-label" for="Archived">Archived</label>
-   </div>
-
-</div>
-   <div class="col-sm-12 py-4"style="margin:auto;">
-  <input type="submit" class="btn btn-primary px-5 py-2" name="SubmitInternalStatus" value="Submit">   
-</div>
-</form>
 {% endif %}
 
 </div>
@@ -754,7 +1025,6 @@
 
 {% block js %}
 <script>
-  console.log("Hello");
   const line1_option = document.querySelectorAll("#UpperArchModelBox");
   const UpperArchAlignerBox = document.querySelectorAll("#UpperArchAlignerBox");
   const UpperArchReadyBox = document.querySelectorAll("#UpperArchReadyBox");
@@ -775,14 +1045,26 @@
     }
   }
 
-  // const line2_option = document.querySelectorAll("#line2-option");
-  // const line2_amount = document.getElementById("box2-length").value;
-  // for(let i=0; i<line2_option.length; i++){
-  //   if(i < line2_amount){
-  //     line2_option[i].style.display = "block";
-  //   }else{
-  //     line2_option[i].style.display = "none";
-  //   }
-  // }
+  const LowerArchModelBox = document.querySelectorAll("#LowerArchModelBox");
+  const LowerArchAlignerBox = document.querySelectorAll("#LowerArchAlignerBox");
+  const LowerArchReadyBox = document.querySelectorAll("#LowerArchReadyBox");
+  const LowerArchMaterialBox = document.querySelectorAll("#LowerArchMaterialBox");
+  
+  const line2_amount = document.getElementById("LowerArch").value;
+  for(let i=0; i<LowerArchModelBox.length; i++){
+    if(i < line2_amount){
+      LowerArchModelBox[i].style.display = "block";
+      LowerArchAlignerBox[i].style.display = "block";
+      LowerArchReadyBox[i].style.display = "block";
+      LowerArchMaterialBox[i].style.display = "block";
+    }else{
+      LowerArchModelBox[i].style.display = "none";
+      LowerArchAlignerBox[i].style.display = "none";
+      LowerArchReadyBox[i].style.display = "none";
+      LowerArchMaterialBox[i].style.display = "none";
+    }
+  }
+
+  
 </script>
 {% endblock js %}
