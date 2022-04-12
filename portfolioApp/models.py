@@ -72,13 +72,14 @@ class Patient(models.Model):
     Note = models.CharField(max_length=10000,null=True)
     Action = models.CharField(max_length=1000,null=True,choices=(("In progress","In progress"),("TC","TC")))
     Progress = models.CharField(max_length=1000,null=True, blank=True, choices=(("Accept","Accept"),("Review","Review"),("Decline","Decline"),("On-Hold","On-Hold"),("New","New")))
-    box1 = models.IntegerField(default=0, null=True, blank=True)
-    box2 = models.IntegerField(default=0,null=True, blank=True)
+    UpperArch = models.IntegerField(default=0, null=True, blank=True)
+    LowerArch = models.IntegerField(default=0,null=True, blank=True)
     def __str__(self):
         return str(self.id) + "  |  " + self.PatientName + "  |  " + str(self.Date) 
 
-class PatientBox1(models.Model):
-    patient = models.OneToOneField(Patient,on_delete=models.CASCADE)
+class UpperArchBox(models.Model):
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, null=True)
     stage1 = models.BooleanField(default=False)
     stage2 = models.BooleanField(default=False)
     stage3 = models.BooleanField(default=False)
@@ -89,9 +90,15 @@ class PatientBox1(models.Model):
     stage8 = models.BooleanField(default=False)
     stage9 = models.BooleanField(default=False)
     stage10 = models.BooleanField(default=False)
+    stage11 = models.BooleanField(default=False)
+    stage12 = models.BooleanField(default=False)
+    stage13 = models.BooleanField(default=False)
+    stage14 = models.BooleanField(default=False)
+    stage15 = models.BooleanField(default=False)
 
-class PatientBox2(models.Model):
-    patient = models.OneToOneField(Patient,on_delete=models.CASCADE)
+class LowerArchBox(models.Model):
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, null=True)
     stage1 = models.BooleanField(default=False)
     stage2 = models.BooleanField(default=False)
     stage3 = models.BooleanField(default=False)
@@ -102,6 +109,11 @@ class PatientBox2(models.Model):
     stage8 = models.BooleanField(default=False)
     stage9 = models.BooleanField(default=False)
     stage10 = models.BooleanField(default=False)
+    stage11 = models.BooleanField(default=False)
+    stage12 = models.BooleanField(default=False)
+    stage13 = models.BooleanField(default=False)
+    stage14 = models.BooleanField(default=False)
+    stage15 = models.BooleanField(default=False)
 
 class userType(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)
