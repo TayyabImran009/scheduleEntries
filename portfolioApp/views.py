@@ -1941,18 +1941,20 @@ def incomeandexpensereportapproved(request):
     return render(request,'incomeandexpensereportapproved.html',context)
 
 def account(request):
-    date=datetime.now().strftime("%Y-%m-%d")
-    StartDate=date
-    EndDate=date
-    incomereport=Income.objects.all().order_by('-Date')
-    expensereport=Expense.objects.all().order_by('-Date')
+
+    incomereport=Income.objects.distinct().filter(
+        Q(Date__month=datetime.now().month) &
+        Q(Date__year=datetime.now().year)
+        ).order_by('-Date')
+
+    expensereport=Expense.objects.distinct().filter(
+        Q(Date__month=datetime.now().month) &
+        Q(Date__year=datetime.now().year)
+        ).order_by('-Date')
     context={
         'payment':'active',
         'incomereport':incomereport,
-        'expensereport':expensereport,
-        'date':date,
-        'StartDate':StartDate,
-        'EndDate':EndDate,
+        'expensereport':expensereport
     }
     return render(request,'account.html',context)
 
