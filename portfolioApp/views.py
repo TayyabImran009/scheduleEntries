@@ -20,10 +20,10 @@ from django.db.models import Q
 # Dashboard
 @login_required(login_url='login')
 def dashboard(request):
-    if request.user.is_superuser or request.user.is_staff:
+    if not request.user.is_dentist:
         #Patients
-        totalpatientscount=Patient.objects.count()
-        newpatientscount=Patient.objects.filter(Status="New").count()
+        totalpatientscount=Patient.objects.filter(~Q(Progress="New")).count()
+        newpatientscount=Patient.objects.filter(Progress="New").count()
         acceptedpatientscount=Patient.objects.filter(Status="Accepted").count()
         reviewpatientscount=Patient.objects.filter(Status="Review").count()
         declinedpatientscount=Patient.objects.filter(Status="Declined").count()
@@ -33,9 +33,12 @@ def dashboard(request):
         mppatientscount=Patient.objects.filter(InternalStatus="Model Production").count()
         arpatientscount=Patient.objects.filter(InternalStatus="Aligners Ready").count()
         tcpatientscount=Patient.objects.filter(InternalStatus="TC").count()
-        archivedpatientcount=Patient.objects.filter(InternalStatus="Archived").count()
+        archivedpatientcount=Patient.objects.filter(Action="TC").count()
         #Referrals
-        reftotalcount=Referral.objects.count()
+        reftotalcount=Referral.objects.distinct().filter(
+            Q(Status="In progress") |
+            Q(Status="Booked")
+            ).count()
         refnewcount=Referral.objects.filter(Status="New").count()
         refconsultationscount=Referral.objects.filter(TreatmentPlan="Consultation").exclude(Status="Declined").exclude(Status="New").exclude(Status="TC").count()
         refimplantscount=Referral.objects.filter(TreatmentPlan="Implant").exclude(Status="Declined").exclude(Status="New").exclude(Status="TC").count()       
@@ -43,11 +46,21 @@ def dashboard(request):
         refrootcanalcount=Referral.objects.filter(TreatmentPlan="Root Canal").exclude(Status="Declined").exclude(Status="New").exclude(Status="TC").count()       
         refcrownnveneerscount=Referral.objects.filter(TreatmentPlan="Crown").exclude(Status="Declined").exclude(Status="New").exclude(Status="TC").count()      
         refdeclinedcount=Referral.objects.filter(Status="Declined").count()       
-        reftccount=Referral.objects.filter(Status="TC").count()       
+        reftccount=Referral.objects.distinct().filter(
+                ~Q(Status="In progress")&
+                ~Q(Status="New")&
+                ~Q(Status="Booked")).count()        
     else:
         #Patients
-        totalpatientscount=Patient.objects.filter(Dentist=request.user).count()
-        newpatientscount=Patient.objects.filter(Dentist=request.user,Status="New").count()
+        totalpatientscount=Patient.objects.distinct().filter(
+            Q(Dentist=request.user) &
+            ~Q(Progress="New") &
+            ~Q(Action="TC")
+        ).count()
+        newpatientscount=Patient.objects.distinct().filter(
+            Q(Dentist=request.user) &
+            Q(Progress="New")
+        ).count()
         acceptedpatientscount=Patient.objects.filter(Dentist=request.user,Status="Accepted").count()
         reviewpatientscount=Patient.objects.filter(Dentist=request.user,Status="Review").count()
         declinedpatientscount=Patient.objects.filter(Dentist=request.user,Status="Declined").count()
@@ -57,9 +70,16 @@ def dashboard(request):
         mppatientscount=Patient.objects.filter(Dentist=request.user,InternalStatus="Model Production").count()
         arpatientscount=Patient.objects.filter(Dentist=request.user,InternalStatus="Aligners Ready").count()
         tcpatientscount=Patient.objects.filter(Dentist=request.user,InternalStatus="TC").count()
-        archivedpatientcount=Patient.objects.filter(InternalStatus="Archived").count()
+        archivedpatientcount=Patient.objects.distinct().filter(
+            Q(Dentist=request.user) &
+            Q(Action="TC")
+        ).count()
         #Referrals
-        reftotalcount=Referral.objects.filter(Dentist=request.user).count()
+        reftotalcount=Referral.objects.distinct().filter(
+            Q(Dentist=request.user) &
+            Q(Status="In progress") |
+            Q(Status="Booked")
+            ).count()
         refnewcount=Referral.objects.filter(Dentist=request.user,Status="New").count()
         refconsultationscount=Referral.objects.filter(Dentist=request.user,TreatmentPlan="Consultation").exclude(Status="Declined").exclude(Status="New").count()
         refimplantscount=Referral.objects.filter(Dentist=request.user,TreatmentPlan="Implant").exclude(Status="Declined").exclude(Status="New").count()       
@@ -67,7 +87,11 @@ def dashboard(request):
         refrootcanalcount=Referral.objects.filter(Dentist=request.user,TreatmentPlan="Root Canal").exclude(Status="Declined").exclude(Status="New").count()       
         refcrownnveneerscount=Referral.objects.filter(Dentist=request.user,TreatmentPlan="Crown and Veneers").exclude(Status="Declined").exclude(Status="New").count()              
         refdeclinedcount=Referral.objects.filter(Dentist=request.user,Status="Declined").count()       
-        reftccount=Referral.objects.filter(Dentist=request.user,Status="TC").count()       
+        reftccount=Referral.objects.distinct().filter(
+                Q(Dentist=request.user) &
+                ~Q(Status="In progress")&
+                ~Q(Status="New")&
+                ~Q(Status="Booked")).count()     
 
     context={
         'dashboard':'active',
@@ -1094,51 +1118,56 @@ def referrals(request):
     if request.user.is_superuser or request.user.is_staff:
         implant_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Implant") &
-                Q(Status="In progress")
+                Q(Status="In progress") |
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         orthodontics_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Orthodontics") &
-                Q(Status="In progress")
+                Q(Status="In progress") |
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         root_canal_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Root Canal") &
-                Q(Status="In progress")
+                Q(Status="In progress") |
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         crown_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Crown") &
-                Q(Status="In progress")
+                Q(Status="In progress") |
+                Q(Status="Booked")
             ).order_by("PatientName")
-        
-        # consultation_referral = Referral.objects.distinct().filter(
-        #         Q(ReferralReason="Consultation") &
-        #         Q(Status="In progress")
-        #     ).order_by("PatientName")
+        print("Otho",orthodontics_referral.count())
+        print("crown",crown_referral.count(),"********************")
     else:
         implant_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Implant") &
-                Q(Status="In progress")
+                Q(Status="In progress") |
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         orthodontics_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Orthodontics") &
-                Q(Status="In progress")
+                Q(Status="In progress") |
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         root_canal_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Root Canal") &
-                Q(Status="In progress")
+                Q(Status="In progress") |
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         crown_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Crown") &
-                Q(Status="In progress")
+                Q(Status="In progress") |
+                Q(Status="Booked")
             ).order_by("PatientName")
 
         # consultation_referral = Referral.objects.distinct().filter(
@@ -1375,46 +1404,62 @@ def reftc(request):
     if request.user.is_superuser or request.user.is_staff:
         implant_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Implant") &
-                ~Q(Status="In progress")
+                ~Q(Status="In progress") &
+                ~Q(Status="New")&
+                ~Q(Status="Booked")
             ).order_by("PatientName")
 
         orthodontics_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Orthodontics") &
-                ~Q(Status="In progress")
+                ~Q(Status="In progress")&
+                ~Q(Status="New")&
+                ~Q(Status="Booked")
             ).order_by("PatientName")
 
         root_canal_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Root Canal") &
-                ~Q(Status="In progress")
+                ~Q(Status="In progress")&
+                ~Q(Status="New")&
+                ~Q(Status="Booked")
             ).order_by("PatientName")
 
         crown_referral = Referral.objects.distinct().filter(
                 Q(ReferralReason="Crown") &
-                ~Q(Status="In progress")
+                ~Q(Status="In progress")&
+                ~Q(Status="New")&
+                ~Q(Status="Booked")
             ).order_by("PatientName")
     else:
         implant_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Implant") &
-                ~Q(Status="In progress")
+                ~Q(Status="In progress")&
+                ~Q(Status="New")&
+                ~Q(Status="Booked")
             ).order_by("PatientName")
 
         orthodontics_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Orthodontics") &
-                ~Q(Status="In progress")
+                ~Q(Status="In progress")&
+                ~Q(Status="New")&
+                ~Q(Status="Booked")
             ).order_by("PatientName")
 
         root_canal_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Root Canal") &
-                ~Q(Status="In progress")
+                ~Q(Status="In progress")&
+                ~Q(Status="New")&
+                ~Q(Status="Booked")
             ).order_by("PatientName")
 
         crown_referral = Referral.objects.distinct().filter(
                 Q(Dentist=request.user) &
                 Q(ReferralReason="Crown") &
-                ~Q(Status="In progress")
+                ~Q(Status="In progress")&
+                ~Q(Status="New")&
+                ~Q(Status="Booked")
             ).order_by("PatientName")
     context={
         'referrals':'active',
@@ -1941,22 +1986,24 @@ def incomeandexpensereportapproved(request):
     return render(request,'incomeandexpensereportapproved.html',context)
 
 def account(request):
+    if request.user.is_admin:
+        incomereport=Income.objects.distinct().filter(
+            Q(Date__month=datetime.now().month) &
+            Q(Date__year=datetime.now().year)
+            ).order_by('-Date')
 
-    incomereport=Income.objects.distinct().filter(
-        Q(Date__month=datetime.now().month) &
-        Q(Date__year=datetime.now().year)
-        ).order_by('-Date')
-
-    expensereport=Expense.objects.distinct().filter(
-        Q(Date__month=datetime.now().month) &
-        Q(Date__year=datetime.now().year)
-        ).order_by('-Date')
-    context={
-        'payment':'active',
-        'incomereport':incomereport,
-        'expensereport':expensereport
-    }
-    return render(request,'account.html',context)
+        expensereport=Expense.objects.distinct().filter(
+            Q(Date__month=datetime.now().month) &
+            Q(Date__year=datetime.now().year)
+            ).order_by('-Date')
+        context={
+            'payment':'active',
+            'incomereport':incomereport,
+            'expensereport':expensereport
+        }
+        return render(request,'account.html',context)
+    else:
+        return redirect('dashboard')
 
 def deleteincome(request,id):
     incomedata=Income.objects.get(id=id)
