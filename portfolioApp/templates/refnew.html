@@ -54,7 +54,7 @@
 <tr>
 <td>{{referrals.DentistName}}</td>
 <td>{{referrals.Date}}</td>
-{% if not user.is_staff or user.is_superuser %}
+{% if not request.user.is_dentist %}
 <td><a href="/referraldetail/{{referrals.id}}/">{{referrals.PatientName}}</a></td>
 {% else %}
 <td class="text-secondary">{{referrals.PatientName}}</td>
@@ -65,6 +65,7 @@
 <form action="" method="POST">
 {% csrf_token %}
 
+{% if not request.user.is_dentist %}
 <td>
     <select name="ReferralReason" id="ReferralReason">
         <option  style="background: rgb(52, 143, 255); color: white;" value="{{referrals.ReferralReason}}"selected>{{referrals.ReferralReason}}</option>
@@ -74,8 +75,12 @@
         <option value="Crowns">Crowns</option>
     </select>
 </td>
+{% else %}
+<td>{{referrals.ReferralReason}}</td>
+{% endif %}
 
 
+{% if not request.user.is_dentist %}
 <td>
   <input type="hidden" name="id"value="{{referrals.id}}">
     <select name="Status" id="Status">
@@ -83,6 +88,9 @@
         <option value="In progress" >In progress</option>
     </select>
 </td>
+{% else %}
+<td>{{referrals.Status}}</td>
+{% endif %}
 
 <td>
     <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save"> 

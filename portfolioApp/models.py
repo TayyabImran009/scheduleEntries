@@ -74,6 +74,8 @@ class Patient(models.Model):
     Progress = models.CharField(max_length=1000,null=True, blank=True, choices=(("Accept","Accept"),("Review","Review"),("Decline","Decline"),("On-Hold","On-Hold"),("New","New")))
     UpperArch = models.IntegerField(default=0, null=True, blank=True)
     LowerArch = models.IntegerField(default=0,null=True, blank=True)
+    UpperArchMaterial = models.CharField(max_length=50,null=True, blank=True)
+    LowerArchMaterial = models.CharField(max_length=50,null=True, blank=True)
     def __str__(self):
         return str(self.id) + "  |  " + self.PatientName + "  |  " + str(self.Date) 
 

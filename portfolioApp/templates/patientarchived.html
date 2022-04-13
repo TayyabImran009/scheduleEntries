@@ -66,7 +66,11 @@
 <td>{{patients.Prescriber}}</td>
 <td>{{patients.Dentist}}</td>
 <td>Code</td>
-<td>{{patients.Treatment}}</td>
+{% if patients.Treatment == "Full TREATMENT: including 3D and all set of aligners" %}
+  <td style="width: 180px;">Full TREATMENT</td>
+{% else %}
+  <td style="width: 180px;">TREATMENT PLAN</td>
+{% endif %}
 <td>{{patients.Progress}}</td>
 <td>{{patients.Status}}</td>
 <td>{{patients.Stage}}</td>

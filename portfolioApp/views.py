@@ -15,6 +15,8 @@ from tasks import entries
 from django.http import FileResponse
 from django.db.models import Q
 
+from account.models import Account
+
 # Create your views here.
 
 # Dashboard
@@ -22,7 +24,10 @@ from django.db.models import Q
 def dashboard(request):
     if not request.user.is_dentist:
         #Patients
-        totalpatientscount=Patient.objects.filter(~Q(Progress="New")).count()
+        totalpatientscount=Patient.objects.distinct().filter(
+            ~Q(Progress="New") &
+            ~Q(Action="TC")
+            ).count()
         newpatientscount=Patient.objects.filter(Progress="New").count()
         acceptedpatientscount=Patient.objects.filter(Status="Accepted").count()
         reviewpatientscount=Patient.objects.filter(Status="Review").count()
@@ -414,7 +419,7 @@ def patienttc(request):
 
 @login_required(login_url='login')
 def dentists(request):
-    dentists=User.objects.order_by("first_name")
+    dentists=Account.objects.filter(is_dentist=True)
     context={
         'dentists':'active',
         'dentists':dentists,
@@ -475,15 +480,12 @@ def addnewpatient(request):
         UpperArchBoxObj.save()
         UpperArchBoxObj = UpperArchBox.objects.create(patient=patient,name="Ready")
         UpperArchBoxObj.save()
-        UpperArchBoxObj = UpperArchBox.objects.create(patient=patient,name="Material")
-        UpperArchBoxObj.save()
+
         LowerArchBoxObj = LowerArchBox.objects.create(patient=patient,name="Model")
         LowerArchBoxObj.save()
         LowerArchBoxObj = LowerArchBox.objects.create(patient=patient,name="Aligner")
         LowerArchBoxObj.save()
         LowerArchBoxObj = LowerArchBox.objects.create(patient=patient,name="Ready")
-        LowerArchBoxObj.save()
-        LowerArchBoxObj = LowerArchBox.objects.create(patient=patient,name="Material")
         LowerArchBoxObj.save()
         
         
@@ -557,7 +559,6 @@ def patientdetail(request,id):
         UpperArchModelBoxObj = UpperArchBox.objects.get(patient=patient, name="Model")
         UpperArchAlignerBoxObj = UpperArchBox.objects.get(patient=patient, name="Aligner")
         UpperArchReadyBoxObj = UpperArchBox.objects.get(patient=patient, name="Ready")
-        UpperArchMaterialBoxObj = UpperArchBox.objects.get(patient=patient, name="Material")
         Modelstage1 = request.POST.get('Modelstage1')
         Modelstage2 = request.POST.get('Modelstage2')
         Modelstage3 = request.POST.get('Modelstage3')
@@ -758,73 +759,15 @@ def patientdetail(request,id):
         else:
             UpperArchReadyBoxObj.stage15 = False
         UpperArchReadyBoxObj.save()
-        #************************************************ Material
-        if request.POST.get('Materialstage1') == "on":
-            UpperArchMaterialBoxObj.stage1 = True
-        else:
-            UpperArchMaterialBoxObj.stage1 = False
-        if request.POST.get('Materialstage2') == "on":
-            UpperArchMaterialBoxObj.stage2 = True
-        else:
-            UpperArchMaterialBoxObj.stage2 = False
-        if request.POST.get('Materialstage3') == "on":
-            UpperArchMaterialBoxObj.stage3 = True
-        else:
-            UpperArchMaterialBoxObj.stage3 = False
-        if request.POST.get('Materialstage4') == "on":
-            UpperArchMaterialBoxObj.stage4 = True
-        else:
-            UpperArchMaterialBoxObj.stage4 = False
-        if request.POST.get('Materialstage5') == "on":
-            UpperArchMaterialBoxObj.stage5 = True
-        else:
-            UpperArchMaterialBoxObj.stage5 = False
-        if request.POST.get('Materialstage6') == "on":
-            UpperArchMaterialBoxObj.stage6 = True
-        else:
-            UpperArchMaterialBoxObj.stage6 = False
-        if request.POST.get('Materialstage7') == "on":
-            UpperArchMaterialBoxObj.stage7 = True
-        else:
-            UpperArchMaterialBoxObj.stage7 = False
-        if request.POST.get('Materialstage8') == "on":
-            UpperArchMaterialBoxObj.stage8 = True
-        else:
-            UpperArchMaterialBoxObj.stage8 = False
-        if request.POST.get('Materialstage9') == "on":
-            UpperArchMaterialBoxObj.stage9 = True
-        else:
-            UpperArchMaterialBoxObj.stage9 = False
-        if request.POST.get('Materialstage10') == "on":
-            UpperArchMaterialBoxObj.stage10 = True
-        else:
-            UpperArchMaterialBoxObj.stage10 = False
-        if request.POST.get('Materialstage11') == "on":
-            UpperArchMaterialBoxObj.stage11 = True
-        else:
-            UpperArchMaterialBoxObj.stage11 = False
-        if request.POST.get('Materialstage12') == "on":
-            UpperArchMaterialBoxObj.stage12 = True
-        else:
-            UpperArchMaterialBoxObj.stage12 = False
-        if request.POST.get('Materialstage13') == "on":
-            UpperArchMaterialBoxObj.stage13 = True
-        else:
-            UpperArchMaterialBoxObj.stage13 = False
-        if request.POST.get('Materialstage14') == "on":
-            UpperArchMaterialBoxObj.stage14 = True
-        else:
-            UpperArchMaterialBoxObj.stage14 = False
-        if request.POST.get('Materialstage15') == "on":
-            UpperArchMaterialBoxObj.stage15 = True
-        else:
-            UpperArchMaterialBoxObj.stage15 = False
-        UpperArchMaterialBoxObj.save()
+
+        patient.UpperArchMaterial = request.POST.get('UpperArchMaterial')
+        patient.save()
+
+        
     if "line2" in request.POST:
         LowerArchModelBoxObj = LowerArchBox.objects.get(patient=patient, name="Model")
         LowerArchAlignerBoxObj = LowerArchBox.objects.get(patient=patient, name="Aligner")
         LowerArchReadyBoxObj = LowerArchBox.objects.get(patient=patient, name="Ready")
-        LowerArchMaterialBoxObj = LowerArchBox.objects.get(patient=patient, name="Material")
         Modelstage1 = request.POST.get('Modelstage1')
         Modelstage2 = request.POST.get('Modelstage2')
         Modelstage3 = request.POST.get('Modelstage3')
@@ -1025,68 +968,10 @@ def patientdetail(request,id):
         else:
             LowerArchReadyBoxObj.stage15 = False
         LowerArchReadyBoxObj.save()
-        #************************************************ Material
-        if request.POST.get('Materialstage1') == "on":
-            LowerArchMaterialBoxObj.stage1 = True
-        else:
-            LowerArchMaterialBoxObj.stage1 = False
-        if request.POST.get('Materialstage2') == "on":
-            LowerArchMaterialBoxObj.stage2 = True
-        else:
-            LowerArchMaterialBoxObj.stage2 = False
-        if request.POST.get('Materialstage3') == "on":
-            LowerArchMaterialBoxObj.stage3 = True
-        else:
-            LowerArchMaterialBoxObj.stage3 = False
-        if request.POST.get('Materialstage4') == "on":
-            LowerArchMaterialBoxObj.stage4 = True
-        else:
-            LowerArchMaterialBoxObj.stage4 = False
-        if request.POST.get('Materialstage5') == "on":
-            LowerArchMaterialBoxObj.stage5 = True
-        else:
-            LowerArchMaterialBoxObj.stage5 = False
-        if request.POST.get('Materialstage6') == "on":
-            LowerArchMaterialBoxObj.stage6 = True
-        else:
-            LowerArchMaterialBoxObj.stage6 = False
-        if request.POST.get('Materialstage7') == "on":
-            LowerArchMaterialBoxObj.stage7 = True
-        else:
-            LowerArchMaterialBoxObj.stage7 = False
-        if request.POST.get('Materialstage8') == "on":
-            LowerArchMaterialBoxObj.stage8 = True
-        else:
-            LowerArchMaterialBoxObj.stage8 = False
-        if request.POST.get('Materialstage9') == "on":
-            LowerArchMaterialBoxObj.stage9 = True
-        else:
-            LowerArchMaterialBoxObj.stage9 = False
-        if request.POST.get('Materialstage10') == "on":
-            LowerArchMaterialBoxObj.stage10 = True
-        else:
-            LowerArchMaterialBoxObj.stage10 = False
-        if request.POST.get('Materialstage11') == "on":
-            LowerArchMaterialBoxObj.stage11 = True
-        else:
-            LowerArchMaterialBoxObj.stage11 = False
-        if request.POST.get('Materialstage12') == "on":
-            LowerArchMaterialBoxObj.stage12 = True
-        else:
-            LowerArchMaterialBoxObj.stage12 = False
-        if request.POST.get('Materialstage13') == "on":
-            LowerArchMaterialBoxObj.stage13 = True
-        else:
-            LowerArchMaterialBoxObj.stage13 = False
-        if request.POST.get('Materialstage14') == "on":
-            LowerArchMaterialBoxObj.stage14 = True
-        else:
-            LowerArchMaterialBoxObj.stage14 = False
-        if request.POST.get('Materialstage15') == "on":
-            LowerArchMaterialBoxObj.stage15 = True
-        else:
-            LowerArchMaterialBoxObj.stage15 = False
-        LowerArchMaterialBoxObj.save() 
+
+        patient.LowerArchMaterial = request.POST.get('LowerArchMaterial')
+        patient.save()
+        
 
     try:
         proposed=PatientProposedTreatment.objects.get(Patient=patient, user=request.user)
@@ -1989,17 +1874,36 @@ def account(request):
     if request.user.is_admin:
         incomereport=Income.objects.distinct().filter(
             Q(Date__month=datetime.now().month) &
-            Q(Date__year=datetime.now().year)
+            Q(Date__year=datetime.now().year) &
+            Q(Status="Pending")
             ).order_by('-Date')
 
         expensereport=Expense.objects.distinct().filter(
             Q(Date__month=datetime.now().month) &
-            Q(Date__year=datetime.now().year)
+            Q(Date__year=datetime.now().year) &
+            Q(Status="Pending")
             ).order_by('-Date')
+
+        incomereportArchived=Income.objects.distinct().filter(
+            Q(Date__month=datetime.now().month) &
+            Q(Date__year=datetime.now().year) &
+            ~Q(Status="Pending")
+            ).order_by('-Date')
+
+        expensereportArchived=Expense.objects.distinct().filter(
+            Q(Date__month=datetime.now().month) &
+            Q(Date__year=datetime.now().year) &
+            ~Q(Status="Pending")
+            ).order_by('-Date')
+
+        
+
         context={
             'payment':'active',
             'incomereport':incomereport,
-            'expensereport':expensereport
+            'expensereport':expensereport,
+            'incomereportArchived':incomereportArchived,
+            'expensereportArchived':expensereportArchived
         }
         return render(request,'account.html',context)
     else:
@@ -2187,46 +2091,18 @@ def addorder(request):
 @login_required(login_url='login')
 def orders(request):
     order=Order.objects.filter(Status="Pending").order_by("Date")
-    if "AddOrderBy" in request.POST:
+    if "Save" in request.POST:
         id=request.POST.get('id')
         editorder=Order.objects.get(id=id)
         editorder.OrderBy=request.POST.get('OrderBy')
-        editorder.save()
-    if "AddSupplier" in request.POST:
-        id=request.POST.get('id')
-        editorder=Order.objects.get(id=id)
         editorder.Supplier=request.POST.get('Supplier')
-        editorder.save()
-    if "AddQuantity" in request.POST:
-        id=request.POST.get('id')
-        editorder=Order.objects.get(id=id)
         editorder.Quantity=request.POST.get('Quantity')
-        editorder.save()
-    if "AddFee" in request.POST:
-        id=request.POST.get('id')
-        editorder=Order.objects.get(id=id)
         editorder.Fee=request.POST.get('Fee')
-        editorder.save()
-    if "AddNewDate" in request.POST:
-        id=request.POST.get('id')
-        editorder=Order.objects.get(id=id)
         editorder.NewDate=request.POST.get('NewDate')
-        editorder.save()
-    if "Arrived" in request.POST:
-        id=request.POST.get('id')
-        editorder=Order.objects.get(id=id)
         editorder.Arrived=request.POST.get('Arrived')
-        editorder.save()                    
-    if "Returned" in request.POST:
-        id=request.POST.get('id')
-        editorder=Order.objects.get(id=id)
         editorder.Returned=request.POST.get('Returned')
-        editorder.save()                    
-    if "AddNote" in request.POST:
-        id=request.POST.get('id')
-        editorder=Order.objects.get(id=id)
         editorder.Note=request.POST.get('Note')
-        editorder.save()          
+        editorder.save()         
     if "Archive" in request.POST:
         id=request.POST.get('id')
         editorder=Order.objects.get(id=id)

@@ -141,47 +141,8 @@
     {% endif %}
     <td>{{referrals.PatientPhone}}</td>
     <td>{{referrals.PatientEmail}}</td>
-  
-    <form action="" method="POST">
-      {% csrf_token %}
-
-    {% if not user.is_dentist %}
-      <td>
-        <select name="Status" id="Status">
-          <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Status}}"selected>{{referrals.Status}}</option>
-          <option value="Booked" >Booked</option>
-          <option value="Declined">Declined</option>
-          <option value="TC" >TC</option>
-          
-        </select>
-      </td>
-    {% else %}
-      <td>{{referrals.Status}}</td>
-    {% endif %}
-
-    
-    {% if not user.is_dentist %}
-    <td>
-      <select name="Stage" id="Stage">
-        <option style="background: rgb(52, 143, 255); color: white;" value="{{referrals.Stage}}"selected>{{referrals.Stage}}</option>
-        <option value="Consultation">Consultation</option>
-        <option value="RCT" >RCT</option>
-        <option value="Review">Review</option>
-        <option value="2nd opinion">2nd opinion</option>
-        
-      </select>
-    </td>
-    <input style="display: none;" name="id" value="{{referrals.id}}">
-    {% else %}
-      <td>{{referrals.Stage}}</td>
-    {% endif %}
-    
-    
-  
-    <td>
-      <input type="submit" class="btn px-2 py-0" value="Save" style="background:yellow;font-size:11px;" name="Save">
-    </td>
-    </form>
+    <td>{{referrals.Status}}</td>
+    <td>{{referrals.Stage}}</td>
   </tr>
   
   

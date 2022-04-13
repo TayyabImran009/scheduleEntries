@@ -74,9 +74,13 @@
     {% if user.is_dentist %}
       <td>
         <select style="width: 180px;" name="Treatment" id="Treatment">
-          <option style="background: rgb(52, 143, 255); color: white;" value="{{patients.Treatment}}"selected>{{patients.Treatment}}</option>
-          <option value="TREATMENT PLAN: includes 3D visualisation and STL files to print models in house">TREATMENT PLAN: includes 3D visualisation and STL files to print models in house</option>
-          <option value="Full TREATMENT: including 3D and all set of aligners">Full TREATMENT: including 3D and all set of aligners</option>
+          {% if patients.Treatment == "Full TREATMENT: including 3D and all set of aligners" %}
+            <option style="background: rgb(52, 143, 255); color: white;" value="{{patients.Treatment}}"selected>Full TREATMENT</option>
+          {% else %}
+            <option style="background: rgb(52, 143, 255); color: white;" value="{{patients.Treatment}}"selected>TREATMENT PLAN</option>
+          {% endif %}
+          <option value="TREATMENT PLAN: includes 3D visualisation and STL files to print models in house">TREATMENT PLAN</option>
+          <option value="Full TREATMENT: including 3D and all set of aligners">Full TREATMENT</option>
         </select>
       </td>
     {% else %}
